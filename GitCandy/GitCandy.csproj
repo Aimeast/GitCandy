@@ -126,6 +126,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Web.config" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -141,7 +142,121 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\SR.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SR.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\SR.zh-Hans.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SR.zh-Hans.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MefConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Base\FileHelper.cs" />
+    <Compile Include="Base\MefDependencyResolver.cs" />
+    <Compile Include="Base\Meta.cs" />
+    <Compile Include="Base\Pager.cs" />
+    <Compile Include="Base\Profiler.cs" />
+    <Compile Include="Base\RawResult.cs" />
+    <Compile Include="Base\RegularExpression.cs" />
+    <Compile Include="Base\StringLogicalComparer.cs" />
+    <Compile Include="Configuration\ConfigurationEntry.cs" />
+    <Compile Include="Configuration\RecommendedValueAttribute.cs" />
+    <Compile Include="Configuration\UserConfiguration.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CandyControllerBase.cs" />
+    <Compile Include="Controllers\GitController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RepositoryController.cs" />
+    <Compile Include="Controllers\SettingController.cs" />
+    <Compile Include="Controllers\TeamController.cs" />
+    <Compile Include="DAL\AuthorizationLog.cs" />
+    <Compile Include="DAL\GitCandyContext.cs" />
+    <Compile Include="DAL\Mapping\AuthorizationLogMap.cs" />
+    <Compile Include="DAL\Mapping\RepositoryMap.cs" />
+    <Compile Include="DAL\Mapping\TeamMap.cs" />
+    <Compile Include="DAL\Mapping\TeamRepositoryRoleMap.cs" />
+    <Compile Include="DAL\Mapping\UserMap.cs" />
+    <Compile Include="DAL\Mapping\UserRepositoryRoleMap.cs" />
+    <Compile Include="DAL\Mapping\UserTeamRoleMap.cs" />
+    <Compile Include="DAL\Repository.cs" />
+    <Compile Include="DAL\Team.cs" />
+    <Compile Include="DAL\TeamRepositoryRole.cs" />
+    <Compile Include="DAL\User.cs" />
+    <Compile Include="DAL\UserRepositoryRole.cs" />
+    <Compile Include="DAL\UserTeamRole.cs" />
+    <Compile Include="Data\MembershipService.cs" />
+    <Compile Include="Data\RepositoryService.cs" />
+    <Compile Include="Extensions\CommitLogExtension.cs" />
+    <Compile Include="Extensions\HtmlHelperExtension.cs" />
+    <Compile Include="Extensions\MetadataExtension.cs" />
+    <Compile Include="Filters\AdministratorAttribute.cs" />
+    <Compile Include="Filters\AllowRegisterUserAttribute.cs" />
+    <Compile Include="Filters\AllowRepositoryCreationAttribute.cs" />
+    <Compile Include="Filters\CurrentUserOrAdministratorAttribute.cs" />
+    <Compile Include="Filters\CustomErrorAttribute.cs" />
+    <Compile Include="Filters\PublicServerAttribute.cs" />
+    <Compile Include="Filters\ReadRepositoryAttribute.cs" />
+    <Compile Include="Filters\RepositoryOwnerOrSystemAdministratorAttribute.cs" />
+    <Compile Include="Filters\SmartAuthorizeAttribute.cs" />
+    <Compile Include="Filters\SmartGitAttribute.cs" />
+    <Compile Include="Filters\TeamOrSystemAdministratorAttribute.cs" />
+    <Compile Include="Git\GitCache.cs" />
+    <Compile Include="Git\GitService.cs" />
+    <Compile Include="Git\RevisionSummaryCacheItem.cs" />
+    <Compile Include="Git\TreeCacheItem.cs" />
+    <Compile Include="Models\AheadBehindModel.cs" />
+    <Compile Include="Models\BlameHunkModel.cs" />
+    <Compile Include="Models\BlameModel.cs" />
+    <Compile Include="Models\BlobType.cs" />
+    <Compile Include="Models\BranchesModel.cs" />
+    <Compile Include="Models\BranchSelectorModel.cs" />
+    <Compile Include="Models\ChangePasswordModel.cs" />
+    <Compile Include="Models\CollaborationModel.cs" />
+    <Compile Include="Models\CommitChangeModel.cs" />
+    <Compile Include="Models\CommitModel.cs" />
+    <Compile Include="Models\CommitsModel.cs" />
+    <Compile Include="Models\ContributorCommitsModel.cs" />
+    <Compile Include="Models\ContributorsModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PathBarModel.cs" />
+    <Compile Include="Models\RepositoryListModel.cs" />
+    <Compile Include="Models\RepositoryModel.cs" />
+    <Compile Include="Models\RepositoryModelBase.cs" />
+    <Compile Include="Models\RepositoryScope.cs" />
+    <Compile Include="Models\RepositoryStatisticsModel.cs" />
+    <Compile Include="Models\SettingModel.cs" />
+    <Compile Include="Models\TagModel.cs" />
+    <Compile Include="Models\TagsModel.cs" />
+    <Compile Include="Models\TeamListModel.cs" />
+    <Compile Include="Models\TeamModel.cs" />
+    <Compile Include="Models\TreeEntryModel.cs" />
+    <Compile Include="Models\TreeModel.cs" />
+    <Compile Include="Models\UserListModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\PasswordProvider.cs" />
+    <Compile Include="Security\PasswordProviderPool.cs" />
+    <Compile Include="Security\PasswordProviderV1.cs" />
+    <Compile Include="Security\PasswordProviderV2.cs" />
+    <Compile Include="Security\PasswordProviderVersionAttribute.cs" />
+    <Compile Include="Security\Token.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\SR.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SR.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\SR.zh-Hans.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SR.zh-Hans.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
