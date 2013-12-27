@@ -23,6 +23,8 @@
 </script>
 <!--
 @Meta.BuildingInformation
-Tracing:
-@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss ddd zzz", System.Globalization.CultureInfo.InvariantCulture)
+
+Version: @Meta.Version
+
+Tracing: @DateTimeOffset.Now.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo)
 -->
