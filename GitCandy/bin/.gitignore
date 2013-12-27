@@ -1,0 +1,4 @@
+# to keep the web.config file
+*
+!.gitignore
+![Ww]eb.[Cc]onfig
