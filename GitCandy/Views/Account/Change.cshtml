@@ -1,0 +1,49 @@
+﻿@model GitCandy.Models.ChangePasswordModel
+
+@{
+    ViewBag.Title = string.Format(SR.Shared_TitleFormat, SR.Account_ChangePasswordTitle);
+}
+
+<h4>@SR.Account_ChangePasswordTitle</h4>
+
+<div class="span7">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            @Html.LabelFor(s => s.OldPassword, new { @class = "span3 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.PasswordFor(s => s.OldPassword, new { @class = "span3 text-left lead" })
+        </div>
+        <div class="row">
+            <span class="text-error span4 offset3">
+                @Html.ValidationMessageFor(s => s.OldPassword)
+            </span>
+        </div>
+        <div class="row">
+            @Html.LabelFor(s => s.NewPassword, new { @class = "span3 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.PasswordFor(s => s.NewPassword, new { @class = "span3 text-left lead" })
+        </div>
+        <div class="row">
+            <span class="text-error span4 offset3">
+                @Html.ValidationMessageFor(s => s.NewPassword)
+            </span>
+        </div>
+        <div class="row">
+            @Html.LabelFor(s => s.ConfirmPassword, new { @class = "span3 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.PasswordFor(s => s.ConfirmPassword, new { @class = "span3 text-left lead" })
+        </div>
+        <div class="row">
+            <span class="text-error span4 offset3">
+                @Html.ValidationMessageFor(s => s.ConfirmPassword)
+            </span>
+        </div>
+
+        <div class="form-actions">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">@SR.Account_ChangePassword</button>
+            </div>
+        </div>
+    }
+</div>

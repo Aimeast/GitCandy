@@ -1,0 +1,35 @@
+﻿@model GitCandy.Models.LoginModel
+
+@{
+    ViewBag.Title = string.Format(SR.Shared_TitleFormat, SR.Account_LoginTitle);
+}
+
+<h4>@SR.Account_LoginTitle</h4>
+
+<div class="span7">
+    @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="row focus">
+            @Html.LabelFor(s => s.ID, new { @class = "span3 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.ID, new { @class = "span3 text-left lead" })
+        </div>
+        <div class="row">
+            @Html.LabelFor(s => s.Password, new { @class = "span3 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.PasswordFor(s => s.Password, new { @class = "span3 text-left lead" })
+        </div>
+
+        @Html.ValidationSummary(true, SR.Account_LoginFailed, new { @class = "alert alert-error" })
+
+        <div class="form-actions">
+            <div class="pull-right">
+                @Html.ActionLink(SR.Account_ForgotPassword, "Forgot")
+                <button type="submit" class="btn btn-primary">@SR.Shared_Login</button>
+            </div>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $('.focus :input').focus();
+</script>

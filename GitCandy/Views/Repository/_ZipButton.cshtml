@@ -1,0 +1,13 @@
+﻿@model string
+
+<div class="btn-group">
+    <a href="@Url.Action("Archive", Html.OverRoute(new { path = Model }))" class="btn"><i class="icon-download-alt"></i>@SR.Repository_Zip</a>
+    <button class="btn dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li>@Html.ActionLink(SR.Repository_ZipLF, "Archive", Html.OverRoute(new { path = Model, eol = "LF" }))</li>
+        <li>@Html.ActionLink(SR.Repository_ZipCR, "Archive", Html.OverRoute(new { path = Model, eol = "CR" }))</li>
+        <li>@Html.ActionLink(SR.Repository_ZipCRLF, "Archive", Html.OverRoute(new { path = Model, eol = "CRLF" }))</li>
+    </ul>
+</div>

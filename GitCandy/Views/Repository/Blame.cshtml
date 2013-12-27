@@ -1,0 +1,43 @@
+﻿@model GitCandy.Models.BlameModel
+
+@{
+    ViewBag.Title = string.Format(SR.Shared_TitleFormat, string.Format(SR.Repository_BlameTitle, Model.RepositoryName, Model.ReferenceName ?? Model.Sha.ToShortSha(), Model.Path));
+}
+
+<h4>@Html.ActionLink(Model.RepositoryName, "Tree", Html.OverRoute(new { path = "" }))</h4>
+
+@Html.Partial("_PathBar", Model.PathBar)
+@Html.Partial("_BranchSelector", Model.BranchSelector)
+
+<div class="row">
+    <div class="span2 pull-left">
+        @Model.SizeString
+    </div>
+    <div class="span4 pull-right">
+        @Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
+        @Html.ActionLink(SR.Repository_NormalView, "Blob", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
+        @Html.ActionLink(SR.Repository_Raw, "Raw", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <tbody>
+        @foreach (var hunk in Model.Hunks)
+        {
+            <tr>
+                <td class="blame-info">
+                    <div>
+                        <span>@Html.ActionLink(hunk.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = hunk.Sha + "/" + Model.Path }))</span>
+                        <span>@Html.ActionLink("»", "Blame", Html.OverRoute(new { path = hunk.Sha + "/" + Model.Path }))</span>
+                        <span title="@hunk.AuthorEmail">@hunk.Author</span>
+                    </div>
+                    <div>
+                        <span title="@hunk.AuthorDate.LocalDateTime">@hunk.AuthorDate.LocalDateTime.ToShortDateString()</span>
+                        <span title="@hunk.MessageShort">@hunk.MessageShort.ShortString(33)</span>
+                    </div>
+                </td>
+                <td><pre class="blame-code"><code class="language @Model.Brush blame-code">@hunk.Code</code></pre></td>
+            </tr>
+        }
+    </tbody>
+</table>

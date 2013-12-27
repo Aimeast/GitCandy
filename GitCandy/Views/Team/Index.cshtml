@@ -1,0 +1,44 @@
+﻿@model GitCandy.Models.TeamListModel
+
+@{
+    ViewBag.Title = string.Format(SR.Shared_TitleFormat, SR.Team_ListTitle);
+}
+
+<h4>@SR.Team_ListTitle</h4>
+
+@using (Html.BeginForm("Index", "Team", FormMethod.Get))
+{
+    <fieldset>
+        <legend class="hide"></legend>
+        <div class="input-append focus">
+            <input type="text" name="query" />
+            <button type="submit" class="btn">@SR.Shared_Search</button>
+        </div>
+    </fieldset>
+}
+<script type="text/javascript">
+    $('.focus :text').focus();
+</script>
+
+<div>
+    <div class="pull-left">@string.Format(SR.Team_TeamsFound, Model.ItemCount)</div>
+    <div class="pull-right">@Html.ActionLink(SR.Shared_Create, "Create", null, new { @class = "btn btn-primary" })</div>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>@SR.Team_Name</th>
+            <th>@SR.Team_Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Teams)
+        {
+            <tr>
+                <td>@Html.ActionLink(item.Name, "Detail", new { name = item.Name })</td>
+                <td>@item.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Partial("../Shared/_Pager")

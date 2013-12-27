@@ -1,0 +1,146 @@
+﻿@model GitCandy.Models.TreeModel
+
+@{
+    ViewBag.Title = string.Format(SR.Shared_TitleFormat, string.Format(SR.Repository_TreeTitle, Model.RepositoryName, Model.ReferenceName ?? Model.Commit.Sha.ToShortSha(), Model.Path));
+}
+
+<h4>@Html.ActionLink(Model.RepositoryName, "Tree", Html.OverRoute(new { path = "" }))</h4>
+
+@if (Model.Entries == null)
+{
+    <div class="clearfix">
+        <div class="pull-right">
+            @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(), new { @class = "btn" })
+        </div>
+    </div>
+    <div class="alert alert-info">
+        @SR.Repository_EmptyWords<br />
+        <pre>touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin <strong class="text-info">@Model.GitUrl</strong>
+git push -u origin master</pre>
+    </div>
+}
+else
+{
+    <div>
+        @if (Model.IsRoot)
+        {
+            <span>@Model.Description</span>
+            <div class="border-area">
+                <ul class="nav nav-pills">
+                    <li>@Html.ActionLink(Model.Scope.Commits + " " + SR.Repository_Commits, "Commits", Html.OverRoute())</li>
+                    <li>@Html.ActionLink(Model.Scope.Branches + " " + SR.Repository_Branches, "Branches", Html.OverRoute(new { path = "" }))</li>
+                    <li>@Html.ActionLink(Model.Scope.Tags + " " + SR.Repository_Tags, "Tags", Html.OverRoute(new { path = "" }))</li>
+                    <li>@Html.ActionLink(Model.Scope.Contributors + " " + SR.Repository_Contributors, "Contributors", Html.OverRoute())</li>
+                </ul>
+            </div>
+        }
+
+        <div class="row">
+            <div class="span12">
+                <div class="pull-left">
+                    @Html.Partial("_BranchSelector", Model.BranchSelector)
+                </div>
+                <div class="pull-left keep-space">
+                    @(Model.IsRoot
+                    ? Html.Partial("_ZipButton", Model.ReferenceName ?? Model.Commit.Sha)
+                    : Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Commit.Sha) + "/" + Model.Path }), new { @class = "btn" }))
+                </div>
+                @if (Model.IsRoot)
+                {
+                    <div class="pull-left">
+                        <label class="pull-left">@SR.Repository_GitUrl</label>
+                        <div class="input-append">
+                            <input class="git-text" type="text" readonly value="@Model.GitUrl" />
+                            <a class="btn" id="copy-clip" data-clipboard-text="@Model.GitUrl"><i class="icon-check"></i></a>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        (function () {
+                            var $clip = $('#copy-clip');
+                            $clip.parent().click(function () { $('.git-text').select(); });
+                            var zero = new ZeroClipboard($clip, {
+                                moviePath: '/Content/ZeroClipboard.swf',
+                                useNoCache: false,
+                            });
+                            var $tip = $(zero.htmlBridge);
+                            zero.on('complete', function (client, args) {
+                                $tip.tooltip('destroy').tooltip({ title: '@SR.Repository_Copied', placement: 'right' }).tooltip('show');
+                            })
+                            .on('mouseover', function (client, args) {
+                                $tip.tooltip('destroy').tooltip({ title: '@SR.Repository_CopyToClipboard', placement: 'right' }).tooltip('show');
+                            });
+                        })();
+                    </script>
+                    <div class="pull-right">
+                        @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(new { path = "" }), new { @class = "btn" })
+                    </div>
+                }
+            </div>
+        </div>
+        @Html.Partial("_PathBar", Model.PathBar)
+        <div class="border-area">
+            <table class="table table-hover">
+                <caption>
+                    <div class="clearfix">
+                        <div title="@Model.Commit.CommitMessageShort" class="pull-left">@Html.ActionLink(Model.Commit.CommitMessageShort.ShortString(80), "Commit", Html.OverRoute(new { path = Model.Commit.Sha }))</div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="pull-left">@Model.Commit.Author.Name</div>
+                        <div class="pull-left keep-space">@SR.Repository_AuthoredAt @Model.Commit.Author.When.LocalDateTime</div>
+                        @if (Model.Commit.Author != Model.Commit.Committer)
+                        {
+                            <div class="pull-left keep-space">@Model.Commit.Committer.Name</div>
+                            <div class="pull-left keep-space">@SR.Repository_CommittedAt @Model.Commit.Committer.When.LocalDateTime</div>
+                        }
+                        <div class="pull-right">@Model.Commit.Sha.ToShortSha()</div>
+                    </div>
+                </caption>
+                <tbody>
+                    @foreach (var entry in Model.Entries)
+                    {
+                        <tr>
+                            <td>
+                                @if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.Tree)
+                                { <i class="icon-folder-close"></i> }
+                                else if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.Blob)
+                                { <i class="icon-file"></i> }
+                                else if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.GitLink)
+                                { <i class="icon-bookmark"></i> }
+                                else
+                                { <i class="icon-leaf"></i> }
+                                @if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.GitLink)
+                                { @entry.Name }
+                                else
+                                { @Html.ActionLink(entry.Name, entry.EntryType.ToString(), Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Commit.Sha) + "/" + entry.Path })) }
+                            </td>
+                            <td title="@entry.Commit.CommitMessageShort">@Html.ActionLink(entry.Commit.CommitMessageShort.ShortString(70), "Commit", Html.OverRoute(new { path = entry.Commit.Sha }))</td>
+                            <td title="@entry.Commit.Author">@entry.Commit.Author.Name</td>
+                            <td title="@entry.Commit.Author.When.LocalDateTime">@entry.Commit.Author.When.LocalDateTime.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (Model.Readme != null)
+        {
+            <div class="border-area">
+                <table class="table">
+                    <caption>
+                        <div class="pull-left keep-space"><i class="icon-list-alt"></i>@Model.Readme.Name</div>
+                    </caption>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Html.Partial("_BlobPreview", Model.Readme)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}

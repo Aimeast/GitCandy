@@ -1,0 +1,33 @@
+﻿@model GitCandy.Models.TagsModel
+
+@{
+    ViewBag.Title = string.Format(SR.Shared_TitleFormat, string.Format(SR.Repository_TagsTitle, Model.RepositoryName));
+}
+
+<h4>@string.Format(SR.Repository_TagsTitle, "") @Html.ActionLink(Model.RepositoryName, "Tree", Html.OverRoute(new { path = "" }))</h4>
+
+<div class="span5">
+    @if (Model.HasTags)
+    {
+        foreach (var tag in Model.Tags)
+        {
+            <div class="row">
+                <div class="span5 border-area">
+                    <div class="span5">
+                        <div class="span3 pull-right">
+                            @Html.Partial("_ZipButton", tag.ReferenceName)
+                        </div>
+                        <div>@Html.ActionLink(tag.ReferenceName, "Tree", Html.OverRoute(new { path = tag.ReferenceName ?? tag.Sha }))</div>
+                        <div title="@tag.DateTime">@tag.DateTime.ToShortDateString()</div>
+                        <div>@tag.MessageShort</div>
+                        <div>@Html.ActionLink(tag.Sha, "Commit", Html.OverRoute(new { path = tag.ReferenceName ?? tag.Sha }))</div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div>@SR.Repository_NoTags</div>
+    }
+</div>

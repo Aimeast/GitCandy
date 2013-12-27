@@ -1,0 +1,100 @@
+﻿@model GitCandy.Models.SettingModel
+
+@{
+    ViewBag.Title = string.Format(SR.Shared_TitleFormat, SR.Setting_EditTitle);
+}
+
+<h4>@SR.Setting_EditTitle</h4>
+
+<div class="span10">
+    @using (Html.BeginForm("Edit", "Setting", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="row">
+            @Html.LabelFor(s => s.IsPublicServer, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.IsPublicServer)
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.ForceSsl, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.ForceSsl)
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.SslPort, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.SslPort, new { @class = "span4 text-left lead" })
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.LocalSkipCustomError, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.LocalSkipCustomError)
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.AllowRegisterUser, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.AllowRegisterUser)
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.AllowRepositoryCreation, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.AllowRepositoryCreation)
+            </div>
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.RepositoryPath, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.RepositoryPath, new { @class = "span4 text-left lead" })
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.CachePath, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.CachePath, new { @class = "span4 text-left lead" })
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.GitExePath, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.GitExePath, new { @class = "span4 text-left lead" })
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.NumberOfCommitsPerPage, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.NumberOfCommitsPerPage, new { @class = "span4 text-left lead" })
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.NumberOfItemsPerList, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.NumberOfItemsPerList, new { @class = "span4 text-left lead" })
+        </div>
+
+        if (!ViewData.ModelState.IsValid)
+        {
+        @Html.ValidationSummary(SR.Setting_UpdateSettingsUnsuccessfull, new { @class = "alert alert-error" })
+        }
+
+        <div class="form-actions">
+            <div class="pull-right">
+                <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
+                <button type="submit" class="btn btn-primary">@SR.Shared_Save</button>
+            </div>
+        </div>
+    }
+</div>

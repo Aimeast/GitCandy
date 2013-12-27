@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <None Include="Scripts\_references.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -131,14 +132,69 @@
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrapSwitch.css" />
+    <Content Include="Content\highlight.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\ZeroClipboard.swf" />
+    <Content Include="CustomErrors\000.html" />
+    <Content Include="CustomErrors\401.html" />
+    <Content Include="CustomErrors\404.html" />
+    <Content Include="CustomErrors\500.html" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
     <Content Include="packages.config" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrapSwitch.js" />
+    <Content Include="Scripts\chooser.js" />
+    <Content Include="Scripts\highlight.pack.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
+    <Content Include="Scripts\marked.js" />
+    <Content Include="Scripts\ZeroClipboard.js" />
+    <Content Include="Scripts\ZeroClipboard.min.js" />
+    <Content Include="Views\Account\Change.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Account\Detail.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Forgot.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Repository\Blame.cshtml" />
+    <Content Include="Views\Repository\Blob.cshtml" />
+    <Content Include="Views\Repository\Branches.cshtml" />
+    <Content Include="Views\Repository\Commit.cshtml" />
+    <Content Include="Views\Repository\Commits.cshtml" />
+    <Content Include="Views\Repository\Contributors.cshtml" />
+    <Content Include="Views\Repository\Coop.cshtml" />
+    <Content Include="Views\Repository\Create.cshtml" />
+    <Content Include="Views\Repository\Delete.cshtml" />
+    <Content Include="Views\Repository\Detail.cshtml" />
+    <Content Include="Views\Repository\Edit.cshtml" />
+    <Content Include="Views\Repository\Index.cshtml" />
+    <Content Include="Views\Repository\Tags.cshtml" />
+    <Content Include="Views\Repository\Tree.cshtml" />
+    <Content Include="Views\Repository\_BlobPreview.cshtml" />
+    <Content Include="Views\Repository\_BranchSelector.cshtml" />
+    <Content Include="Views\Repository\_PathBar.cshtml" />
+    <Content Include="Views\Repository\_ZipButton.cshtml" />
+    <Content Include="Views\Setting\Edit.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Members.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\YesNo.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Pager.cshtml" />
+    <Content Include="Views\Team\Create.cshtml" />
+    <Content Include="Views\Team\Delete.cshtml" />
+    <Content Include="Views\Team\Detail.cshtml" />
+    <Content Include="Views\Team\Edit.cshtml" />
+    <Content Include="Views\Team\Index.cshtml" />
+    <Content Include="Views\Team\Users.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

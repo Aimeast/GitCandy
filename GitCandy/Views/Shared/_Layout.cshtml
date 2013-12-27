@@ -1,0 +1,76 @@
+﻿@{
+    var token = GitCandy.Security.Token.Current;
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/highlight")
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/highlight")
+    @Scripts.Render("~/bundles/ZeroClipboard")
+</head>
+<body>
+    <div class="navbar navbar-static-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="/">@SR.Shared_AppTitle <span class="label">Alpha</span></a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav nav-pills">
+                        <li class="divider-vertical"></li>
+                        <li class="">@Html.ActionLink(SR.Shared_Repositories, "Index", "Repository")</li>
+                        <li class="">@Html.ActionLink(SR.Shared_About, "About", "Home")</li>
+
+                        @if (token != null && token.IsSystemAdministrator)
+                        {
+                            <li class="divider-vertical"></li>
+                            <li class="">@Html.ActionLink(SR.Shared_Users, "Index", "Account")</li>
+                            <li class="">@Html.ActionLink(SR.Shared_Teams, "Index", "Team")</li>
+                            <li class="">@Html.ActionLink(SR.Shared_Settings, "Edit", "Setting")</li>
+                        }
+                    </ul>
+
+                    <ul class="nav nav-pills pull-right">
+                        @if (token == null)
+                        {
+                            <li class="">@Html.ActionLink(SR.Shared_Register, "Create", "Account")</li>
+                            <li class="">@Html.ActionLink(SR.Shared_Login, "Login", "Account", new { ReturnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, null)</li>
+                        }
+                        else
+                        {
+                            <li class="">@Html.ActionLink(token.Nickname, "Detail", "Account", new { name = token.Username }, null)</li>
+                            <li class="">@Html.ActionLink(SR.Shared_Logout, "Logout", "Account", new { ReturnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, null)</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <div class="container footer">
+        <div class="page-divider"></div>
+        <div class="clearfix">
+            <div class="pull-right btn-group dropup">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">@ViewBag.Language <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.CultureActionLink("zh-cn")</li>
+                    <li>@Html.CultureActionLink("en-us")</li>
+                </ul>
+            </div>
+            <div class="pull-left"><p class="muted" title="@Profiler.Current.Elapsed">&copy; @DateTime.Now.Year Aimeast. All rights reserved.</p></div>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

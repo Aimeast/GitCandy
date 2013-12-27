@@ -1,0 +1,48 @@
+﻿@model GitCandy.Models.BranchSelectorModel
+@{
+    var values = ViewContext.RouteData.Values;
+    var action = values["action"] as string;
+}
+<div class="dropdown">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><i class="@Model.CurrentIsBranch.ToFlagString("icon-random", "icon-tag")"></i>@Model.Current <span class="caret"></span></a>
+    <div class="dropdown-menu">
+        <form>
+            <ul class="nav nav-tabs">
+                <li class="@Model.CurrentIsBranch.ToFlagString("active", "")"><a href="#branch-pane" data-toggle="tab">@SR.Repository_Branches</a></li>
+                <li class="@Model.CurrentIsBranch.ToFlagString("", "active")"><a href="#tag-pane" data-toggle="tab">@SR.Repository_Tags</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane @Model.CurrentIsBranch.ToFlagString("active", "") branch-selector" id="branch-pane">
+                    <ul class="nav nav-list">
+                        @foreach (var branch in Model.Branches)
+                        {
+                            if (branch == Model.Current)
+                            {
+                                <li class="active"><a>@branch</a></li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink(branch, action, Html.OverRoute(new { path = branch + "/" + Model.Path }))</li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="tab-pane @Model.CurrentIsBranch.ToFlagString("", "active") branch-selector" id="tag-pane">
+                    <ul class="nav nav-list">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            if (tag == Model.Current)
+                            {
+                                <li class="active"><a>@tag</a></li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink(tag, action, Html.OverRoute(new { path = tag + "/" + Model.Path }))</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

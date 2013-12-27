@@ -1,0 +1,31 @@
+﻿@{
+    var action = ViewContext.RouteData.Values["Action"] as string;
+    Pager pager = ViewBag.Pager;
+}
+<div class="pagination pagination-centered">
+    <ul>
+        @if (pager.HasPreviousPage)
+        {
+            <li class="active">@Html.ActionLink("<<", action, Html.OverRoute(new { page = pager.FirstPageIndex }))</li>
+            <li class="active">@Html.ActionLink("<", action, Html.OverRoute(new { page = pager.PreviousPageIndex }))</li>
+        }
+
+        @foreach (int page in pager)
+        {
+            if (page == pager.CurrentPageIndex)
+            {
+            <li class="disabled"><span>@page</span></li>
+            }
+            else
+            {
+            <li class="active">@Html.ActionLink(page.ToString(), action, Html.OverRoute(new { page }))</li>
+            }
+        }
+
+        @if (pager.HasNextPage)
+        {
+            <li class="active">@Html.ActionLink(">", action, Html.OverRoute(new { page = pager.NextPageIndex }))</li>
+            <li class="active">@Html.ActionLink(">>", action, Html.OverRoute(new { page = pager.LastPageIndex }))</li>
+        }
+    </ul>
+</div>
