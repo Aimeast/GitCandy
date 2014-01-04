@@ -5,11 +5,13 @@ namespace GitCandy.Configuration
     [AttributeUsage(AttributeTargets.Property)]
     public class RecommendedValueAttribute : Attribute
     {
-        public RecommendedValueAttribute(object value)
+        public RecommendedValueAttribute(object recommendedValue, object defaultValue = null)
         {
-            Value = value;
+            RecommendedValue = recommendedValue;
+            DefaultValue = defaultValue;
         }
 
-        public object Value { get; private set; }
+        public object RecommendedValue { get; private set; }
+        public object DefaultValue { get; private set; }
     }
 }

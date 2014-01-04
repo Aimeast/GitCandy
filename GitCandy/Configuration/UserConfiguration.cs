@@ -6,7 +6,7 @@ namespace GitCandy.Configuration
         [RecommendedValue(true)]
         public bool IsPublicServer { get; set; }
 
-        [RecommendedValue(true)]
+        [RecommendedValue(true, defaultValue: false)]
         public bool ForceSsl { get; set; }
 
         [RecommendedValue(443)]

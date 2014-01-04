@@ -50,7 +50,7 @@ namespace GitCandy.Configuration
             {
                 var attr = property.GetCustomAttributes(typeof(RecommendedValueAttribute), false).FirstOrDefault() as RecommendedValueAttribute;
                 if (attr != null)
-                    property.SetValue(entry, attr.Value);
+                    property.SetValue(entry, attr.DefaultValue ?? attr.RecommendedValue);
             }
             entry.IsNew = true;
 
