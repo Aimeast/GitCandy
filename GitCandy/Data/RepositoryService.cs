@@ -132,25 +132,24 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var user = ctx.Users.FirstOrDefault(s => s.Name == username);
-                if (user == null)
-                    return null;
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return null;
-                if (repo.UserRepositoryRoles.Any(s => s.User.Name == username))
+                var pair = (from r in ctx.Repositories
+                            from u in ctx.Users
+                            where r.Name == reponame && u.Name == username
+                                && r.UserRepositoryRoles.All(s => s.User.Name != username)
+                            select new { RepoID = r.ID, UserID = u.ID })
+                            .FirstOrDefault();
+                if (pair == null)
                     return null;
 
                 var role = new UserRepositoryRole
                 {
-                    Repository = repo,
-                    User = user,
+                    RepositoryID = pair.RepoID,
+                    UserID = pair.UserID,
                     AllowRead = true,
                     AllowWrite = true,
                     IsOwner = false,
                 };
-                repo.UserRepositoryRoles.Add(role);
-
+                ctx.UserRepositoryRoles.Add(role);
                 ctx.SaveChanges();
                 return role;
             }
@@ -160,15 +159,11 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return false;
-                var role = repo.UserRepositoryRoles.FirstOrDefault(s => s.User.Name == username);
+                var role = ctx.UserRepositoryRoles.FirstOrDefault(s => s.Repository.Name == reponame && s.User.Name == username);
                 if (role == null)
                     return false;
 
-                repo.UserRepositoryRoles.Remove(role);
-
+                ctx.UserRepositoryRoles.Remove(role);
                 ctx.SaveChanges();
                 return true;
             }
@@ -178,10 +173,7 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return false;
-                var role = repo.UserRepositoryRoles.FirstOrDefault(s => s.User.Name == username);
+                var role = ctx.UserRepositoryRoles.FirstOrDefault(s => s.Repository.Name == reponame && s.User.Name == username);
                 if (role == null)
                     return false;
 
@@ -203,24 +195,23 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var team = ctx.Teams.FirstOrDefault(s => s.Name == teamname);
-                if (team == null)
-                    return null;
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return null;
-                if (repo.TeamRepositoryRoles.Any(s => s.Team.Name == teamname))
+                var pair = (from r in ctx.Repositories
+                            from t in ctx.Teams
+                            where r.Name == reponame && t.Name == teamname
+                                && r.TeamRepositoryRoles.All(s => s.Team.Name != teamname)
+                            select new { RepoID = r.ID, TeamID = t.ID })
+                            .FirstOrDefault();
+                if (pair == null)
                     return null;
 
                 var role = new TeamRepositoryRole
                 {
-                    Repository = repo,
-                    Team = team,
+                    RepositoryID = pair.RepoID,
+                    TeamID = pair.TeamID,
                     AllowRead = true,
                     AllowWrite = true,
                 };
-                repo.TeamRepositoryRoles.Add(role);
-
+                ctx.TeamRepositoryRoles.Add(role);
                 ctx.SaveChanges();
                 return role;
             }
@@ -230,15 +221,11 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return false;
-                var role = repo.TeamRepositoryRoles.FirstOrDefault(s => s.Team.Name == teamname);
+                var role = ctx.TeamRepositoryRoles.FirstOrDefault(s => s.Repository.Name == reponame && s.Team.Name == teamname);
                 if (role == null)
                     return false;
 
-                repo.TeamRepositoryRoles.Remove(role);
-
+                ctx.TeamRepositoryRoles.Remove(role);
                 ctx.SaveChanges();
                 return true;
             }
@@ -248,10 +235,7 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return false;
-                var role = repo.TeamRepositoryRoles.FirstOrDefault(s => s.Team.Name == teamname);
+                var role = ctx.TeamRepositoryRoles.FirstOrDefault(s => s.Repository.Name == reponame && s.Team.Name == teamname);
                 if (role == null)
                     return false;
 
@@ -286,11 +270,7 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return false;
-
-                var role = repo.UserRepositoryRoles.FirstOrDefault(s => s.User.Name == username);
+                var role = ctx.UserRepositoryRoles.FirstOrDefault(s => s.Repository.Name == reponame && s.User.Name == username);
                 return role != null && role.IsOwner;
             }
         }
