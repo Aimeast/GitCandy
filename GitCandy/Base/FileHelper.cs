@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -145,26 +146,34 @@ namespace GitCandy.Base
             if (bytes.Length > 1024)
                 bytes = bytes.Take(1024).ToArray();
 
-            var collection = encodings.Concat(new[] { Encoding.UTF8 })
+            var collection = encodings.Concat(new[]
+                    {
+                        // generic
+                        Encoding.UTF8,
+                        // default encoding for user selected UI lanaguage
+                        Encoding.GetEncoding(CultureInfo.CurrentUICulture.TextInfo.ANSICodePage),
+                        // as more as possible, default encoding for server side
+                        Encoding.Default,
+                    })
                 .Where(s => s != null)
                 .GroupBy(s => s.CodePage)
-                .Select(s => s.First());
-            foreach (var e in collection)
-                try
-                {
-                    var s = e.GetString(bytes); // ignore unknow BOM, supposing there is no BOM
-                    var r = e.GetBytes(s);
+                .Select(s => s.First())
+                .ToArray();
 
-                    var match = 0.0;
-                    for (var i = 0; i < r.Length; i++)
-                        if (bytes[i] == r[i])
-                            match++;
-                    if (match >= r.Length * 0.9)
-                        return e;
-                }
-                catch { }
+            var hasNonSingleByte = collection.Any(s => !s.IsSingleByte);
+            if (hasNonSingleByte)
+            {
+                var pendings = collection
+                    .Where(s => IsMatchEncoding(s, bytes))
+                    .ToArray();
 
-            return null;
+                return pendings.FirstOrDefault(s => !s.IsSingleByte)
+                    ?? pendings.FirstOrDefault();
+            }
+            else
+            {
+                return collection.FirstOrDefault(s => IsMatchEncoding(s, bytes));
+            }
         }
 
         public static string ReadToEnd(byte[] bytes, Encoding encoding = null, string newline = null)
@@ -226,6 +235,24 @@ namespace GitCandy.Base
                     return i;
             }
             return -1;
+        }
+
+        private static bool IsMatchEncoding(Encoding encoding, byte[] bytes)
+        {
+            try
+            {
+                var s = encoding.GetString(bytes); // ignore unknow BOM, supposing there is no BOM
+                var r = encoding.GetBytes(s);
+
+                var match = 0.0;
+                for (var i = 0; i < r.Length; i++)
+                    if (bytes[i] == r[i])
+                        match++;
+                if (match >= r.Length * 0.9)
+                    return true;
+            }
+            catch { }
+            return false;
         }
     }
 }
