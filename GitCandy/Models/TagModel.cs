@@ -6,7 +6,7 @@ namespace GitCandy.Models
     {
         public string ReferenceName { get; set; }
         public string Sha { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTimeOffset When { get; set; }
         public string MessageShort { get; set; }
     }
 }

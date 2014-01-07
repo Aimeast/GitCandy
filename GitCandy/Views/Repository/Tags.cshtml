@@ -18,7 +18,7 @@
                             @Html.Partial("_ZipButton", tag.ReferenceName)
                         </div>
                         <div>@Html.ActionLink(tag.ReferenceName, "Tree", Html.OverRoute(new { path = tag.ReferenceName ?? tag.Sha }))</div>
-                        <div title="@tag.DateTime">@tag.DateTime.ToShortDateString()</div>
+                        <div title="@tag.When">@tag.When.LocalDateTime.ToShortDateString()</div>
                         <div>@tag.MessageShort</div>
                         <div>@Html.ActionLink(tag.Sha, "Commit", Html.OverRoute(new { path = tag.ReferenceName ?? tag.Sha }))</div>
                     </div>

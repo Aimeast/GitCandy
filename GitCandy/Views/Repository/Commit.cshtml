@@ -12,11 +12,11 @@
     <div class="span9 pull-left">
         <pre>@Model.CommitMessage</pre>
         <div class="pull-left keep-space">@Model.Author.Name</div>
-        <div class="pull-left keep-space">@SR.Repository_AuthoredAt @Model.Author.When.LocalDateTime</div>
+        <div class="pull-left keep-space">@SR.Repository_AuthoredAt <span title="@Model.Author.When">@Model.Author.When.LocalDateTime</span></div>
         @if (Model.Author != Model.Committer)
         {
             <div class="pull-left keep-space">@Model.Committer.Name</div>
-            <div class="pull-left keep-space">@SR.Repository_CommittedAt @Model.Committer.When.LocalDateTime</div>
+            <div class="pull-left keep-space">@SR.Repository_CommittedAt <span title="@Model.Committer.When">@Model.Committer.When.LocalDateTime</span></div>
         }
     </div>
     <div class="span1 pull-right">

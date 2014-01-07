@@ -445,10 +445,10 @@ namespace GitCandy.Git
                 {
                     ReferenceName = s.Name,
                     Sha = s.Target.Sha,
-                    DateTime = ((Commit)s.Target).Author.When.LocalDateTime,
+                    When = ((Commit)s.Target).Author.When,
                     MessageShort = ((Commit)s.Target).MessageShort.RepetitionIfEmpty(NoCommitMessage),
                 })
-                .OrderByDescending(s => s.DateTime)
+                .OrderByDescending(s => s.When)
                 .ToArray()
             };
             return model;
