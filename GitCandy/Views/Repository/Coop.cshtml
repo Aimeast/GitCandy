@@ -14,13 +14,12 @@
     <span>@SR.Shared_Teams</span>
     <div id="choose_team"></div>
 
-    <script type="text/javascript" src="/Scripts/chooser.js"></script>
     <script type="text/javascript">
-        $(function () {
-            var repo = "@Model.RepositoryName";
-            var data = @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.Users));
-            chooser({
-                data: data,
+        var repo = "@Model.RepositoryName";
+        var chooser_params = [];
+        chooser_params.push(
+            {
+                data: @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.Users)),
                 controller: "Account",
                 container: "#choose_user",
                 add_label: "@SR.Shared_Add",
@@ -50,14 +49,11 @@
                         unchecked: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "owner", value: false } } },
                     },
                 ]
-            }, window.jQuery);
-        });
+            });
 
-        $(function () {
-            var repo = "@Model.RepositoryName";
-            var data = @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.Teams));
-            chooser({
-                data: data,
+        chooser_params.push(
+            {
+                data: @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.Teams)),
                 controller: "Team",
                 container: "#choose_team",
                 add_label: "@SR.Shared_Add",
@@ -80,8 +76,7 @@
                         unchecked: { url: "/Repository/ChooseTeam", query: function (item) { return { name: repo, team: item, act: "write", value: false } } },
                     },
                 ]
-            }, window.jQuery);
-        });
+            });
     </script>
 }
 <div class="form-actions">

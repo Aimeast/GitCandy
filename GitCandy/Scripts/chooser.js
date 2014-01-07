@@ -57,12 +57,12 @@ function chooser(params, $) {
                + '</div>';
 
             var $cell = $(cell_html),
-                $checkbox = $cell.find("input"),
-                $switcher = $cell.find(".switch");
+                $checkbox = $cell.find('input'),
+                $switcher = $cell.find('.switch');
 
             $row.append($cell);
 
-            $checkbox.prop('checked', eval('item.' + action.key));
+            $checkbox.prop('checked', item[action.key]);
             $checkbox.parent().bootstrapSwitch();
 
             var tobe = null;
@@ -144,3 +144,13 @@ function chooser(params, $) {
 
     init();
 }
+
+(function ($) {
+    $(function () {
+        typeof chooser_params !== 'undefined'
+        && chooser_params instanceof Array
+        && chooser_params.forEach(function (elem) {
+            chooser(elem, $);
+        });
+    });
+})(jQuery);

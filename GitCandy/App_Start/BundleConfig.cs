@@ -7,35 +7,22 @@ namespace GitCandy
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"
-                        ));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
+                        "~/Content/bootstrap.css",
+                        "~/Content/bootstrapSwitch.css",
+                        "~/Content/highlight.css",
                         "~/Content/site.css"
                         ));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            bundles.Add(new ScriptBundle("~/bundles/js").Include(
+                        "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
-                        "~/Scripts/bootstrapSwitch.js"
-                        ));
-
-            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
-                        "~/Content/bootstrap.css",
-                        "~/Content/bootstrapSwitch.css"
-                        ));
-
-            bundles.Add(new ScriptBundle("~/bundles/highlight").Include(
+                        "~/Scripts/bootstrapSwitch.js",
                         "~/Scripts/highlight.pack.js",
-                        "~/Scripts/marked.js"
-                        ));
-
-            bundles.Add(new StyleBundle("~/Content/highlight").Include(
-                        "~/Content/highlight.css"
-                        ));
-
-            bundles.Add(new ScriptBundle("~/bundles/ZeroClipboard").Include(
-                        "~/Scripts/ZeroClipboard.js"
+                        "~/Scripts/marked.js",
+                        "~/Scripts/ZeroClipboard.js",
+                        "~/Scripts/chooser.js",
+                        "~/Scripts/common.js"
                         ));
         }
     }

@@ -54,27 +54,10 @@ else
                     <div class="pull-left">
                         <label class="pull-left">@SR.Repository_GitUrl</label>
                         <div class="input-append">
-                            <input class="git-text" type="text" readonly value="@Model.GitUrl" />
-                            <a class="btn" id="copy-clip" data-clipboard-text="@Model.GitUrl"><i class="icon-check"></i></a>
+                            <input type="text" class="git-text" readonly value="@Model.GitUrl" />
+                            <a class="btn copy-clip" data-clipboard-text="@Model.GitUrl" data-tips="@SR.Repository_CopyToClipboard" data-copied="@SR.Repository_Copied"><i class="icon-check"></i></a>
                         </div>
                     </div>
-                    <script type="text/javascript">
-                        (function () {
-                            var $clip = $('#copy-clip');
-                            $clip.parent().click(function () { $('.git-text').select(); });
-                            var zero = new ZeroClipboard($clip, {
-                                moviePath: '/Content/ZeroClipboard.swf',
-                                useNoCache: false,
-                            });
-                            var $tip = $(zero.htmlBridge);
-                            zero.on('complete', function (client, args) {
-                                $tip.tooltip('destroy').tooltip({ title: '@SR.Repository_Copied', placement: 'right' }).tooltip('show');
-                            })
-                            .on('mouseover', function (client, args) {
-                                $tip.tooltip('destroy').tooltip({ title: '@SR.Repository_CopyToClipboard', placement: 'right' }).tooltip('show');
-                            });
-                        })();
-                    </script>
                     <div class="pull-right">
                         @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(new { path = "" }), new { @class = "btn" })
                     </div>

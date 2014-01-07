@@ -7,14 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/bootstrap")
-    @Styles.Render("~/Content/highlight")
-    @Styles.Render("~/Content/css")
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/highlight")
-    @Scripts.Render("~/bundles/ZeroClipboard")
+    @Styles.Render("~/bundles/css")
 </head>
 <body>
     <div class="navbar navbar-static-top">
@@ -71,6 +64,7 @@
         </div>
     </div>
 
+    @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

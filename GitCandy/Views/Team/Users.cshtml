@@ -10,13 +10,12 @@
 {
     <div id="chooser"></div>
 
-    <script type="text/javascript" src="/Scripts/chooser.js"></script>
     <script type="text/javascript">
-        $(function () {
-            var team = "@Model.Name";
-            var data = @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.MembersRole));
-            chooser({
-                data: data,
+        var team = "@Model.Name";
+        var chooser_params = [];
+        chooser_params.push(
+            {
+                data: @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.MembersRole)),
                 controller: "Account",
                 container: "#chooser",
                 add_label: "@SR.Shared_Add",
@@ -32,8 +31,7 @@
                         unchecked: { url: "/Team/ChooseUser", query: function (item) { return { name: team, user: item, act: "member" } } },
                     }
                 ]
-            }, window.jQuery);
-        });
+            });
     </script>
 }
 <div class="form-actions">
