@@ -97,11 +97,11 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm Password.
+        ///   Looks up a localized string similar to Conform Password.
         /// </summary>
-        public static string Account_ConfirmPassword {
+        public static string Account_ConformPassword {
             get {
-                return ResourceManager.GetString("Account_ConfirmPassword", resourceCulture);
+                return ResourceManager.GetString("Account_ConformPassword", resourceCulture);
             }
         }
         
@@ -124,7 +124,7 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm Delete User {0}.
+        ///   Looks up a localized string similar to Conform Delete User {0}.
         /// </summary>
         public static string Account_DeleteTitle {
             get {
@@ -133,7 +133,7 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you confirm to delete the account &quot;{0}&quot;?.
+        ///   Looks up a localized string similar to Do you conform to delete the account &quot;{0}&quot;?.
         /// </summary>
         public static string Account_DeletionWords {
             get {
@@ -698,7 +698,7 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm Delete Repository {0}.
+        ///   Looks up a localized string similar to Conform Delete Repository {0}.
         /// </summary>
         public static string Repository_DeleteTitle {
             get {
@@ -707,7 +707,7 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you confirm to delete the repository &quot;{0}&quot;?.
+        ///   Looks up a localized string similar to Do you conform to delete the repository &quot;{0}&quot;?.
         /// </summary>
         public static string Repository_DeletionWords {
             get {
@@ -1202,6 +1202,24 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conform to restart.
+        /// </summary>
+        public static string Setting_RestartTitle {
+            get {
+                return ResourceManager.GetString("Setting_RestartTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you conform to restart this application?.
+        /// </summary>
+        public static string Setting_RestartWords {
+            get {
+                return ResourceManager.GetString("Setting_RestartWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTPS connection port.
         /// </summary>
         public static string Setting_SslPort {
@@ -1256,11 +1274,11 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm.
+        ///   Looks up a localized string similar to Conform.
         /// </summary>
-        public static string Shared_Confirm {
+        public static string Shared_Conform {
             get {
-                return ResourceManager.GetString("Shared_Confirm", resourceCulture);
+                return ResourceManager.GetString("Shared_Conform", resourceCulture);
             }
         }
         
@@ -1373,6 +1391,15 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restart.
+        /// </summary>
+        public static string Shared_Restart {
+            get {
+                return ResourceManager.GetString("Shared_Restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Shared_Save {
@@ -1481,7 +1508,7 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm Delete Team {0}.
+        ///   Looks up a localized string similar to Conform Delete Team {0}.
         /// </summary>
         public static string Team_DeleteTitle {
             get {
@@ -1490,7 +1517,7 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you confirm to delete the team &quot;{0}&quot;?.
+        ///   Looks up a localized string similar to Do you conform to delete the team &quot;{0}&quot;?.
         /// </summary>
         public static string Team_DeletionWords {
             get {

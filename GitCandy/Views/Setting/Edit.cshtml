@@ -91,6 +91,9 @@
         }
 
         <div class="form-actions">
+            <div class="pull-left">
+                @Html.ActionLink(SR.Shared_Restart, "Restart", null, new { @class = "btn" })
+            </div>
             <div class="pull-right">
                 <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
                 <button type="submit" class="btn btn-primary">@SR.Shared_Save</button>

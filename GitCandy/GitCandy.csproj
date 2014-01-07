@@ -185,6 +185,7 @@
     <Content Include="Views\Repository\_PathBar.cshtml" />
     <Content Include="Views\Repository\_ZipButton.cshtml" />
     <Content Include="Views\Setting\Edit.cshtml" />
+    <Content Include="Views\Setting\Restart.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Members.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YesNo.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />

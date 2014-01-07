@@ -21,7 +21,7 @@ namespace GitCandy.Models
         [StringLength(100, MinimumLength = 6, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_StringLengthRange")]
         [Compare("NewPassword", ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_Compare")]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(SR), Name = "Account_ConfirmPassword")]
-        public string ConfirmPassword { get; set; }
+        [Display(ResourceType = typeof(SR), Name = "Account_ConformPassword")]
+        public string ConformPassword { get; set; }
     }
 }

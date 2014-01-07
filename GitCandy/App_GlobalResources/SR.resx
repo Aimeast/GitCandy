@@ -129,8 +129,8 @@
   <data name="Account_ChangePasswordTitle" xml:space="preserve">
     <value>Change Password</value>
   </data>
-  <data name="Account_ConfirmPassword" xml:space="preserve">
-    <value>Confirm Password</value>
+  <data name="Account_ConformPassword" xml:space="preserve">
+    <value>Conform Password</value>
   </data>
   <data name="Account_CreateTitle" xml:space="preserve">
     <value>Register</value>
@@ -139,10 +139,10 @@
     <value>Account creation was unsuccessful. Please correct the errors and try again.</value>
   </data>
   <data name="Account_DeleteTitle" xml:space="preserve">
-    <value>Confirm Delete User {0}</value>
+    <value>Conform Delete User {0}</value>
   </data>
   <data name="Account_DeletionWords" xml:space="preserve">
-    <value>Do you confirm to delete the account "{0}"?</value>
+    <value>Do you conform to delete the account "{0}"?</value>
   </data>
   <data name="Account_Description" xml:space="preserve">
     <value>Description</value>
@@ -335,10 +335,10 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
     <value>Source size in default branch</value>
   </data>
   <data name="Repository_DeleteTitle" xml:space="preserve">
-    <value>Confirm Delete Repository {0}</value>
+    <value>Conform Delete Repository {0}</value>
   </data>
   <data name="Repository_DeletionWords" xml:space="preserve">
-    <value>Do you confirm to delete the repository "{0}"?</value>
+    <value>Do you conform to delete the repository "{0}"?</value>
   </data>
   <data name="Repository_Description" xml:space="preserve">
     <value>Description</value>
@@ -502,6 +502,12 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Setting_RepositoryPath" xml:space="preserve">
     <value>Path of repositories</value>
   </data>
+  <data name="Setting_RestartTitle" xml:space="preserve">
+    <value>Conform to restart</value>
+  </data>
+  <data name="Setting_RestartWords" xml:space="preserve">
+    <value>Do you conform to restart this application?</value>
+  </data>
   <data name="Setting_SslPort" xml:space="preserve">
     <value>HTTPS connection port</value>
   </data>
@@ -520,8 +526,8 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Shared_Back" xml:space="preserve">
     <value>Back</value>
   </data>
-  <data name="Shared_Confirm" xml:space="preserve">
-    <value>Confirm</value>
+  <data name="Shared_Conform" xml:space="preserve">
+    <value>Conform</value>
   </data>
   <data name="Shared_Create" xml:space="preserve">
     <value>Create</value>
@@ -558,6 +564,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   </data>
   <data name="Shared_Reset" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="Shared_Restart" xml:space="preserve">
+    <value>Restart</value>
   </data>
   <data name="Shared_Save" xml:space="preserve">
     <value>Save</value>
@@ -596,10 +605,10 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
     <value>Team creation was unsuccessful. Please correct the errors and try again.</value>
   </data>
   <data name="Team_DeleteTitle" xml:space="preserve">
-    <value>Confirm Delete Team {0}</value>
+    <value>Conform Delete Team {0}</value>
   </data>
   <data name="Team_DeletionWords" xml:space="preserve">
-    <value>Do you confirm to delete the team "{0}"?</value>
+    <value>Do you conform to delete the team "{0}"?</value>
   </data>
   <data name="Team_Description" xml:space="preserve">
     <value>Team description</value>

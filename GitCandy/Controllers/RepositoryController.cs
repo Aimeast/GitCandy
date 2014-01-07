@@ -189,9 +189,9 @@ namespace GitCandy.Controllers
         }
 
         [RepositoryOwnerOrSystemAdministrator]
-        public ActionResult Delete(string name, string confirm)
+        public ActionResult Delete(string name, string conform)
         {
-            if (string.Equals(confirm, "yes", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(conform, "yes", StringComparison.OrdinalIgnoreCase))
             {
                 RepositoryService.Delete(name);
                 GitService.DeleteRepository(name);

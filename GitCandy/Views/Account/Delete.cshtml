@@ -6,7 +6,7 @@
 
 <div class="span7">
     <div class="alert alert-block">
-        <h4>@SR.Shared_Confirm</h4>
+        <h4>@SR.Shared_Conform</h4>
         @string.Format(SR.Account_DeletionWords, Model);
     </div>
     @Html.ValidationSummary(true, "", new { @class = "alert alert-error" })
@@ -16,7 +16,7 @@
             @Html.ActionLink(SR.Shared_Back, "Detail", "Account", new { name = Model }, new { @class = "btn" })
         </div>
         <div class="pull-right">
-            @Html.ActionLink(SR.Shared_Delete, "Delete", "Account", new { name = Model, Confirm = "Yes" }, new { @class = "btn btn-danger" })
+            @Html.ActionLink(SR.Shared_Delete, "Delete", "Account", new { name = Model, Conform = "Yes" }, new { @class = "btn btn-danger" })
         </div>
     </div>
 </div>

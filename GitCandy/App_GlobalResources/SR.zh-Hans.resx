@@ -129,7 +129,7 @@
   <data name="Account_ChangePasswordTitle" xml:space="preserve">
     <value>修改密码</value>
   </data>
-  <data name="Account_ConfirmPassword" xml:space="preserve">
+  <data name="Account_ConformPassword" xml:space="preserve">
     <value>确认密码</value>
   </data>
   <data name="Account_CreateTitle" xml:space="preserve">
@@ -502,6 +502,12 @@
   <data name="Setting_RepositoryPath" xml:space="preserve">
     <value>代码库存储路径</value>
   </data>
+  <data name="Setting_RestartTitle" xml:space="preserve">
+    <value>确认重启</value>
+  </data>
+  <data name="Setting_RestartWords" xml:space="preserve">
+    <value>你确认要重新本程序吗？</value>
+  </data>
   <data name="Setting_SslPort" xml:space="preserve">
     <value>HTTPS 链接端口号</value>
   </data>
@@ -520,7 +526,7 @@
   <data name="Shared_Back" xml:space="preserve">
     <value>返回</value>
   </data>
-  <data name="Shared_Confirm" xml:space="preserve">
+  <data name="Shared_Conform" xml:space="preserve">
     <value>确认</value>
   </data>
   <data name="Shared_Create" xml:space="preserve">
@@ -558,6 +564,9 @@
   </data>
   <data name="Shared_Reset" xml:space="preserve">
     <value>重置</value>
+  </data>
+  <data name="Shared_Restart" xml:space="preserve">
+    <value>重启</value>
   </data>
   <data name="Shared_Save" xml:space="preserve">
     <value>保存</value>

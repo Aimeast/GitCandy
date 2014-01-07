@@ -3,6 +3,7 @@ using GitCandy.Configuration;
 using GitCandy.Filters;
 using GitCandy.Git;
 using GitCandy.Models;
+using System;
 using System.Composition;
 using System.Web;
 using System.Web.Mvc;
@@ -72,6 +73,16 @@ namespace GitCandy.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult Restart(string conform)
+        {
+            if (string.Equals(conform, "yes", StringComparison.OrdinalIgnoreCase))
+            {
+                HttpRuntime.UnloadAppDomain();
+                return RedirectToStartPage();
+            }
+            return View();
         }
     }
 }

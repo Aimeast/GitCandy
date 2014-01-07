@@ -174,7 +174,7 @@ namespace GitCandy.Controllers
             var isAdmin = Token.IsSystemAdministrator
                 && !string.Equals(name, Token.Username, StringComparison.OrdinalIgnoreCase);
 
-            ModelState.Remove("ConfirmPassword");
+            ModelState.Remove("ConformPassword");
             if (ModelState.IsValid)
             {
                 var user = MembershipService.Login(isAdmin ? Token.Username : name, model.Password);
@@ -201,13 +201,13 @@ namespace GitCandy.Controllers
         }
 
         [Administrator]
-        public ActionResult Delete(string name, string confirm)
+        public ActionResult Delete(string name, string conform)
         {
             if (string.Equals(Token.Username, name, StringComparison.OrdinalIgnoreCase))
             {
                 ModelState.AddModelError("", SR.Account_CantRemoveSelf);
             }
-            else if (string.Equals(confirm, "yes", StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(conform, "yes", StringComparison.OrdinalIgnoreCase))
             {
                 MembershipService.DeleteUser(name);
                 return RedirectToAction("Index");
