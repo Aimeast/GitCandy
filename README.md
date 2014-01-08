@@ -9,7 +9,7 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
 ### Prerequisites
 * [IIS 7.0](http://www.iis.net/learn)
 * [.NET Framework 4.5](http://www.microsoft.com/en-us/download/details.aspx?id=30653)
-* [ASP.NET MVC 4](http://www.asp.net/mvc/mvc4)
+* [ASP.NET MVC 5](http://www.asp.net/mvc/tutorials/mvc-5)
 * [Git Bash](http://git-scm.com/downloads)
 * [Sqlite](http://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki) or [Sql Server](http://www.microsoft.com/en-us/sqlserver/get-sql-server/try-it.aspx)
 
@@ -23,6 +23,7 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
 * Prepare two folders for storage `Repositories` and `Cache`
 * Navigate to your site and login with default username `admin`, password `gitcandy`
 * Go to `Settings` page for set folders path of `Repositories`, `Cache` and `git.exe`
+* You are recommended to set `<compilation debug="false" />` in `Web.config`
 
 ---
 ### Thanks for (alphabet)
