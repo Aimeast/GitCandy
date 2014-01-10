@@ -825,24 +825,26 @@ namespace GitCandy.Git
         private string CalcBranchesSha(bool includeTags = false)
         {
             var sb = new StringBuilder();
-            sb.Append(":HEAD");
-            if (_repository.Head.Tip != null)
-                sb.Append(_repository.Head.Tip.Sha);
+            var head = _repository.Head;
+            sb.Append(":");
+            sb.Append(head.CanonicalName);
+            if (head.Tip != null)
+                sb.Append(head.Tip.Sha);
             sb.Append(';');
-            foreach (var branch in _repository.Branches.OrderBy(s => s.Name))
+            foreach (var branch in _repository.Branches.OrderBy(s => s.CanonicalName))
             {
                 sb.Append(':');
-                sb.Append(branch.Name);
+                sb.Append(branch.CanonicalName);
                 if (branch.Tip != null)
                     sb.Append(branch.Tip.Sha);
             }
-            sb.Append(';');
             if (includeTags)
             {
-                foreach (var tag in _repository.Tags.OrderBy(s => s.Name))
+                sb.Append(';');
+                foreach (var tag in _repository.Tags.OrderBy(s => s.CanonicalName))
                 {
                     sb.Append(':');
-                    sb.Append(tag.Name);
+                    sb.Append(tag.CanonicalName);
                     if (tag.Target != null)
                         sb.Append(tag.Target.Sha);
                 }
