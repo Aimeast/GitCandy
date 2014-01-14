@@ -895,7 +895,10 @@ namespace GitCandy.Git
             var path = Path.Combine(UserConfiguration.Current.RepositoryPath, name);
             try
             {
-                Repository.Init(path, true);
+                using (var repo = new Repository(Repository.Init(path, true)))
+                {
+                    repo.Config.Set("core.logallrefupdates", true);
+                }
                 return true;
             }
             catch
