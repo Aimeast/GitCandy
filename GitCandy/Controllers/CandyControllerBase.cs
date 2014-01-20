@@ -117,6 +117,7 @@ namespace GitCandy.Controllers
                 : culture.EnglishName + " - " + culture.NativeName;
 
             ViewBag.Language = displayName;
+            ViewBag.Lang = culture.Name;
 
             base.OnActionExecuting(filterContext);
         }
