@@ -21,6 +21,14 @@ namespace GitCandy.Filters
             var username = controller.Session[AuthKey] as string;
             if (username == null)
             {
+                var token = controller.Token;
+                if (token != null)
+                {
+                    username = token.Username;
+                }
+            }
+            if (username == null)
+            {
                 var auth = controller.HttpContext.Request.Headers["Authorization"];
 
                 if (!String.IsNullOrEmpty(auth))
@@ -35,7 +43,6 @@ namespace GitCandy.Filters
                     if (user != null)
                     {
                         username = user.Name;
-                        controller.Session[AuthKey] = username;
                     }
                     else
                     {
@@ -43,6 +50,7 @@ namespace GitCandy.Filters
                     }
                 }
             }
+            controller.Session[AuthKey] = username;
 
             var right = false;
 
@@ -75,7 +83,7 @@ namespace GitCandy.Filters
             if (controller == null || controller.Token == null)
             {
                 filterContext.HttpContext.Response.Clear();
-                filterContext.HttpContext.Response.AddHeader("WWW-Authenticate", "Basic realm=\"Secure Area\"");
+                filterContext.HttpContext.Response.AddHeader("WWW-Authenticate", "Basic realm=\"Git Candy\"");
                 filterContext.Result = new HttpUnauthorizedResult();
             }
             else

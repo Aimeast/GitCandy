@@ -119,6 +119,8 @@ namespace GitCandy.Controllers
             ViewBag.Language = displayName;
             ViewBag.Lang = culture.Name;
 
+            Response.AddHeader("X-GitCandy-Version", GitCandyApplication.Version.ToString());
+
             base.OnActionExecuting(filterContext);
         }
 

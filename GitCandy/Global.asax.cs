@@ -12,6 +12,8 @@ namespace GitCandy
 {
     public class GitCandyApplication : System.Web.HttpApplication
     {
+        public static readonly Version Version = typeof(GitCandyApplication).Assembly.GetName().Version;
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
