@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using GitCandy.Log;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -33,6 +34,7 @@ namespace GitCandy.Configuration
 
                     if (_current == null)
                     {
+                        Logger.Info("New configuration of {0}", typeof(TEntry).FullName);
                         _current = NewDefault();
                         _current.Save();
                     }

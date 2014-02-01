@@ -2,6 +2,7 @@
 using GitCandy.Configuration;
 using GitCandy.Filters;
 using GitCandy.Git;
+using GitCandy.Log;
 using GitCandy.Models;
 using System;
 using System.Composition;
@@ -66,6 +67,8 @@ namespace GitCandy.Controllers
                 config.Save();
                 ModelState.Clear();
             }
+
+            Logger.Info("Settings updated by {0}#{1}", Token.Username, Token.UserID);
 
             if (needRestart)
             {

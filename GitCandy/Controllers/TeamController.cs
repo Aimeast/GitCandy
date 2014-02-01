@@ -2,6 +2,7 @@
 using GitCandy.Base;
 using GitCandy.Configuration;
 using GitCandy.Filters;
+using GitCandy.Log;
 using GitCandy.Models;
 using System;
 using System.Composition;
@@ -128,6 +129,7 @@ namespace GitCandy.Controllers
             if (string.Equals(conform, "yes", StringComparison.OrdinalIgnoreCase))
             {
                 MembershipService.DeleteTeam(name);
+                Logger.Info("Team {0} deleted by {1}#{2}", name, Token.Username, Token.UserID);
                 return RedirectToAction("Index");
             }
             return View((object)name);
