@@ -1,7 +1,11 @@
 ﻿using GitCandy.Base;
+using GitCandy.Configuration;
 using GitCandy.Git;
+using GitCandy.Log;
 using System;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -12,10 +16,15 @@ namespace GitCandy
 {
     public class GitCandyApplication : System.Web.HttpApplication
     {
-        public static readonly Version Version = typeof(GitCandyApplication).Assembly.GetName().Version;
+        public bool HidingRequestResponse { get; private set; }
 
         protected void Application_Start()
         {
+            HidingRequestResponse = HttpRuntime.UsingIntegratedPipeline;
+
+            Logger.SetLogPath();
+            Logger.Info(AppInfomation.GetAppStartingInfo());
+
             AreaRegistration.RegisterAllAreas();
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -25,9 +34,71 @@ namespace GitCandy
             MefConfig.RegisterMef();
 
             GitCache.Initialize();
+
+            Logger.Info(AppInfomation.GetAppStartedInfo());
+
+            HidingRequestResponse = false;
         }
 
-        protected void Application_AcquireRequestState(object sender, EventArgs e)
+        protected void Application_End()
+        {
+            Logger.Info(AppInfomation.GetAppEndInfo());
+        }
+
+        protected void Application_Error()
+        {
+            var context = this.Context;
+            var server = context.Server;
+            var ex = server.GetLastError();
+            var statusCode = new HttpException(null, ex).GetHttpCode();
+
+            var sb = new StringBuilder();
+            if (HidingRequestResponse)
+                sb.AppendLine(statusCode + ", Unknow, First request on integrated mode");
+            else
+                sb.AppendLine(statusCode + ", " + context.Request.HttpMethod + ", " + context.Request.Url.ToString());
+            if (statusCode == 500)
+            {
+                sb.AppendLine(ex.ToString());
+                Logger.Error(sb.ToString());
+            }
+            else
+            {
+                Logger.Warning(sb.ToString());
+            }
+
+            if (!HidingRequestResponse && UserConfiguration.Current.LocalSkipCustomError && context.Request.IsLocal)
+                return;
+
+            if (!HidingRequestResponse)
+            {
+                var response = context.Response;
+                response.Clear();
+                response.StatusCode = statusCode;
+                response.TrySkipIisCustomErrors = true;
+                response.ContentType = @"text/html; charset=utf-8";
+
+                var path = server.MapPath("~/CustomErrors/");
+                var filename = Path.Combine(path, statusCode + ".html");
+                if (File.Exists(filename))
+                {
+                    response.WriteFile(filename);
+                }
+                else
+                {
+                    filename = Path.Combine(path, "000.html");
+                    if (File.Exists(filename))
+                    {
+                        var content = File.ReadAllText(filename);
+                        response.Write(string.Format(content, statusCode));
+                    }
+                }
+            }
+
+            server.ClearError();
+        }
+
+        protected void Application_AcquireRequestState()
         {
             if (HttpContext.Current.Session != null)
             {

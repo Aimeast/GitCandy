@@ -213,13 +213,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.zh-Hans.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_Start\AppInfomation.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\MefConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Base\FileHelper.cs" />
     <Compile Include="Base\MefDependencyResolver.cs" />
-    <Compile Include="Base\Meta.cs" />
     <Compile Include="Base\Pager.cs" />
     <Compile Include="Base\Profiler.cs" />
     <Compile Include="Base\RawResult.cs" />
@@ -273,6 +273,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Log\Logger.cs" />
+    <Compile Include="Log\LogLevels.cs" />
     <Compile Include="Models\AheadBehindModel.cs" />
     <Compile Include="Models\BlameHunkModel.cs" />
     <Compile Include="Models\BlameModel.cs" />

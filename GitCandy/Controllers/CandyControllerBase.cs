@@ -119,7 +119,7 @@ namespace GitCandy.Controllers
             ViewBag.Language = displayName;
             ViewBag.Lang = culture.Name;
 
-            Response.AddHeader("X-GitCandy-Version", GitCandyApplication.Version.ToString());
+            Response.AddHeader("X-GitCandy-Version", AppInfomation.Version.ToString());
 
             base.OnActionExecuting(filterContext);
         }
