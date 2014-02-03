@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Composition.Convention;
 using System.Composition.Hosting;
-using System.Reflection;
 using System.Web.Mvc;
 
 namespace GitCandy.Base
@@ -15,7 +14,7 @@ namespace GitCandy.Base
         public MefDependencyResolver(AttributedModelProvider builder, IDependencyResolver resolver)
         {
             _container = new ContainerConfiguration()
-                .WithAssembly(Assembly.GetExecutingAssembly(), builder)
+                .WithAssemblies(AppDomain.CurrentDomain.GetAssemblies(), builder)
                 .CreateContainer();
 
             _resolver = resolver;

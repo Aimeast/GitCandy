@@ -32,6 +32,7 @@ namespace GitCandy
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             MefConfig.RegisterMef();
+            ScheduleConfig.RegisterScheduler();
 
             GitCache.Initialize();
 

@@ -218,6 +218,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\MefConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\ScheduleConfig.cs" />
     <Compile Include="Base\FileHelper.cs" />
     <Compile Include="Base\MefDependencyResolver.cs" />
     <Compile Include="Base\Pager.cs" />
@@ -305,6 +306,11 @@
     <Compile Include="Models\UserListModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedules\IJob.cs" />
+    <Compile Include="Schedules\JobContext.cs" />
+    <Compile Include="Schedules\LogJob.cs" />
+    <Compile Include="Schedules\Runner.cs" />
+    <Compile Include="Schedules\Scheduler.cs" />
     <Compile Include="Security\PasswordProvider.cs" />
     <Compile Include="Security\PasswordProviderPool.cs" />
     <Compile Include="Security\PasswordProviderV1.cs" />

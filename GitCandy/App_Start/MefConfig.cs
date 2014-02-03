@@ -1,4 +1,5 @@
 ﻿using GitCandy.Base;
+using GitCandy.Schedules;
 using System.Composition.Convention;
 using System.Web.Mvc;
 
@@ -21,7 +22,7 @@ namespace GitCandy
             //builder.ForTypesMatching
             //    (x => x.GetProperty("SourceMaterial") != null).Export<exam>();
 
-            //builder.ForTypesDerivedFrom<ControllerBase>().Export();
+            builder.ForTypesDerivedFrom<IJob>().Export<IJob>();
 
             return builder;
         }
