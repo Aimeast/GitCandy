@@ -311,6 +311,7 @@
     <Compile Include="Schedules\LogJob.cs" />
     <Compile Include="Schedules\Runner.cs" />
     <Compile Include="Schedules\Scheduler.cs" />
+    <Compile Include="Schedules\SingleJob.cs" />
     <Compile Include="Security\PasswordProvider.cs" />
     <Compile Include="Security\PasswordProviderPool.cs" />
     <Compile Include="Security\PasswordProviderV1.cs" />
