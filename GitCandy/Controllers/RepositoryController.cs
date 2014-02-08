@@ -210,6 +210,9 @@ namespace GitCandy.Controllers
                 var model = git.GetTree(path);
                 if (model == null)
                     throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
+                if (model.Entries == null && model.ReferenceName != "HEAD")
+                    return RedirectToAction("Tree", new { path = model.ReferenceName });
+
                 model.GitUrl = GetGitUrl(name);
                 model.RepositoryName = name;
                 if (model.IsRoot)

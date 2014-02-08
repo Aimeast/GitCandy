@@ -61,16 +61,22 @@ namespace GitCandy.Git
         #region Repository Browser
         public TreeModel GetTree(string path)
         {
-            if (_repository.Head == null || _repository.Head.Tip == null) // empty repository
-                return new TreeModel
-                {
-                    ReferenceName = "HEAD",
-                };
-
+            var isEmptyPath = string.IsNullOrEmpty(path);
             string referenceName;
             var commit = GetCommitByPath(ref path, out referenceName);
             if (commit == null)
+            {
+                if (isEmptyPath)
+                {
+                    var branch = _repository.Branches["master"]
+                        ?? _repository.Branches.FirstOrDefault();
+                    return new TreeModel
+                    {
+                        ReferenceName = branch == null ? "HEAD" : branch.Name,
+                    };
+                }
                 return null;
+            }
 
             var model = new TreeModel
             {
