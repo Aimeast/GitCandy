@@ -1,6 +1,8 @@
-﻿
+﻿using System;
+
 namespace GitCandy.Models
 {
+    [Serializable]
     public class RepositoryScope
     {
         public int Commits { get; set; }

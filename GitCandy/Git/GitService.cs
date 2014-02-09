@@ -1,7 +1,9 @@
 ﻿using GitCandy.Base;
 using GitCandy.Configuration;
 using GitCandy.Extensions;
+using GitCandy.Log;
 using GitCandy.Models;
+using GitCandy.Schedules;
 using ICSharpCode.SharpZipLib.Zip;
 using LibGit2Sharp;
 using System;
@@ -103,22 +105,48 @@ namespace GitCandy.Git
             IEnumerable<Commit> ancestors = _repository.Commits
                 .QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological });
 
-            var cacheItem = GitCache.Get<TreeCacheItem>(tree.Sha, "tree");
-            var missing = cacheItem == null;
-            if (missing)
+            var scope = GitCache.Get<RepositoryScope>(commit.Sha, "scope");
+
+            if (scope == null)
             {
-                cacheItem = new TreeCacheItem();
-                if (model.IsRoot)
+                ancestors = ancestors.ToList();
+                scope = new RepositoryScope
                 {
-                    ancestors = ancestors.ToList();
-                    cacheItem.CommitsCount = ancestors.Count();
-                    cacheItem.ContributorsCount = ancestors.GroupBy(s => s.Author.Name + "!" + s.Author.Email).Count();
-                }
+                    Commits = ancestors.Count(),
+                    Contributors = ancestors.GroupBy(s => s.ToString()).Count(),
+                };
+                GitCache.Set(commit.Sha, "scope", scope);
             }
-            var entries = CalculateRevisionSummary(referenceName, tree, ancestors, ref cacheItem.RevisionSummary);
+
+            var entries = tree
+                .OrderBy(s => s.TargetType == TreeEntryTargetType.Blob)
+                .ThenBy(s => s.Name, new StringLogicalComparer())
+                .Select(s => new TreeEntryModel
+                {
+                    Name = s.Name,
+                    ReferenceName = referenceName,
+                    Path = s.Path.Replace('\\', '/'),
+                    Commit = new CommitModel
+                    {
+                        CommitMessageShort = "???",
+                        Author = new Signature("???", "???", DateTimeOffset.MinValue),
+                    },
+                    Sha = s.Target.Sha,
+                    EntryType = s.TargetType,
+                })
+                .ToList();
+
+            var summary = GitCache.Get<RevisionSummaryCacheItem[]>(tree.Sha, "summary");
+            var missing = summary == null;
+            double scale = scope.Commits * tree.Count;
+            if ((missing || summary.Length == 0) && scale > 20000)
+                LazyLoadTree(entries, commit, path, scale);
+            else
+                summary = CalculateRevisionSummary(entries, ancestors, summary);
+
             if (missing)
             {
-                GitCache.Set(tree.Sha, "tree", cacheItem);
+                GitCache.Set(tree.Sha, "summary", summary ?? new RevisionSummaryCacheItem[0]);
             }
 
             model.Entries = entries;
@@ -156,13 +184,11 @@ namespace GitCandy.Git
             };
 
             if (model.IsRoot)
-                model.Scope = new RepositoryScope
-                {
-                    Commits = cacheItem.CommitsCount,
-                    Branches = _repository.Branches.Count(),
-                    Tags = _repository.Tags.Count(),
-                    Contributors = cacheItem.ContributorsCount,
-                };
+            {
+                scope.Branches = _repository.Branches.Count();
+                scope.Tags = _repository.Tags.Count();
+                model.Scope = scope;
+            }
 
             return model;
         }
@@ -618,34 +644,20 @@ namespace GitCandy.Git
         #endregion
 
         #region Private Methods
-        private List<TreeEntryModel> CalculateRevisionSummary(string referenceName, Tree tree, IEnumerable<Commit> ancestors, ref RevisionSummaryCacheItem[] cache)
+        private RevisionSummaryCacheItem[] CalculateRevisionSummary(IList<TreeEntryModel> entries, IEnumerable<Commit> ancestors, RevisionSummaryCacheItem[] summary)
         {
-            var entries = tree
-                .OrderBy(s => s.TargetType == TreeEntryTargetType.Blob)
-                .ThenBy(s => s.Name, new StringLogicalComparer())
-                .Select(s => new TreeEntryModel
-                {
-                    Name = s.Name,
-                    ReferenceName = referenceName,
-                    Path = s.Path.Replace('\\', '/'),
-                    Commit = new CommitModel(),
-                    Sha = s.Target.Sha,
-                    EntryType = s.TargetType,
-                })
-                .ToList();
-
-            if (cache != null)
+            if (summary != null)
             {
                 foreach (var entry in entries)
                 {
                     var commitModel = entry.Commit;
-                    var item = cache.First(s => s.Name == entry.Name);
+                    var item = summary.First(s => s.Name == entry.Name);
                     commitModel.Sha = item.Sha;
                     commitModel.CommitMessageShort = item.MessageShort;
                     commitModel.Author = new Signature(item.AuthorName, item.AuthorEmail, item.AuthorWhen);
                     commitModel.Committer = new Signature(item.CommitterName, item.CommitterEmail, item.CommitterWhen);
                 }
-                return entries;
+                return summary;
             }
 
             // null, continue search current reference
@@ -696,7 +708,7 @@ namespace GitCandy.Git
                 lastCommit = ancestor;
             }
 
-            cache = entries.Select(s => new RevisionSummaryCacheItem
+            return entries.Select(s => new RevisionSummaryCacheItem
             {
                 Name = s.Name,
                 Sha = s.Commit.Sha,
@@ -708,8 +720,30 @@ namespace GitCandy.Git
                 CommitterEmail = s.Commit.Committer.Email,
                 CommitterWhen = s.Commit.Committer.When,
             }).ToArray();
+        }
 
-            return entries;
+        private void LazyLoadTree(IList<TreeEntryModel> entries, Commit commit, string path, double scale)
+        {
+            var tree = string.IsNullOrEmpty(path)
+                ? commit.Tree
+                : commit[path].Target as Tree;
+
+            var sha = tree.Sha;
+            if (GitCache.Exists(sha, "summary"))
+                return;
+
+            var job = new SingleJob(() =>
+            {
+                Task.Delay(1000).Wait(); // let's the page going on
+
+                using (var repo = new Repository(_repositoryPath))
+                {
+                    var ancestors = repo.Commits.QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological });
+                    var summary = CalculateRevisionSummary(entries, ancestors, null);
+                    GitCache.Set(sha, "summary", summary, true);
+                }
+            }, scale / 10000);
+            Scheduler.Instance.AddJob(job, string.Format("LazyLoadTree {0}/{1}/{2}", this.Name, commit.Sha, path));
         }
 
         private BranchSelectorModel GetBranchSelectorModel(string referenceName, string refer, string path)

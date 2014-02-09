@@ -46,7 +46,7 @@ namespace GitCandy.Git
             }
         }
 
-        public static void Set(string objectish, string key, byte[] data)
+        public static void Set(string objectish, string key, byte[] data, bool overwritten = false)
         {
             if (!Enabled)
                 return;
@@ -56,13 +56,12 @@ namespace GitCandy.Git
             Contract.Ensures(data != null);
 
             var path = GetPath(objectish, key, true);
-            if (!File.Exists(path))
-                lock (path)
-                    if (!File.Exists(path))
-                        File.WriteAllBytes(path, data);
+            lock (path)
+                if (overwritten || !File.Exists(path))
+                    File.WriteAllBytes(path, data);
         }
 
-        public static void Set<T>(string objectish, string key, T obj)
+        public static void Set<T>(string objectish, string key, T obj, bool overwritten = false)
         {
             if (!Enabled)
                 return;
@@ -72,17 +71,16 @@ namespace GitCandy.Git
             Contract.Ensures(obj != null);
 
             var path = GetPath(objectish, key, true);
-            if (!File.Exists(path))
-                lock (path)
-                    if (!File.Exists(path))
+            lock (path)
+                if (overwritten || !File.Exists(path))
+                {
+                    var xs = new BinaryFormatter();
+                    using (var fs = File.Open(path, FileMode.Create))
                     {
-                        var xs = new BinaryFormatter();
-                        using (var fs = File.Open(path, FileMode.Create))
-                        {
-                            xs.Serialize(fs, obj);
-                            fs.Flush();
-                        }
+                        xs.Serialize(fs, obj);
+                        fs.Flush();
                     }
+                }
         }
 
         public static byte[] Get(string objectish, string key)
@@ -94,10 +92,9 @@ namespace GitCandy.Git
             Contract.Ensures(key != null);
 
             var path = GetPath(objectish, key, false);
-            if (!File.Exists(path))
-                lock (path)
-                    if (!File.Exists(path))
-                        return null;
+            lock (path)
+                if (!File.Exists(path))
+                    return null;
 
             return File.ReadAllBytes(path);
         }
@@ -111,10 +108,9 @@ namespace GitCandy.Git
             Contract.Ensures(key != null);
 
             var path = GetPath(objectish, key, false);
-            if (!File.Exists(path))
-                lock (path)
-                    if (!File.Exists(path))
-                        return default(T);
+            lock (path)
+                if (!File.Exists(path))
+                    return default(T);
 
             try
             {
@@ -131,6 +127,12 @@ namespace GitCandy.Git
             {
                 return default(T);
             }
+        }
+
+        public static bool Exists(string objectish, string key)
+        {
+            var path = GetPath(objectish, key, false);
+            return File.Exists(path);
         }
 
         public static string GetCacheFilename(string objectish, string key, out bool exist, bool ensureDirectory = false)

@@ -18,9 +18,9 @@ namespace GitCandy.Schedules
             _runner = new Runner(this);
         }
 
-        public JobContext AddJob(IJob job)
+        public JobContext AddJob(IJob job, string jobName = null)
         {
-            var context = new JobContext(this, job);
+            var context = new JobContext(this, job) { Name = jobName };
             context.UtcCreation = DateTime.UtcNow;
             InsertJobContext(context);
 

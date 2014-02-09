@@ -53,6 +53,8 @@ namespace GitCandy.Schedules
                 if (context != null)
                 {
                     var jobName = context.Job.GetType().FullName;
+                    if (string.IsNullOrEmpty(context.Name))
+                        jobName += " (" + context.Name + ")";
                     try
                     {
                         var utcNow = DateTime.UtcNow;

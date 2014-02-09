@@ -102,7 +102,7 @@ else
                                     { @Html.ActionLink(entry.Name.ShortString(25), entry.EntryType.ToString(), Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Commit.Sha) + "/" + entry.Path })) }
                                 </span>
                             </td>
-                            <td><span title="@entry.Commit.CommitMessageShort">@Html.ActionLink(entry.Commit.CommitMessageShort.ShortString(70), "Commit", Html.OverRoute(new { path = entry.Commit.Sha }))</span></td>
+                            <td><span title="@entry.Commit.CommitMessageShort">@(entry.Commit.Sha == null ? Html.Raw(entry.Commit.CommitMessageShort) : Html.ActionLink(entry.Commit.CommitMessageShort.ShortString(70), "Commit", Html.OverRoute(new { path = entry.Commit.Sha })))</span></td>
                             <td title="@entry.Commit.Author">@entry.Commit.Author.Name.ShortString(20)</td>
                             <td title="@entry.Commit.Author.When">@entry.Commit.Author.When.LocalDateTime.ToShortDateString()</td>
                         </tr>

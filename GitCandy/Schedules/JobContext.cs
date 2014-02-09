@@ -20,6 +20,8 @@ namespace GitCandy.Schedules
         public DateTime UtcNextExecution { get; internal set; }
         public Exception LastException { get; internal set; }
 
+        public string Name { get; set; }
+
         public event EventHandler<JobContext> Executing;
         public event EventHandler<JobContext> Executed;
 
