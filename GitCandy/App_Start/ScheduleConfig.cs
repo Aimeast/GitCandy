@@ -15,7 +15,13 @@ namespace GitCandy
                 scheduler.AddJob(job);
             }
 
-            scheduler.Start();
+            scheduler.StartAll();
+        }
+
+        public static void StopAndWait()
+        {
+            Scheduler.Instance.StopAll();
+            Scheduler.Instance.WaitAll();
         }
     }
 }

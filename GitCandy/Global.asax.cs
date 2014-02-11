@@ -43,6 +43,7 @@ namespace GitCandy
 
         protected void Application_End()
         {
+            ScheduleConfig.StopAndWait();
             Logger.Info(AppInfomation.GetAppEndInfo());
         }
 

@@ -7,14 +7,21 @@ namespace GitCandy.Schedules
 {
     internal sealed class Runner
     {
+        private readonly static int IntervalOfTask = Environment.ProcessorCount * 1000;
+
         private readonly object _syncRoot = new object();
         private readonly Scheduler _scheduler;
 
-        private CancellationTokenSource _tokenSource;
+        private static int _id = 0;
 
-        public Runner(Scheduler scheduler)
+        private CancellationTokenSource _tokenSource;
+        private Task _task;
+
+        public Runner(Scheduler scheduler, RunnerType runnerType)
         {
             _scheduler = scheduler;
+            RunnerType = runnerType;
+            ID = Interlocked.Increment(ref _id);
         }
 
         public void Start()
@@ -24,12 +31,15 @@ namespace GitCandy.Schedules
                     if (_tokenSource == null)
                     {
                         _tokenSource = new CancellationTokenSource();
-                        Task.Factory.StartNew(() => RunnerLoop(),
+                        _task = Task.Factory.StartNew(() => RunnerLoop(),
                             _tokenSource.Token,
                             TaskCreationOptions.LongRunning,
                             TaskScheduler.Current);
                     }
         }
+
+        public int ID { get; private set; }
+        public RunnerType RunnerType { get; private set; }
 
         public void Stop()
         {
@@ -38,8 +48,13 @@ namespace GitCandy.Schedules
                     if (_tokenSource != null)
                     {
                         _tokenSource.Cancel();
-                        _tokenSource = null;
                     }
+        }
+
+        public void WaitForExit(int millisecondsTimeout = -1)
+        {
+            if (_task != null)
+                _task.Wait(millisecondsTimeout);
         }
 
         private void RunnerLoop()
@@ -49,25 +64,25 @@ namespace GitCandy.Schedules
                 if (_tokenSource.IsCancellationRequested)
                     break;
 
-                var context = _scheduler.GetNextJobContext();
+                var context = _scheduler.GetNextJobContext(RunnerType);
                 if (context != null)
                 {
                     var jobName = context.Job.GetType().FullName;
-                    if (string.IsNullOrEmpty(context.Name))
+                    if (!string.IsNullOrEmpty(context.Name))
                         jobName += " (" + context.Name + ")";
                     try
                     {
-                        var utcNow = DateTime.UtcNow;
-                        context.UtcStart = utcNow;
+                        var utcStart = DateTime.UtcNow;
+                        context.UtcStart = utcStart;
 
                         context.OnExecuting(this, context);
-                        Logger.Info("Job " + jobName + " on executing");
+                        Logger.Info("Job {0} executing on runner #{1}", jobName, ID);
                         context.Job.Execute(context);
-                        Logger.Info("Job " + jobName + " on executed");
                         context.ExecutionTimes++;
                         context.UtcLastEnd = DateTime.UtcNow;
-                        context.UtcLastStart = utcNow;
+                        context.UtcLastStart = utcStart;
                         context.UtcStart = null;
+                        Logger.Info("Job {0} executed on runner #{1}, elapsed {2}", jobName, ID, context.UtcLastEnd - context.UtcLastStart);
 
                         context.Scheduler.JobExecuted(context);
                         context.OnExecuted(this, context);
@@ -77,15 +92,24 @@ namespace GitCandy.Schedules
                     catch (Exception ex)
                     {
                         context.LastException = ex;
-                        Logger.Error("Job " + jobName + " exception" + Environment.NewLine + ex.ToString());
+                        Logger.Error("Job {0} exception on runner #{1}" + Environment.NewLine + "{2}", jobName, ID, ex);
                     }
                 }
 
                 if (_tokenSource.IsCancellationRequested)
                     break;
 
-                Task.Delay(1000).Wait();
+                Task.Delay(IntervalOfTask).Wait();
             }
+
+            _tokenSource = null;
+            Logger.Info("Exit schedule runner #{0} loop", ID);
         }
+    }
+
+    internal enum RunnerType
+    {
+        RealTime,
+        LongRunning,
     }
 }
