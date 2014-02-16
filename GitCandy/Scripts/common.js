@@ -1,5 +1,5 @@
 ﻿
-$(function () {
+; window.jQuery(function ($) {
     $('#md').html(marked($('#md').text()));
     $('.focus :text').focus();
     $('.copy-clip').each(function () {
@@ -20,4 +20,30 @@ $(function () {
             console.error('No flash or wrong flash version');
         });
     });
-})
+    // blame page
+    $('[data-brush]').each(function () {
+        var $section = $(this),
+            $blocks = $section.find('.no-highlight'),
+            brush = $section.data('brush'),
+            language = hljs.getLanguage(brush),
+            code = '',
+            queue = [];
+        if (!language)
+            return;
+        $blocks.each(function () {
+            var text = $(this).text();
+            var numOfLines = text.split(/\r\n|\r|\n/).length;
+            queue.push(numOfLines);
+            code += text + '\n';
+        });
+        var lines = hljs.highlight(brush, code).value.split(/\r\n|\r|\n/);
+        $blocks.each(function () {
+            var $cell = $(this),
+                num = queue.shift(),
+                html = '';
+            for (var i = 0; i < num; i++)
+                html += (i ? '\n' : '') + lines.shift();
+            $cell.html(html);
+        });
+    });
+});

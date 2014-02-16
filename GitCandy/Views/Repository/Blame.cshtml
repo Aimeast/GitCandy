@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered" data-brush="@Model.Brush">
     <tbody>
         @foreach (var hunk in Model.Hunks)
         {
@@ -36,7 +36,7 @@
                         <span title="@hunk.MessageShort">@hunk.MessageShort.ShortString(33)</span>
                     </div>
                 </td>
-                <td><pre class="blame-code"><code class="language @Model.Brush blame-code">@hunk.Code</code></pre></td>
+                <td><pre class="blame-code"><code class="language no-highlight blame-code">@hunk.Code</code></pre></td>
             </tr>
         }
     </tbody>
