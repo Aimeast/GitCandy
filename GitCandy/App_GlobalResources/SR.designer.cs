@@ -491,6 +491,15 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Summary: {0} changed files with {1} additions and {2} deletions..
+        /// </summary>
+        public static string Repository_ChangedSummary {
+            get {
+                return ResourceManager.GetString("Repository_ChangedSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collaborations.
         /// </summary>
         public static string Repository_Collaborations {

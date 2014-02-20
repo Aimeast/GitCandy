@@ -265,6 +265,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Repository_BranchesTitle" xml:space="preserve">
     <value>Branches · {0}</value>
   </data>
+  <data name="Repository_ChangedSummary" xml:space="preserve">
+    <value>Summary: {0} changed files with {1} additions and {2} deletions.</value>
+  </data>
   <data name="Repository_Collaborations" xml:space="preserve">
     <value>Collaborations</value>
   </data>

@@ -265,6 +265,9 @@
   <data name="Repository_BranchesTitle" xml:space="preserve">
     <value>分支 · {0}</value>
   </data>
+  <data name="Repository_ChangedSummary" xml:space="preserve">
+    <value>共计: 修改{0}个文件，增加{1}行、删除{2}行。</value>
+  </data>
   <data name="Repository_Collaborations" xml:space="preserve">
     <value>你参与的代码库</value>
   </data>
