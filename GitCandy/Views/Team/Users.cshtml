@@ -20,15 +20,15 @@
                 container: "#chooser",
                 add_label: "@SR.Shared_Add",
                 del_label: "@SR.Shared_Remove",
-                add_action: { url: "/Team/ChooseUser", query: function (item) { return { name: team, user: item, act: "add" } } },
-                del_action: { url: "/Team/ChooseUser", query: function (item) { return { name: team, user: item, act: "del" } } },
+                add_action: { url: "@Url.Action("ChooseUser","Team")", query: function (item) { return { name: team, user: item, act: "add" }; } },
+                del_action: { url: "@Url.Action("ChooseUser","Team")", query: function (item) { return { name: team, user: item, act: "del" }; } },
                 action_array: [
                     {
                         key: "IsAdministrator",
                         on_label: "@SR.Team_ShortAdministrator",
                         off_label: "@SR.Team_ShortNonAdministrator",
-                        checked: { url: "/Team/ChooseUser", query: function (item) { return { name: team, user: item, act: "admin" } } },
-                        unchecked: { url: "/Team/ChooseUser", query: function (item) { return { name: team, user: item, act: "member" } } },
+                        checked: { url: "@Url.Action("ChooseUser","Team")", query: function (item) { return { name: team, user: item, act: "admin" }; } },
+                        unchecked: { url: "@Url.Action("ChooseUser","Team")", query: function (item) { return { name: team, user: item, act: "member" }; } },
                     }
                 ]
             });
