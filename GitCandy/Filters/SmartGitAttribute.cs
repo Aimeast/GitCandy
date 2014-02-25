@@ -1,4 +1,5 @@
-﻿using GitCandy.Controllers;
+﻿using GitCandy.Configuration;
+using GitCandy.Controllers;
 using System;
 using System.Text;
 using System.Web.Mvc;
@@ -40,17 +41,17 @@ namespace GitCandy.Filters
                     username = certificate.Substring(0, index);
 
                     var user = controller.MembershipService.Login(username, password);
-                    if (user != null)
-                    {
-                        username = user.Name;
-                    }
-                    else
-                    {
-                        username = null;
-                    }
+                    username = user != null ? user.Name : null;
                 }
             }
+
             controller.Session[AuthKey] = username;
+
+            if (username == null && !UserConfiguration.Current.IsPublicServer)
+            {
+                HandleUnauthorizedRequest(filterContext);
+                return;
+            }
 
             var right = false;
 

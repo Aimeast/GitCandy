@@ -11,8 +11,11 @@ namespace GitCandy.Filters
             if (UserConfiguration.Current.IsPublicServer)
                 return;
 
-            bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
-                || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+            bool skipAuthorization = 
+                   filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
+                || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
+                || filterContext.ActionDescriptor.IsDefined(typeof(SmartGitAttribute), true)
+                || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(SmartGitAttribute), true);
 
             if (skipAuthorization)
                 return;
