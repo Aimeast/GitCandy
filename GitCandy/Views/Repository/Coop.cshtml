@@ -24,29 +24,29 @@
                 container: "#choose_user",
                 add_label: "@SR.Shared_Add",
                 del_label: "@SR.Shared_Remove",
-                add_action: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "add" } } },
-                del_action: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "del" } } },
+                add_action: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "add" }; } },
+                del_action: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "del" }; } },
                 action_array: [
                     {
                         key: "AllowRead",
                         on_label: "@SR.Repository_ShortAllowRead",
                         off_label: "@SR.Repository_ShortNonAllowRead",
-                        checked: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "read", value: true } } },
-                        unchecked: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "read", value: false } } },
+                        checked: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "read", value: true }; } },
+                        unchecked: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "read", value: false }; } },
                     },
                     {
                         key: "AllowWrite",
                         on_label: "@SR.Repository_ShortAllowWrite",
                         off_label: "@SR.Repository_ShortNonAllowWrite",
-                        checked: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "write", value: true } } },
-                        unchecked: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "write", value: false } } },
+                        checked: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "write", value: true }; } },
+                        unchecked: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "write", value: false }; } },
                     },
                     {
                         key: "IsOwner",
                         on_label: "@SR.Repository_ShortIsOwner",
                         off_label: "@SR.Repository_ShortNotOwner",
-                        checked: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "owner", value: true } } },
-                        unchecked: { url: "/Repository/ChooseUser", query: function (item) { return { name: repo, user: item, act: "owner", value: false } } },
+                        checked: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "owner", value: true }; } },
+                        unchecked: { url: "@Url.Action("ChooseUser", "Repository")", query: function (item) { return { name: repo, user: item, act: "owner", value: false }; } },
                     },
                 ]
             });
@@ -58,22 +58,22 @@
                 container: "#choose_team",
                 add_label: "@SR.Shared_Add",
                 del_label: "@SR.Shared_Remove",
-                add_action: { url: "/Repository/ChooseTeam", query: function (item) { return { name: repo, team: item, act: "add" } } },
-                del_action: { url: "/Repository/ChooseTeam", query: function (item) { return { name: repo, team: item, act: "del" } } },
+                add_action: { url: "@Url.Action("ChooseTeam", "Repository")", query: function (item) { return { name: repo, team: item, act: "add" }; } },
+                del_action: { url: "@Url.Action("ChooseTeam", "Repository")", query: function (item) { return { name: repo, team: item, act: "del" }; } },
                 action_array: [
                     {
                         key: "AllowRead",
                         on_label: "@SR.Repository_ShortAllowRead",
                         off_label: "@SR.Repository_ShortNonAllowRead",
-                        checked: { url: "/Repository/ChooseTeam", query: function (item) { return { name: repo, team: item, act: "read", value: true } } },
-                        unchecked: { url: "/Repository/ChooseTeam", query: function (item) { return { name: repo, team: item, act: "read", value: false } } },
+                        checked: { url: "@Url.Action("ChooseTeam", "Repository")", query: function (item) { return { name: repo, team: item, act: "read", value: true }; } },
+                        unchecked: { url: "@Url.Action("ChooseTeam", "Repository")", query: function (item) { return { name: repo, team: item, act: "read", value: false }; } },
                     },
                     {
                         key: "AllowWrite",
                         on_label: "@SR.Repository_ShortAllowWrite",
                         off_label: "@SR.Repository_ShortNonAllowWrite",
-                        checked: { url: "/Repository/ChooseTeam", query: function (item) { return { name: repo, team: item, act: "write", value: true } } },
-                        unchecked: { url: "/Repository/ChooseTeam", query: function (item) { return { name: repo, team: item, act: "write", value: false } } },
+                        checked: { url: "@Url.Action("ChooseTeam", "Repository")", query: function (item) { return { name: repo, team: item, act: "write", value: true }; } },
+                        unchecked: { url: "@Url.Action("ChooseTeam", "Repository")", query: function (item) { return { name: repo, team: item, act: "write", value: false }; } },
                     },
                 ]
             });
