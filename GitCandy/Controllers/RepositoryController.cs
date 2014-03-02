@@ -373,11 +373,9 @@ namespace GitCandy.Controllers
         private string GetGitUrl(string name)
         {
             var url = Request.Url;
-            var git = url.Scheme + "://" + url.Host;
-            if (!url.IsDefaultPort)
-                git += ":" + url.Port;
-            git += "/git/" + name + ".git";
-            return git;
+            string path = VirtualPathUtility.ToAbsolute("~/git/" + name + ".git");
+            UriBuilder ub = new UriBuilder(url.Scheme, url.Host, url.Port, path);
+            return ub.Uri.ToString();
         }
     }
 }
