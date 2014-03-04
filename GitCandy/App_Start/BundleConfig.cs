@@ -21,7 +21,6 @@ namespace GitCandy
                         "~/Scripts/highlight.pack.js",
                         "~/Scripts/marked.js",
                         "~/Scripts/ZeroClipboard.js",
-                        "~/Scripts/chooser.js",
                         "~/Scripts/common.js"
                         ));
         }
