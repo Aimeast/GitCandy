@@ -1,7 +1,81 @@
 ﻿
+; (function ($, undefined) {
+    'use strict';
+
+    $.extend({
+        queryString: {
+            parse: function (str) {
+                /*!
+                    https://github.com/sindresorhus/query-string
+                    by Sindre Sorhus
+                    MIT License
+                */
+                var set = typeof str === 'undefined';
+
+                if (set && $.queryString.parsed)
+                    return $.queryString.parsed;
+
+                var segments = (set ? window.location.search : str).replace(/^\?/, '').split('&');
+
+                var ret = {};
+                segments.forEach(function (param) {
+                    var parts = param.replace(/\+/g, ' ').split('=');
+                    var key = parts[0];
+                    var val = parts[1];
+                    if (!(key && val))
+                        return;
+
+                    key = decodeURIComponent(key);
+                    // missing `=` should be `null`:
+                    // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+                    val = typeof val === 'undefined' ? null : decodeURIComponent(val);
+
+                    if (!ret.hasOwnProperty(key)) {
+                        ret[key] = val;
+                    } else if (Array.isArray(ret[key])) {
+                        ret[key].push(val);
+                    } else {
+                        ret[key] = [ret[key], val];
+                    }
+                });
+
+                var parsed = {
+                    query: ret,
+                    get: function (key, ignoreCase) {
+                        var ign = !!ignoreCase;
+                        if (ign)
+                            key = key.toUpperCase();
+
+                        var keys = Object.keys(ret);
+                        for (var i in keys) {
+                            var prop = keys[i];
+                            if (ign && key === prop.toUpperCase()
+                                || !ign && key === prop) {
+                                return ret[prop];
+                            }
+                        }
+                    }
+                };
+
+                if (set)
+                    $.queryString.parsed = parsed;
+
+                return parsed;
+            }
+        }
+    });
+
+    $.queryString.query = $.queryString.parse().query;
+    $.queryString.get = function (key, ignoreCase) {
+        return $.queryString.parse().get(key, ignoreCase);
+    };
+
+})(window.jQuery);
+
 ; window.jQuery(function ($) {
     $('#md').html(marked($('#md').text()));
     $('.focus :text').focus();
+    $('.focus :text[name=query]').val($.queryString.get('query', true));
     $('.copy-clip').each(function () {
         var $clip = $(this);
         $clip.parent().children(':text').click(function () { $(this).select(); });
