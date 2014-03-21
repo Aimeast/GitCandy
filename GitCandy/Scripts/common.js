@@ -94,6 +94,34 @@
             console.error('No flash or wrong flash version');
         });
     });
+    // prevent all empty link
+    $('a[href=#]').click(function () {
+        event.preventDefault();
+    });
+    $('.branch-from, .branch-to').each(function () {
+        var $con = $(this);
+        $con.find('.tab-content li').click(function () {
+            var $bn = $con.find('.branch-name'),
+                $li = $(this);
+            $bn.text($li.text());
+            $bn.prev('i').attr('class',
+                $li.closest('div').attr('id').indexOf('branch') == 0 ? 'icon-random' : 'icon-tag');
+            $con.find('.dropdown').removeClass('open');
+        });
+    });
+    $('.branch-compare').click(function () {
+        var from = $('.branch-from .branch-name').text().replace(/\//g, ';'),
+            to = $('.branch-to .branch-name').text().replace(/\//g, ';'),
+            relative = from + '...' + to,
+            base = window.location.href,
+            seg = base.split('/'),
+            last = seg[seg.length - 1],
+            append = last != '' && last.indexOf('...') == -1;
+
+        append
+        ? window.location.href += '/' + relative
+        : window.location.href = relative;
+    });
     // blame page
     $('[data-brush]').each(function () {
         var $section = $(this),

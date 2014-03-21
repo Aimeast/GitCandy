@@ -289,6 +289,15 @@
   <data name="Repository_CommitTitle" xml:space="preserve">
     <value>{2} 在 {1} · {0}</value>
   </data>
+  <data name="Repository_Compare" xml:space="preserve">
+    <value>比较</value>
+  </data>
+  <data name="Repository_CompareNothing" xml:space="preserve">
+    <value>没有什么可比较</value>
+  </data>
+  <data name="Repository_CompareTitle" xml:space="preserve">
+    <value>比较 · {0}</value>
+  </data>
   <data name="Repository_Contributors" xml:space="preserve">
     <value>参与</value>
   </data>

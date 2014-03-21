@@ -120,6 +120,8 @@
   <ItemGroup>
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\Repository\Compare.cshtml" />
+    <Content Include="Views\Repository\_Diff.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -290,6 +292,7 @@
     <Compile Include="Models\CommitChangeModel.cs" />
     <Compile Include="Models\CommitModel.cs" />
     <Compile Include="Models\CommitsModel.cs" />
+    <Compile Include="Models\CompareModel.cs" />
     <Compile Include="Models\ContributorCommitsModel.cs" />
     <Compile Include="Models\ContributorsModel.cs" />
     <Compile Include="Models\LoginModel.cs" />

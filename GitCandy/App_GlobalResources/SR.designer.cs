@@ -563,6 +563,33 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compare.
+        /// </summary>
+        public static string Repository_Compare {
+            get {
+                return ResourceManager.GetString("Repository_Compare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is nothing to compare.
+        /// </summary>
+        public static string Repository_CompareNothing {
+            get {
+                return ResourceManager.GetString("Repository_CompareNothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compare · {0}.
+        /// </summary>
+        public static string Repository_CompareTitle {
+            get {
+                return ResourceManager.GetString("Repository_CompareTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contributors.
         /// </summary>
         public static string Repository_Contributors {

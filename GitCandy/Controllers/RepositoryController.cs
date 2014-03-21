@@ -279,6 +279,35 @@ namespace GitCandy.Controllers
         }
 
         [ReadRepository]
+        public ActionResult Compare(string name, string path)
+        {
+            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            {
+                var start = "";
+                var end = "";
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var index = path.IndexOf("...");
+                    if (index == -1)
+                    {
+                        start = path;
+                        end = "";
+                    }
+                    else
+                    {
+                        start = path.Substring(0, index);
+                        end = path.Substring(index + 3);
+                    }
+                }
+                var model = git.GetCompare(start.Replace(';', '/'), end.Replace(';', '/'));
+                if (model == null)
+                    throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
+                model.RepositoryName = name;
+                return View(model);
+            }
+        }
+
+        [ReadRepository]
         public ActionResult Commits(string name, string path, int? page)
         {
             using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))

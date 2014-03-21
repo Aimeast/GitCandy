@@ -52,6 +52,7 @@ else
                 @if (Model.IsRoot)
                 {
                     <div class="pull-left">
+                        <a href="@Url.Action("Compare", Html.OverRoute(new { path = "" }))" class="btn pull-left"><i class="icon-retweet"></i>@SR.Repository_Compare</a>
                         <label class="pull-left">@SR.Repository_GitUrl</label>
                         <div class="input-append">
                             <input type="text" class="git-text" readonly value="@Model.GitUrl" />

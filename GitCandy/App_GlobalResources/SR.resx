@@ -289,6 +289,15 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Repository_CommitTitle" xml:space="preserve">
     <value>{2} at {1} · {0}</value>
   </data>
+  <data name="Repository_Compare" xml:space="preserve">
+    <value>Compare</value>
+  </data>
+  <data name="Repository_CompareNothing" xml:space="preserve">
+    <value>There is nothing to compare</value>
+  </data>
+  <data name="Repository_CompareTitle" xml:space="preserve">
+    <value>Compare · {0}</value>
+  </data>
   <data name="Repository_Contributors" xml:space="preserve">
     <value>Contributors</value>
   </data>

@@ -43,5 +43,15 @@ namespace GitCandy.Extensions
 
             return LinkExtensions.ActionLink(htmlHelper, displayName, "Language", "Home", new { Lang = culture.Name }, null);
         }
+
+        public static dynamic GetRootViewBag(this HtmlHelper html)
+        {
+            var controller = html.ViewContext.Controller;
+            while (controller.ControllerContext.IsChildAction)
+            {
+                controller = controller.ControllerContext.ParentActionViewContext.Controller;
+            }
+            return controller.ViewBag;
+        }
     }
 }

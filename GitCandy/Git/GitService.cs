@@ -277,6 +277,44 @@ namespace GitCandy.Git
             return model;
         }
 
+        public CompareModel GetCompare(string start, string end)
+        {
+            string name1, name2;
+            var commit1 = GetCommitByPath(ref start, out name1);
+            var commit2 = GetCommitByPath(ref end, out name2);
+            if (commit1 == null)
+            {
+                commit1 = _repository.Head.Tip;
+                name1 = _repository.Head.Name;
+            }
+            if (commit2 == null)
+            {
+                commit2 = _repository.Head.Tip;
+                name2 = _repository.Head.Name;
+            }
+
+            var walks = _repository.Commits
+                .QueryBy(new CommitFilter { Since = commit2, Until = commit1, SortBy = CommitSortStrategies.Time })
+                .Select(s => new CommitModel
+                {
+                    Sha = s.Sha,
+                    Committer = s.Committer,
+                    CommitMessageShort = s.MessageShort.RepetitionIfEmpty(NoCommitMessage),
+                })
+                .ToArray();
+
+            var fromBranchSelector = GetBranchSelectorModel(name1, commit1.Sha, null);
+            var toBranchSelector = GetBranchSelectorModel(name2, commit2.Sha, null);
+            var model = new CompareModel
+            {
+                BaseBranchSelector = fromBranchSelector,
+                CompareBranchSelector = toBranchSelector,
+                CompareResult = ToCommitModel(commit1, name1, true, "", commit2.Tree),
+                Walks = walks,
+            };
+            return model;
+        }
+
         public CommitsModel GetCommits(string path, int page = 1, int pagesize = 20)
         {
             string referenceName;
@@ -795,7 +833,7 @@ namespace GitCandy.Git
             return commit;
         }
 
-        private CommitModel ToCommitModel(Commit commit, string referenceName, bool isTree = true, string detailFilter = null)
+        private CommitModel ToCommitModel(Commit commit, string referenceName, bool isTree = true, string detailFilter = null, Tree compareWith = null)
         {
             if (commit == null)
                 return null;
@@ -814,10 +852,13 @@ namespace GitCandy.Git
             {
                 if (detailFilter != "" && isTree)
                     detailFilter = detailFilter + "/";
-                var firstTree = commit.Parents.Any()
-                    ? commit.Parents.First().Tree
-                    : null;
-                var secondTree = commit.Tree;
+                var firstTree = compareWith != null
+                    ? commit.Tree
+                    : commit.Parents.Any()
+                        ? commit.Parents.First().Tree
+                        : null;
+                if (compareWith == null)
+                    compareWith = commit.Tree;
                 var compareOptions = new LibGit2Sharp.CompareOptions
                 {
                     Similarity = SimilarityOptions.Renames,
@@ -825,8 +866,8 @@ namespace GitCandy.Git
                 var paths = detailFilter == ""
                     ? null
                     : new[] { detailFilter };
-                var changes = _repository.Diff.Compare<TreeChanges>(firstTree, secondTree, paths, compareOptions: compareOptions);
-                var patches = _repository.Diff.Compare<Patch>(firstTree, secondTree, paths, compareOptions: compareOptions);
+                var changes = _repository.Diff.Compare<TreeChanges>(firstTree, compareWith, paths, compareOptions: compareOptions);
+                var patches = _repository.Diff.Compare<Patch>(firstTree, compareWith, paths, compareOptions: compareOptions);
                 model.Changes = (from s in changes
                                  where (s.Path.Replace('\\', '/') + '/').StartsWith(detailFilter)
                                  orderby s.Path
