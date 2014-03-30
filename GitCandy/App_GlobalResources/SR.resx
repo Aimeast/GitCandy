@@ -259,6 +259,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Repository_BlobTitle" xml:space="preserve">
     <value>{2} at {1} · {0}</value>
   </data>
+  <data name="Repository_BranchDeletionWords" xml:space="preserve">
+    <value>Do you conform to delete the branch "{0}"?</value>
+  </data>
   <data name="Repository_Branches" xml:space="preserve">
     <value>Branches</value>
   </data>

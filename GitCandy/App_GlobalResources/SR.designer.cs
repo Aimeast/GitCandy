@@ -473,6 +473,15 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you conform to delete the branch &quot;{0}&quot;?.
+        /// </summary>
+        public static string Repository_BranchDeletionWords {
+            get {
+                return ResourceManager.GetString("Repository_BranchDeletionWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Branches.
         /// </summary>
         public static string Repository_Branches {

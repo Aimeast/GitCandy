@@ -259,6 +259,9 @@
   <data name="Repository_BlobTitle" xml:space="preserve">
     <value>{2} 在 {1} · {0}</value>
   </data>
+  <data name="Repository_BranchDeletionWords" xml:space="preserve">
+    <value>你确认要删除分支 "{0}" 吗？</value>
+  </data>
   <data name="Repository_Branches" xml:space="preserve">
     <value>分支</value>
   </data>

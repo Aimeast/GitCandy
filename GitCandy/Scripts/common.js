@@ -62,6 +62,17 @@
 
                 return parsed;
             }
+        },
+        stringFormat: function () {
+            var args = arguments;
+            if (args.length == 0 || typeof args[0] !== 'string')
+                return '';
+            return args[0].replace(/{(\d+)}/g, function (match, number) {
+                var index = parseInt(number);
+                return typeof args[index + 1] !== 'undefined'
+                  ? args[index + 1]
+                  : match;
+            });
         }
     });
 
@@ -147,6 +158,18 @@
                 html += (i ? '\n' : '') + lines.shift();
             $cell.html(html);
         });
+    });
+    // delete a branch
+    $('[data-branch]').click(function () {
+        var $this = $(this),
+            name = $this.data('branch');
+        if (confirm($.stringFormat(deleteBranch_params.words, name)))
+        {
+            $this.disabled = true;
+            $.post(deleteBranch_params.url, { path: name }, function () {
+                $this.closest('tr').remove();
+            });
+        }
     });
     // chooser
     typeof chooser_params !== 'undefined'

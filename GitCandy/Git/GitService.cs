@@ -573,6 +573,11 @@ namespace GitCandy.Git
             return model;
         }
 
+        public void DeleteBranch(string branch)
+        {
+            _repository.Branches.Remove(branch);
+        }
+
         public ContributorsModel GetContributors(string path)
         {
             string referenceName;

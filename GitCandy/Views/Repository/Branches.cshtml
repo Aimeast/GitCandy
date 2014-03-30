@@ -28,8 +28,14 @@
                 </td>
                 <td><p class="text-right">@item.Behind @SR.Repository_Behind</p></td>
                 <td><p class="text-left">@item.Ahead @SR.Repository_Ahead</p></td>
-                <td></td>
+                <td>@if(Model.CanDelete){<a class="btn" data-branch="@item.Commit.ReferenceName" href="#">@SR.Shared_Delete</a>}</td>
             </tr>
         }
     </tbody>
 </table>
+<script type="text/javascript">
+    var deleteBranch_params = {
+        words: '@Html.Raw(SR.Repository_BranchDeletionWords)',
+        url: '@Url.Action("Branches", "Repository")'
+    };
+</script>
