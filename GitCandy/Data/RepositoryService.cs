@@ -279,23 +279,13 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return false;
+                var q0 = ctx.Repositories.Where(s => s.Name == reponame && s.AllowAnonymousRead).Select(s => 0);
+                if (string.IsNullOrEmpty(username))
+                    return q0.Any();
 
-                if (repo.AllowAnonymousRead)
-                    return true;
-
-                if (!string.IsNullOrEmpty(username))
-                {
-                    if (repo.UserRepositoryRoles.Any(s => s.User.Name == username && s.AllowRead))
-                        return true;
-
-                    if (repo.TeamRepositoryRoles.Any(s => s.Team.UserTeamRoles.Any(t => t.User.Name == username) && s.AllowRead))
-                        return true;
-                }
-
-                return false;
+                var q1 = ctx.UserRepositoryRoles.Where(s => s.Repository.Name == reponame && s.User.Name == username && s.AllowRead).Select(s => 0);
+                var q2 = ctx.TeamRepositoryRoles.Where(s => s.Repository.Name == reponame && s.Team.UserTeamRoles.Any(t => t.User.Name == username) && s.AllowRead).Select(s => 0);
+                return q0.Concat(q1).Concat(q2).Any();
             }
         }
 
@@ -303,23 +293,13 @@ namespace GitCandy.Data
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
-                if (repo == null)
-                    return false;
+                var q0 = ctx.Repositories.Where(s => s.Name == reponame && s.AllowAnonymousRead && s.AllowAnonymousWrite).Select(s => 0);
+                if (string.IsNullOrEmpty(username))
+                    return q0.Any();
 
-                if (repo.AllowAnonymousRead && repo.AllowAnonymousWrite)
-                    return true;
-
-                if (!string.IsNullOrEmpty(username))
-                {
-                    if (repo.UserRepositoryRoles.Any(s => s.User.Name == username && s.AllowRead && s.AllowWrite))
-                        return true;
-
-                    if (repo.TeamRepositoryRoles.Any(s => s.Team.UserTeamRoles.Any(t => t.User.Name == username) && s.AllowRead && s.AllowWrite))
-                        return true;
-                }
-
-                return false;
+                var q1 = ctx.UserRepositoryRoles.Where(s => s.Repository.Name == reponame && s.User.Name == username && s.AllowRead && s.AllowWrite).Select(s => 0);
+                var q2 = ctx.TeamRepositoryRoles.Where(s => s.Repository.Name == reponame && s.Team.UserTeamRoles.Any(t => t.User.Name == username) && s.AllowRead && s.AllowWrite).Select(s => 0);
+                return q0.Concat(q1).Concat(q2).Any();
             }
         }
 
