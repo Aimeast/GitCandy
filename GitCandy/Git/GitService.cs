@@ -205,6 +205,37 @@ namespace GitCandy.Git
                 return null;
 
             var blob = (Blob)entry.Target;
+
+            var lastCommitSha = GitCache.Get<string>(blob.Sha, "affectedcommit");
+            if (lastCommitSha == null)
+            {
+                var hs = new HashSet<string>();
+                var queue = new Queue<Commit>();
+                queue.Enqueue(commit);
+                hs.Add(commit.Sha);
+                while (queue.Count > 0)
+                {
+                    commit = queue.Dequeue();
+                    var has = false;
+                    foreach (var parent in commit.Parents)
+                    {
+                        var tree = parent[path];
+                        if (tree == null)
+                            continue;
+                        var eq = tree.Target.Sha == blob.Sha;
+                        if (eq && hs.Add(parent.Sha))
+                            queue.Enqueue(parent);
+                        has = has || eq;
+                    }
+                    if (!has)
+                        break;
+                }
+                lastCommitSha = commit.Sha;
+                GitCache.Set(blob.Sha, "affectedcommit", lastCommitSha);
+            }
+            if (lastCommitSha != commit.Sha)
+                commit = _repository.Lookup<Commit>(lastCommitSha);
+
             var data = blob.GetContentStream().ToBytes();
             var encoding = FileHelper.DetectEncoding(data, CpToEncoding(commit.Encoding), _i18n.Value);
             var extension = Path.GetExtension(entry.Name).ToLower();
