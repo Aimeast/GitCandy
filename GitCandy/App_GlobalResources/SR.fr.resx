@@ -216,7 +216,7 @@
   <data name="Home_AboutDescription" xml:space="preserve">
     <value>Git Candy© est une plate-forme [Git](http://git-scm.com/documentation) de contrôle de version distribué, basé sur une application ASP.NET MVC, qui prend en charge les dépôts publics et privés. Vous pouvez créer et collaborer votre dépôt avec votre équipe n'importe quand n'importe où sans aucune limite.
 
-Visitez une démo sur [http://git.53wb.com]()
+Visitez une démo sur [http://gitcandy.com]()
 
 Get source and fork me on [http://github.com/Aimeast/GitCandy]()
 
