@@ -397,6 +397,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Repository_GitUrl" xml:space="preserve">
     <value>Git Url</value>
   </data>
+  <data name="Repository_HeadNotSet" xml:space="preserve">
+    <value>The HEAD has not set yet</value>
+  </data>
   <data name="Repository_History" xml:space="preserve">
     <value>History</value>
   </data>

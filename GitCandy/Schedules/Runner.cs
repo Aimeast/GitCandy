@@ -84,7 +84,6 @@ namespace GitCandy.Schedules
                         context.UtcStart = null;
                         Logger.Info("Job {0} executed on runner #{1}, elapsed {2}", jobName, ID, context.UtcLastEnd - context.UtcLastStart);
 
-                        context.Scheduler.JobExecuted(context);
                         context.OnExecuted(this, context);
 
                         context.LastException = null;
@@ -94,6 +93,7 @@ namespace GitCandy.Schedules
                         context.LastException = ex;
                         Logger.Error("Job {0} exception on runner #{1}" + Environment.NewLine + "{2}", jobName, ID, ex);
                     }
+                    context.Scheduler.JobExecuted(context);
                 }
 
                 if (_tokenSource.IsCancellationRequested)

@@ -84,6 +84,8 @@
 })(window.jQuery);
 
 ; window.jQuery(function ($) {
+    'use strict';
+
     $('#md').html(marked($('#md').text()));
     $('.focus :text').focus();
     $('.focus :text[name=query]').val($.queryString.get('query', true));

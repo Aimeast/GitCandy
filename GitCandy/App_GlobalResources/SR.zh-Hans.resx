@@ -397,6 +397,9 @@
   <data name="Repository_GitUrl" xml:space="preserve">
     <value>Git 地址</value>
   </data>
+  <data name="Repository_HeadNotSet" xml:space="preserve">
+    <value>HEAD 还未设置</value>
+  </data>
   <data name="Repository_History" xml:space="preserve">
     <value>提交记录</value>
   </data>

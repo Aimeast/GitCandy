@@ -1,4 +1,5 @@
-﻿using GitCandy.DAL;
+﻿using GitCandy.Base;
+using GitCandy.DAL;
 using GitCandy.Models;
 using System;
 using System.Collections.Generic;
@@ -67,8 +68,14 @@ namespace GitCandy.Data
                 };
                 if (withShipment)
                 {
-                    model.Collaborators = repo.UserRepositoryRoles.Select(s => s.User.Name).ToArray();
-                    model.Teams = repo.TeamRepositoryRoles.Select(s => s.Team.Name).ToArray();
+                    model.Collaborators = repo.UserRepositoryRoles
+                        .Select(s => s.User.Name)
+                        .OrderBy(s => s, new StringLogicalComparer())
+                        .ToArray();
+                    model.Teams = repo.TeamRepositoryRoles
+                        .Select(s => s.Team.Name)
+                        .OrderBy(s => s, new StringLogicalComparer())
+                        .ToArray();
                 }
                 return model;
             }
@@ -112,7 +119,7 @@ namespace GitCandy.Data
                             AllowWrite = s.AllowWrite,
                             IsOwner = s.IsOwner,
                         })
-                        .OrderBy(s => s.Name)
+                        .OrderBy(s => s.Name, new StringLogicalComparer())
                         .ToArray(),
                     Teams = repo.TeamRepositoryRoles
                         .Select(s => new CollaborationModel.TeamRole
@@ -121,7 +128,7 @@ namespace GitCandy.Data
                             AllowRead = s.AllowRead,
                             AllowWrite = s.AllowWrite,
                         })
-                        .OrderBy(s => s.Name)
+                        .OrderBy(s => s.Name, new StringLogicalComparer())
                         .ToArray(),
                 };
                 return model;

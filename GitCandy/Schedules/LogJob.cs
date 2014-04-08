@@ -13,7 +13,7 @@ namespace GitCandy.Schedules
 
         public TimeSpan GetNextInterval(JobContext jobContext)
         {
-            return TimeSpan.FromSeconds(24 * 3600 + 3) - DateTime.Now.TimeOfDay;
+            return TimeSpan.FromSeconds(24 * 3600) - DateTime.Now.TimeOfDay;
         }
 
         public TimeSpan Due

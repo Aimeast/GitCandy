@@ -1,6 +1,7 @@
 ﻿
 namespace GitCandy.Configuration
 {
+    [ConfigurationKey("UserConfiguration")]
     public class UserConfiguration : ConfigurationEntry<UserConfiguration>
     {
         [RecommendedValue(true)]

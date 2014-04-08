@@ -1,4 +1,5 @@
-﻿using GitCandy.DAL;
+﻿using GitCandy.Base;
+using GitCandy.DAL;
 using GitCandy.Models;
 using GitCandy.Security;
 using System;
@@ -79,7 +80,7 @@ namespace GitCandy.Data
                 {
                     model.Teams = ctx.UserTeamRoles
                         .Where(s => s.User.ID == user.ID)
-                        .OrderBy(s => s.Team.Name)
+                        .OrderBy(s => s.Team.Name, new StringLogicalComparer())
                         .Select(s => s.Team.Name)
                         .ToArray();
 
@@ -96,7 +97,7 @@ namespace GitCandy.Data
                                 || ctx.TeamRepositoryRoles.Any(t => t.RepositoryID == s.RepositoryID
                                     && t.Team.UserTeamRoles.Any(r => r.User.Name == viewUser)
                                     && t.AllowRead)))
-                        .OrderBy(s => s.Repository.Name)
+                        .OrderBy(s => s.Repository.Name, new StringLogicalComparer())
                         .Select(s => s.Repository.Name)
                         .ToArray();
                 }
@@ -379,7 +380,7 @@ namespace GitCandy.Data
                 {
                     model.MembersRole = ctx.UserTeamRoles
                         .Where(s => s.TeamID == team.ID)
-                        .OrderBy(s => s.User.Name)
+                        .OrderBy(s => s.User.Name, new StringLogicalComparer())
                         .Select(s => new TeamModel.UserRole
                         {
                             Name = s.User.Name,
@@ -401,7 +402,7 @@ namespace GitCandy.Data
                                 || ctx.TeamRepositoryRoles.Any(t => t.RepositoryID == s.RepositoryID
                                     && t.Team.UserTeamRoles.Any(r => r.User.Name == viewUser)
                                     && t.AllowRead)))
-                        .OrderBy(s => s.Repository.Name)
+                        .OrderBy(s => s.Repository.Name, new StringLogicalComparer())
                         .Select(s => new TeamModel.RepositoryRole
                         {
                             Name = s.Repository.Name,
