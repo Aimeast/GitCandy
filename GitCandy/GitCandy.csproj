@@ -255,6 +255,7 @@
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="DAL\AuthorizationLog.cs" />
     <Compile Include="DAL\GitCandyContext.cs" />
+    <Compile Include="DAL\GitCandyDropCreateDatabaseIfModelChanges.cs" />
     <Compile Include="DAL\Mapping\AuthorizationLogMap.cs" />
     <Compile Include="DAL\Mapping\RepositoryMap.cs" />
     <Compile Include="DAL\Mapping\TeamMap.cs" />
