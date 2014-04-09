@@ -1,4 +1,7 @@
 ﻿
+using GitCandy.Git;
+using System;
+using System.Web;
 namespace GitCandy.Configuration
 {
     [ConfigurationKey("UserConfiguration")]
@@ -22,11 +25,64 @@ namespace GitCandy.Configuration
         [RecommendedValue(true)]
         public bool AllowRepositoryCreation { get; set; }
 
-        public string RepositoryPath { get; set; }
+        private string _RepositoryPath;
+        public string RepositoryPath
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_RepositoryPath))
+                {
+                    _RepositoryPath = HttpContext.Current.Server.MapPath("~/App_Data/Repositories/");
+                }
+                return _RepositoryPath;
+            }
+            set
+            {
+                _RepositoryPath = value;
+            }
+        }
 
-        public string CachePath { get; set; }
+        private string _cachePath;
+        public string CachePath 
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_cachePath))
+                {
+                    _cachePath = HttpContext.Current.Server.MapPath("~/App_Data/Cache/");
+                }
+                return _cachePath;
+            }
+            set
+            {
+                _cachePath = value;
+            }
+        }
 
-        public string GitExePath { get; set; }
+        private string _GitExePath;
+        public string GitExePath
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_GitExePath))
+                {
+                    _GitExePath = @"C:\Program Files (x86)\Git\bin\git.exe";
+                    if(!GitService.VerifyGit(_GitExePath))
+                    {
+                        _GitExePath = @"C:\Program Files\Git\bin\git.exe";
+                        if (!GitService.VerifyGit(_GitExePath))
+                        {
+                            throw new Exception("Please Config the GitExePath first.");
+                        }
+                    }
+                }
+                return _GitExePath;
+            }
+            set
+            {
+                _GitExePath = value;
+            }
+        }
 
         [RecommendedValue(30)]
         public int NumberOfCommitsPerPage { get; set; }

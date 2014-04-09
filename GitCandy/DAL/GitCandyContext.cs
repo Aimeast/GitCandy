@@ -8,7 +8,7 @@ namespace GitCandy.DAL
     {
         static GitCandyContext()
         {
-            Database.SetInitializer<GitCandyContext>(null);
+            Database.SetInitializer<GitCandyContext>(new GitCandyDropCreateDatabaseIfModelChanges());
         }
 
         public GitCandyContext()
