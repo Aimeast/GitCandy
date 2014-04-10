@@ -11,7 +11,18 @@ namespace GitCandy.Configuration
     {
         private static TEntry _current;
         private static readonly object _sync = new object();
-        private static readonly string _configurationPath = HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["UserConfiguration"]);
+        private static readonly string _configurationPath;
+
+        static ConfigurationEntry()
+        {
+            var type = typeof(TEntry);
+            var attr = type.GetCustomAttributes(typeof(ConfigurationKeyAttribute), false)
+                .FirstOrDefault() as ConfigurationKeyAttribute;
+            ConfigurationKey = attr == null ? type.Name : attr.Key;
+            _configurationPath = HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings[ConfigurationKey]);
+        }
+
+        public static string ConfigurationKey { get; private set; }
 
         public static TEntry Current { get { return _current ?? Load(); } }
 
@@ -36,7 +47,7 @@ namespace GitCandy.Configuration
                     {
                         Logger.Info("New configuration of {0}", typeof(TEntry).FullName);
                         _current = NewDefault();
-                        _current.Save();
+                        _current.Save(false);
                     }
                 }
 
@@ -59,7 +70,7 @@ namespace GitCandy.Configuration
             return entry;
         }
 
-        public void Save()
+        public void Save(bool overwritten = true)
         {
             lock (_sync)
             {
@@ -69,7 +80,7 @@ namespace GitCandy.Configuration
                 if (!fileInfo.Directory.Exists)
                     fileInfo.Directory.Create();
 
-                using (var stream = fileInfo.Open(FileMode.Create))
+                using (var stream = fileInfo.Open(overwritten ? FileMode.Create : FileMode.CreateNew))
                     serializer.Serialize(stream, this);
 
                 _current = (TEntry)this;

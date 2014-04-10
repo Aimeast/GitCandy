@@ -113,7 +113,7 @@ namespace GitCandy.Git
                 scope = new RepositoryScope
                 {
                     Commits = ancestors.Count(),
-                    Contributors = ancestors.GroupBy(s => s.ToString()).Count(),
+                    Contributors = ancestors.Select(s => s.Author.ToString()).Distinct().Count(),
                 };
                 GitCache.Set(commit.Sha, "scope", scope);
             }
@@ -169,6 +169,7 @@ namespace GitCandy.Git
                         ? BlobType.MarkDown
                         : BlobType.Text;
                     model.Readme.TextContent = FileHelper.ReadToEnd(data, encoding);
+                    model.Readme.TextBrush = "no-highlight";
                 }
             }
 
@@ -353,10 +354,14 @@ namespace GitCandy.Git
             if (commit == null)
                 return null;
 
-            if (!string.IsNullOrEmpty(path) && commit[path] == null)
+            var tree = commit[path];
+            if (!string.IsNullOrEmpty(path) && tree == null)
                 return null;
 
-            var commits = GitCache.Get<RevisionSummaryCacheItem[]>((commit.Sha + path).CalcSha(), "commits");
+            var cacheKey = commit.Sha;
+            if (tree != null)
+                cacheKey += "-" + tree.Target.Sha;
+            var commits = GitCache.Get<RevisionSummaryCacheItem[]>(cacheKey, "commits");
             if (commits == null)
             {
                 var ancestors = _repository.Commits
@@ -376,7 +381,7 @@ namespace GitCandy.Git
                     CommitterWhen = s.Committer.When,
                 }).ToArray();
 
-                GitCache.Set((commit.Sha + path).CalcSha(), "commits", commits);
+                GitCache.Set(cacheKey, "commits", commits);
             }
 
             var model = new CommitsModel
@@ -440,7 +445,7 @@ namespace GitCandy.Git
                     Code = reader.ReadLines(s.LineCount),
                     StartLine = s.FinalStartLineNumber,
                     EndLine = s.LineCount,
-                    MessageShort = s.FinalCommit.MessageShort,
+                    MessageShort = s.FinalCommit.MessageShort.RepetitionIfEmpty(NoCommitMessage),
                     Sha = s.FinalCommit.Sha,
                     Author = s.FinalCommit.Author.Name,
                     AuthorEmail = s.FinalCommit.Author.Email,
@@ -542,15 +547,18 @@ namespace GitCandy.Git
         {
             var model = new TagsModel
             {
-                Tags = _repository.Tags.Select(s => new TagModel
-                {
-                    ReferenceName = s.Name,
-                    Sha = s.Target.Sha,
-                    When = ((Commit)s.Target).Author.When,
-                    MessageShort = ((Commit)s.Target).MessageShort.RepetitionIfEmpty(NoCommitMessage),
-                })
-                .OrderByDescending(s => s.When)
-                .ToArray()
+                Tags = (from tag in _repository.Tags
+                        let commit = (tag.IsAnnotated ? tag.Annotation.Target : tag.Target) as Commit
+                        where commit != null
+                        select new TagModel
+                        {
+                            ReferenceName = tag.Name,
+                            Sha = tag.Target.Sha,
+                            When = ((Commit)tag.Target).Author.When,
+                            MessageShort = ((Commit)tag.Target).MessageShort.RepetitionIfEmpty(NoCommitMessage),
+                        })
+                        .OrderByDescending(s => s.When)
+                        .ToArray()
             };
             return model;
         }
@@ -558,6 +566,9 @@ namespace GitCandy.Git
         public BranchesModel GetBranches()
         {
             var head = _repository.Head;
+            if (head.Tip == null)
+                return new BranchesModel();
+
             var sha = CalcBranchesSha();
             var aheadBehinds = GitCache.Get<RevisionSummaryCacheItem[]>(sha, "branches");
             if (aheadBehinds == null)
@@ -643,7 +654,7 @@ namespace GitCandy.Git
                 {
                     Branch = referenceName,
                     Commits = ancestors.Count(),
-                    Contributors = ancestors.GroupBy(s => s.Author.ToString()).Count(),
+                    Contributors = ancestors.Select(s => s.Author.ToString()).Distinct().Count(),
                     Files = FilesInCommit(commit, out size),
                     SourceSize = size,
                 };
@@ -663,7 +674,7 @@ namespace GitCandy.Git
                     {
                         Branch = _repository.Head.Name,
                         Commits = ancestors.Count(),
-                        Contributors = ancestors.GroupBy(s => s.Author.ToString()).Count(),
+                        Contributors = ancestors.Select(s => s.Author.ToString()).Distinct().Count(),
                         Files = FilesInCommit(commit, out size),
                         SourceSize = size,
                     };
@@ -1103,7 +1114,7 @@ namespace GitCandy.Git
             using (var process = System.Diagnostics.Process.Start(info))
             {
                 inStream.CopyTo(process.StandardInput.BaseStream);
-                process.StandardInput.Write('\0');
+                process.StandardInput.Close();
                 process.StandardOutput.BaseStream.CopyTo(outStream);
 
                 process.WaitForExit();

@@ -51,9 +51,9 @@ namespace GitCandy.Git
             if (!Enabled)
                 return;
 
-            Contract.Ensures(objectish != null);
-            Contract.Ensures(key != null);
-            Contract.Ensures(data != null);
+            Contract.Requires(objectish != null);
+            Contract.Requires(key != null);
+            Contract.Requires(data != null);
 
             var path = GetPath(objectish, key, true);
             lock (path)
@@ -66,9 +66,9 @@ namespace GitCandy.Git
             if (!Enabled)
                 return;
 
-            Contract.Ensures(objectish != null);
-            Contract.Ensures(key != null);
-            Contract.Ensures(obj != null);
+            Contract.Requires(objectish != null);
+            Contract.Requires(key != null);
+            Contract.Requires(obj != null);
 
             var path = GetPath(objectish, key, true);
             lock (path)
@@ -88,8 +88,8 @@ namespace GitCandy.Git
             if (!Enabled)
                 return null;
 
-            Contract.Ensures(objectish != null);
-            Contract.Ensures(key != null);
+            Contract.Requires(objectish != null);
+            Contract.Requires(key != null);
 
             var path = GetPath(objectish, key, false);
             lock (path)
@@ -104,8 +104,8 @@ namespace GitCandy.Git
             if (!Enabled)
                 return default(T);
 
-            Contract.Ensures(objectish != null);
-            Contract.Ensures(key != null);
+            Contract.Requires(objectish != null);
+            Contract.Requires(key != null);
 
             var path = GetPath(objectish, key, false);
             lock (path)

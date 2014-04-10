@@ -1,5 +1,4 @@
-﻿using GitCandy.Filters;
-using System.Composition;
+﻿using System.Composition;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,7 +7,6 @@ namespace GitCandy.Controllers
     [Export(typeof(HomeController))]
     public class HomeController : CandyControllerBase
     {
-        [PublicServer]
         public ActionResult Index()
         {
             return RedirectToStartPage();
@@ -19,6 +17,7 @@ namespace GitCandy.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Language(string lang)
         {
             var cookie = new HttpCookie("Lang", lang);

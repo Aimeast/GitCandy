@@ -24,7 +24,7 @@ namespace GitCandy.Log
             Contract.Requires(logPath != null);
 
             LogFilePath = logPath;
-            _timer = new Timer(DisposeWriter, null, TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0));
+            _timer = new Timer(DisposeWriter, null, TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0));
         }
 
         public string LogFilePath { get; private set; }
@@ -50,7 +50,7 @@ namespace GitCandy.Log
         {
             if (_writer != null)
                 lock (_instanceSyncRoot)
-                    if (_writer != null && _utcLastWrite.AddSeconds(2.0) < DateTime.UtcNow)
+                    if (_writer != null && _utcLastWrite.AddSeconds(1.0) < DateTime.UtcNow)
                     {
                         _writer.Flush();
                         _writer.Dispose();

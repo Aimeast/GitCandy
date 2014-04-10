@@ -1,4 +1,5 @@
-﻿using GitCandy.DAL;
+﻿using GitCandy.Base;
+using GitCandy.DAL;
 using GitCandy.Models;
 using GitCandy.Security;
 using System;
@@ -79,8 +80,9 @@ namespace GitCandy.Data
                 {
                     model.Teams = ctx.UserTeamRoles
                         .Where(s => s.User.ID == user.ID)
-                        .OrderBy(s => s.Team.Name)
                         .Select(s => s.Team.Name)
+                        .AsEnumerable()
+                        .OrderBy(s => s, new StringLogicalComparer())
                         .ToArray();
 
                     model.Respositories = ctx.UserRepositoryRoles
@@ -96,8 +98,9 @@ namespace GitCandy.Data
                                 || ctx.TeamRepositoryRoles.Any(t => t.RepositoryID == s.RepositoryID
                                     && t.Team.UserTeamRoles.Any(r => r.User.Name == viewUser)
                                     && t.AllowRead)))
-                        .OrderBy(s => s.Repository.Name)
                         .Select(s => s.Repository.Name)
+                        .AsEnumerable()
+                        .OrderBy(s => s, new StringLogicalComparer())
                         .ToArray();
                 }
                 return model;
@@ -379,14 +382,17 @@ namespace GitCandy.Data
                 {
                     model.MembersRole = ctx.UserTeamRoles
                         .Where(s => s.TeamID == team.ID)
-                        .OrderBy(s => s.User.Name)
                         .Select(s => new TeamModel.UserRole
                         {
                             Name = s.User.Name,
                             IsAdministrator = s.IsAdministrator
                         })
+                        .AsEnumerable()
+                        .OrderBy(s => s.Name, new StringLogicalComparer())
                         .ToArray();
-                    model.Members = model.MembersRole.Select(s => s.Name).ToArray();
+                    model.Members = model.MembersRole
+                        .Select(s => s.Name)
+                        .ToArray();
 
                     model.RepositoriesRole = ctx.TeamRepositoryRoles
                         // belong team
@@ -401,15 +407,18 @@ namespace GitCandy.Data
                                 || ctx.TeamRepositoryRoles.Any(t => t.RepositoryID == s.RepositoryID
                                     && t.Team.UserTeamRoles.Any(r => r.User.Name == viewUser)
                                     && t.AllowRead)))
-                        .OrderBy(s => s.Repository.Name)
                         .Select(s => new TeamModel.RepositoryRole
                         {
                             Name = s.Repository.Name,
                             AllowRead = s.AllowRead,
                             AllowWrite = s.AllowWrite,
                         })
+                        .AsEnumerable()
+                        .OrderBy(s => s.Name, new StringLogicalComparer())
                         .ToArray();
-                    model.Repositories = model.RepositoriesRole.Select(s => s.Name).ToArray();
+                    model.Repositories = model.RepositoriesRole
+                        .Select(s => s.Name)
+                        .ToArray();
                 }
                 return model;
             }

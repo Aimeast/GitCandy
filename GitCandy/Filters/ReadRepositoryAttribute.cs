@@ -5,6 +5,13 @@ namespace GitCandy.Filters
 {
     public class ReadRepositoryAttribute : SmartAuthorizeAttribute
     {
+        private bool requireWrite;
+
+        public ReadRepositoryAttribute(bool requireWrite = false)
+        {
+            this.requireWrite = requireWrite;
+        }
+
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);
@@ -18,7 +25,9 @@ namespace GitCandy.Filters
             {
                 var username = controller.Token == null ? null : controller.Token.Username;
                 var field = controller.ValueProvider.GetValue("name");
-                var canRead = field != null && repoController.RepositoryService.CanReadRepository(field.AttemptedValue, username);
+                var canRead = field != null && (requireWrite
+                    ? repoController.RepositoryService.CanWriteRepository(field.AttemptedValue, username)
+                    : repoController.RepositoryService.CanReadRepository(field.AttemptedValue, username));
                 if (canRead)
                     return;
             }

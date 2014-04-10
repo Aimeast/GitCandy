@@ -233,6 +233,7 @@
     <Compile Include="Base\RegularExpression.cs" />
     <Compile Include="Base\StringLogicalComparer.cs" />
     <Compile Include="Configuration\ConfigurationEntry.cs" />
+    <Compile Include="Configuration\ConfigurationKeyAttribute.cs" />
     <Compile Include="Configuration\RecommendedValueAttribute.cs" />
     <Compile Include="Configuration\UserConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
