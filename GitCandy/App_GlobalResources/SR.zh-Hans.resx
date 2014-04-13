@@ -216,7 +216,7 @@
   <data name="Home_AboutDescription" xml:space="preserve">
     <value>Git Candy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
 
-演示地址：[http://git.53wb.com]()
+演示地址：[http://gitcandy.com]()
 
 获取源码并衍生：[http://github.com/Aimeast/GitCandy]()
 

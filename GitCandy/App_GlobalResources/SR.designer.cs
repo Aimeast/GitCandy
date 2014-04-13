@@ -351,7 +351,7 @@ namespace GitCandy.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Git Candy&amp;copy; is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
         ///
-        ///Visit a demo on [http://git.53wb.com]()
+        ///Visit a demo on [http://gitcandy.com]()
         ///
         ///Get source and fork me on [http://github.com/Aimeast/GitCandy]()
         ///

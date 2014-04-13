@@ -1,7 +1,7 @@
 ﻿## Git Candy
 Git Candy© is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
 
-Visit a demo on [http://git.53wb.com](http://git.53wb.com).
+Visit a demo on [http://gitcandy.com](http://gitcandy.com).
 
 Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com/Aimeast/GitCandy).
 
@@ -17,7 +17,7 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
 ### Installation
 * Download last [release](http://github.com/Aimeast/GitCandy/releases) or build [dev](http://github.com/Aimeast/GitCandy/dev) branch by yourself
 * Create a web site on IIS, copy binary and resource files to site path
-* Copy associated Sqlite or MsSql driver with EF to `bin` folder if any
+* Copy `GitCandy\bin\[NativeBinaries & x86 & x64]` folders to destination if you are publishing the website
 * Create a database by `/Sql/Create.[Sqlite | MsSql].sql`, copy database file to `App_Data` folder if any
 * Update connection string in `Web.config` file
 * Prepare two folders for storage `Repositories` and `Cache`
@@ -36,7 +36,8 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
 * [LibGit2Sharp](http://github.com/libgit2/libgit2sharp) @ [MIT License](http://github.com/libgit2/libgit2sharp/blob/master/LICENSE.md)
 * [marked](http://github.com/chjj/marked) @ [MIT License](http://github.com/chjj/marked/blob/master/LICENSE)
 * [Microsoft.Composition (MEF2)](http://mef.codeplex.com/) @ [Microsoft Public License](http://mef.codeplex.com/license)
-* [SharpZipLib](http://github.com/icsharpcode/SharpZipLib) @ [GPL License](http://github.com/icsharpcode/SharpZipLib/blob/master/doc/COPYING.txt)
+* [Newtonsoft.Json](http://json.codeplex.com/) @ [MIT License](http://json.codeplex.com/license)
+* [SharpZipLib](http://github.com/icsharpcode/SharpZipLib) @ [GPL License v2](http://github.com/icsharpcode/SharpZipLib/blob/master/doc/COPYING.txt)
 * [ZeroClipboard](http://github.com/zeroclipboard/zeroclipboard) @ [MIT License](http://github.com/zeroclipboard/zeroclipboard/blob/master/LICENSE)
 
 ---
