@@ -47,7 +47,7 @@
             <div class="pull-left">
                 @Html.ActionLink(SR.Repository_Tree, "Tree", new { Model.Name }, new { @class = "btn" })
             </div>
-            @if (token != null && (token.Username == Model.Name || token.IsSystemAdministrator))
+            @if (token != null && (Model.CurrentUserIsOwner || token.IsSystemAdministrator))
             {
                 <div class="pull-right">
                     @Html.ActionLink(SR.Repository_Relationship, "Coop", new { Model.Name }, new { @class = "btn" })

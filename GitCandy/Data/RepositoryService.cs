@@ -50,11 +50,11 @@ namespace GitCandy.Data
             }
         }
 
-        public RepositoryModel GetRepositoryModel(string name, bool withShipment = false)
+        public RepositoryModel GetRepositoryModel(string reponame, bool withShipment = false, string username = null)
         {
             using (var ctx = new GitCandyContext())
             {
-                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == name);
+                var repo = ctx.Repositories.FirstOrDefault(s => s.Name == reponame);
                 if (repo == null)
                     return null;
 
@@ -66,16 +66,34 @@ namespace GitCandy.Data
                     AllowAnonymousRead = repo.AllowAnonymousRead,
                     AllowAnonymousWrite = repo.AllowAnonymousWrite,
                 };
-                if (withShipment)
+                if (withShipment || username != null)
                 {
-                    model.Collaborators = repo.UserRepositoryRoles
-                        .Select(s => s.User.Name)
-                        .OrderBy(s => s, new StringLogicalComparer())
-                        .ToArray();
-                    model.Teams = repo.TeamRepositoryRoles
-                        .Select(s => s.Team.Name)
-                        .OrderBy(s => s, new StringLogicalComparer())
-                        .ToArray();
+                    var tempList = ctx.UserRepositoryRoles
+                        .Where(s => s.Repository.Name == reponame)
+                        .Select(s => new { s.User.Name, s.IsOwner, Kind = true })
+                        .Concat(ctx.TeamRepositoryRoles
+                            .Where(s => s.Repository.Name == reponame)
+                            .Select(s => new { s.Team.Name, IsOwner = false, Kind = false }))
+                        .ToList();
+
+                    if (withShipment)
+                    {
+                        model.Collaborators = tempList
+                            .Where(s => s.Kind)
+                            .Select(s => s.Name)
+                            .OrderBy(s => s, new StringLogicalComparer())
+                            .ToArray();
+                        model.Teams = tempList
+                            .Where(s => !s.Kind)
+                            .Select(s => s.Name)
+                            .OrderBy(s => s, new StringLogicalComparer())
+                            .ToArray();
+                    }
+                    if (username != null)
+                    {
+                        model.CurrentUserIsOwner = tempList
+                            .Any(s => s.Kind && s.IsOwner && s.Name == username);
+                    }
                 }
                 return model;
             }

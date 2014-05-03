@@ -72,7 +72,7 @@
                 @Html.ActionLink(SR.Shared_Back, "Detail", new { Model.Name }, new { @class = "btn" })
             </div>
             <div class="pull-right">
-                @if (token.IsSystemAdministrator)
+                @if (token != null && (Model.CurrentUserIsOwner || token.IsSystemAdministrator))
                 {
                     @Html.ActionLink(SR.Shared_Delete, "Delete", new { Model.Name }, new { @class = "btn" })
                 }

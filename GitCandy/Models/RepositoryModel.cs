@@ -44,5 +44,7 @@ namespace GitCandy.Models
         public string DefaultBranch { get; set; }
 
         public string[] LocalBranches { get; set; }
+
+        public bool CurrentUserIsOwner { get; set; }
     }
 }
