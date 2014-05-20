@@ -517,6 +517,9 @@
   <data name="Setting_NumberOfItemsPerList" xml:space="preserve">
     <value>每一页显示条目数</value>
   </data>
+  <data name="Setting_NumberOfRepositoryContributors" xml:space="preserve">
+    <value>显示参与者的条目数</value>
+  </data>
   <data name="Setting_RepositoryPath" xml:space="preserve">
     <value>代码库存储路径</value>
   </data>

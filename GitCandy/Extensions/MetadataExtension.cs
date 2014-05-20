@@ -3,6 +3,7 @@ using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -13,6 +14,44 @@ namespace GitCandy.Extensions
 {
     public static class MetadataExtension
     {
+        const int ShaBytesLength = 20;
+        const string HexValuesInUppercase = "0123456789ABCDEF";
+        const string HexValuesInLowercase = "0123456789abcdef";
+
+        public static byte[] AggregateSha(this byte[] one, params byte[][] twos)
+        {
+            Contract.Requires(one == null);
+            Contract.Requires(one.Length == ShaBytesLength);
+
+            var val = one.ToArray();
+            foreach (var two in twos)
+            {
+                Contract.Assert(two != null && two.Length == ShaBytesLength);
+                for (int i = 0; i < ShaBytesLength; i++)
+                {
+                    val[i] ^= two[i];
+                }
+            }
+
+            return val;
+        }
+
+        public static string BytesToString(this byte[] bytes)
+        {
+            Contract.Requires(bytes != null);
+
+            var length = bytes.Length;
+            var chars = new char[length * 2];
+            for (int i = 0, index = 0; i < length; i++)
+            {
+                var b = bytes[i];
+                chars[index++] = HexValuesInLowercase[b & 0xf];
+                chars[index++] = HexValuesInLowercase[b >> 4];
+            }
+
+            return new string(chars);
+        }
+
         public static string ToFlagString(this bool flag, string trueStr, string falseStr)
         {
             return flag ? trueStr : falseStr;
@@ -145,6 +184,14 @@ namespace GitCandy.Extensions
                 default:
                     return string.Empty;
             }
+        }
+
+        [Pure]
+        public static string SafyToString(this object obj)
+        {
+            if (obj == null)
+                return null;
+            return obj.ToString();
         }
     }
 }

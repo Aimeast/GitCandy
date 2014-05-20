@@ -40,5 +40,9 @@ namespace GitCandy.Models
         [Range(5, 50, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_NumberRange")]
         [Display(ResourceType = typeof(SR), Name = "Setting_NumberOfItemsPerList")]
         public int NumberOfItemsPerList { get; set; }
+
+        [Range(10, 100, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_NumberRange")]
+        [Display(ResourceType = typeof(SR), Name = "Setting_NumberOfRepositoryContributors")]
+        public int NumberOfRepositoryContributors { get; set; }
     }
 }

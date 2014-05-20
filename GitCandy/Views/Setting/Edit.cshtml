@@ -85,6 +85,12 @@
             @Html.TextBoxFor(s => s.NumberOfItemsPerList, new { @class = "span4 text-left lead" })
         </div>
 
+        <div class="row">
+            @Html.LabelFor(s => s.NumberOfRepositoryContributors, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.NumberOfRepositoryContributors, new { @class = "span4 text-left lead" })
+        </div>
+
         if (!ViewData.ModelState.IsValid)
         {
         @Html.ValidationSummary(SR.Setting_UpdateSettingsUnsuccessfull, new { @class = "alert alert-error" })

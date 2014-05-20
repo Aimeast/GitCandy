@@ -6,7 +6,9 @@ namespace GitCandy.Git
     public class RevisionSummaryCacheItem
     {
         public string Name;
-        public string Sha;
+        public string Path;
+        public string TargetSha;
+        public string CommitSha;
         public string MessageShort;
         public string AuthorName;
         public string AuthorEmail;

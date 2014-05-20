@@ -319,9 +319,19 @@
     <Compile Include="Filters\SmartAuthorizeAttribute.cs" />
     <Compile Include="Filters\SmartGitAttribute.cs" />
     <Compile Include="Filters\TeamOrSystemAdministratorAttribute.cs" />
-    <Compile Include="Git\GitCache.cs" />
+    <Compile Include="Git\ArchiverAccessor.cs" />
+    <Compile Include="Git\BlameAccessor.cs" />
+    <Compile Include="Git\Cache\GitCacheAccessor.cs" />
+    <Compile Include="Git\Cache\GitCacheReturn.cs" />
+    <Compile Include="Git\CommitsAccessor.cs" />
+    <Compile Include="Git\ContributorsAccessor.cs" />
     <Compile Include="Git\GitService.cs" />
+    <Compile Include="Git\HistoryDivergenceAccessor.cs" />
+    <Compile Include="Git\LastCommitAccessor.cs" />
+    <Compile Include="Git\RepositorySizeAccessor.cs" />
     <Compile Include="Git\RevisionSummaryCacheItem.cs" />
+    <Compile Include="Git\ScopeAccessor.cs" />
+    <Compile Include="Git\SummaryAccessor.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

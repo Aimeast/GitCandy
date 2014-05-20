@@ -24,7 +24,7 @@ namespace GitCandy.Log
             Contract.Requires(logPath != null);
 
             LogFilePath = logPath;
-            _timer = new Timer(DisposeWriter, null, TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0));
+            _timer = new Timer(o => DisposeWriter(false), null, TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0));
         }
 
         public string LogFilePath { get; private set; }
@@ -35,7 +35,7 @@ namespace GitCandy.Log
             {
                 if (_instance != null)
                 {
-                    _instance.DisposeWriter();
+                    _instance.DisposeWriter(true);
                     _instance._timer.Dispose();
                 }
 
@@ -46,11 +46,11 @@ namespace GitCandy.Log
             }
         }
 
-        private void DisposeWriter(object obj = null)
+        private void DisposeWriter(bool force)
         {
             if (_writer != null)
                 lock (_instanceSyncRoot)
-                    if (_writer != null && _utcLastWrite.AddSeconds(1.0) < DateTime.UtcNow)
+                    if (_writer != null && (force || _utcLastWrite.AddSeconds(1.0) < DateTime.UtcNow))
                     {
                         _writer.Flush();
                         _writer.Dispose();
@@ -64,7 +64,7 @@ namespace GitCandy.Log
             {
                 if (_writer == null)
                 {
-                    _writer = new StreamWriter(LogFilePath, true, Encoding.UTF8);
+                    _writer = new StreamWriter(new FileStream(LogFilePath, FileMode.Append, FileAccess.Write, FileShare.Read), Encoding.UTF8);
                 }
 
                 _writer.Write(">> " + DateTimeOffset.Now.ToString("MM/dd/yyyy HH:mm:ss.fff zzz") + " " + level + ", ");

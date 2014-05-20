@@ -33,5 +33,8 @@ namespace GitCandy.Configuration
 
         [RecommendedValue(30)]
         public int NumberOfItemsPerList { get; set; }
+
+        [RecommendedValue(50)]
+        public int NumberOfRepositoryContributors { get; set; }
     }
 }

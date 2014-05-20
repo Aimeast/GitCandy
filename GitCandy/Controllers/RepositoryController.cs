@@ -73,7 +73,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Detail(string name)
         {
-            var model = RepositoryService.GetRepositoryModel(name, true, Token.Username);
+            var model = RepositoryService.GetRepositoryModel(name, true, Token == null ? null : Token.Username);
             if (model == null)
                 throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
             using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))

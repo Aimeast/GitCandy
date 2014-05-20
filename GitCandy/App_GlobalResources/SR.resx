@@ -517,6 +517,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Setting_NumberOfItemsPerList" xml:space="preserve">
     <value>Number of items per list</value>
   </data>
+  <data name="Setting_NumberOfRepositoryContributors" xml:space="preserve">
+    <value>Number of repository contributors</value>
+  </data>
   <data name="Setting_RepositoryPath" xml:space="preserve">
     <value>Path of repositories</value>
   </data>

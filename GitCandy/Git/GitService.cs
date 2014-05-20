@@ -1,6 +1,7 @@
 ﻿using GitCandy.Base;
 using GitCandy.Configuration;
 using GitCandy.Extensions;
+using GitCandy.Git.Cache;
 using GitCandy.Log;
 using GitCandy.Models;
 using GitCandy.Schedules;
@@ -19,10 +20,11 @@ namespace GitCandy.Git
 {
     public class GitService : IDisposable
     {
-        private const string NoCommitMessage = "<+++++>";
+        public const string UnknowString = "<Unknow>";
 
         private readonly Repository _repository;
         private readonly string _repositoryPath;
+        private readonly string _repoId = null;
         private readonly Lazy<Encoding> _i18n;
         private bool _disposed;
 
@@ -43,7 +45,7 @@ namespace GitCandy.Git
                     ? null
                     : CpToEncoding(entry.Value);
             });
-            Name = new DirectoryInfo(path).Name;
+            _repoId = Name = new DirectoryInfo(path).Name;
         }
 
         #region Git Smart HTTP Transport
@@ -89,7 +91,7 @@ namespace GitCandy.Git
                     Sha = commit.Sha,
                     Author = commit.Author,
                     Committer = commit.Committer,
-                    CommitMessageShort = commit.MessageShort.RepetitionIfEmpty(NoCommitMessage),
+                    CommitMessageShort = commit.MessageShort.RepetitionIfEmpty(UnknowString),
                     Parents = commit.Parents.Select(s => s.Sha).ToArray()
                 },
             };
@@ -102,52 +104,28 @@ namespace GitCandy.Git
             if (tree == null)
                 return null;
 
-            IEnumerable<Commit> ancestors = _repository.Commits
-                .QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological });
-
-            var scope = GitCache.Get<RepositoryScope>(commit.Sha, "scope");
-
-            if (scope == null)
-            {
-                ancestors = ancestors.ToList();
-                scope = new RepositoryScope
-                {
-                    Commits = ancestors.Count(),
-                    Contributors = ancestors.Select(s => s.Author.ToString()).Distinct().Count(),
-                };
-                GitCache.Set(commit.Sha, "scope", scope);
-            }
-
-            var entries = tree
-                .OrderBy(s => s.TargetType == TreeEntryTargetType.Blob)
-                .ThenBy(s => s.Name, new StringLogicalComparer())
-                .Select(s => new TreeEntryModel
-                {
-                    Name = s.Name,
-                    ReferenceName = referenceName,
-                    Path = s.Path.Replace('\\', '/'),
-                    Commit = new CommitModel
-                    {
-                        CommitMessageShort = "???",
-                        Author = new Signature("???", "???", DateTimeOffset.MinValue),
-                    },
-                    Sha = s.Target.Sha,
-                    EntryType = s.TargetType,
-                })
-                .ToList();
-
-            var summary = GitCache.Get<RevisionSummaryCacheItem[]>(tree.Sha, "summary");
-            var missing = summary == null;
-            double scale = scope.Commits * tree.Count;
-            if ((missing || summary.Length == 0) && scale > 20000)
-                LazyLoadTree(entries, commit, path, scale);
-            else
-                summary = CalculateRevisionSummary(entries, ancestors, summary);
-
-            if (missing)
-            {
-                GitCache.Set(tree.Sha, "summary", summary ?? new RevisionSummaryCacheItem[0]);
-            }
+            var summaryAccessor = GitCacheAccessor.Singleton(new SummaryAccessor(_repoId, _repository, commit, tree));
+            var items = summaryAccessor.Result.Value;
+            var entries = (from entry in tree
+                           join item in items on entry.Name equals item.Name into g
+                           from item in g
+                           select new TreeEntryModel
+                           {
+                               Name = entry.Name,
+                               Path = entry.Path.Replace('\\', '/'),
+                               Commit = new CommitModel
+                               {
+                                   Sha = item.CommitSha,
+                                   CommitMessageShort = item.MessageShort,
+                                   Author = CreateSafeSignature(item.AuthorName, item.AuthorEmail, item.AuthorWhen),
+                                   Committer = CreateSafeSignature(item.CommitterName, item.CommitterEmail, item.CommitterWhen),
+                               },
+                               Sha = item.CommitSha,
+                               EntryType = entry.TargetType,
+                           })
+                           .OrderBy(s => s.EntryType == TreeEntryTargetType.Blob)
+                           .ThenBy(s => s.Name, new StringLogicalComparer())
+                           .ToList();
 
             model.Entries = entries;
             model.Readme = entries.FirstOrDefault(s => s.EntryType == TreeEntryTargetType.Blob
@@ -186,9 +164,8 @@ namespace GitCandy.Git
 
             if (model.IsRoot)
             {
-                scope.Branches = _repository.Branches.Count();
-                scope.Tags = _repository.Tags.Count();
-                model.Scope = scope;
+                var scopeAccessor = GitCacheAccessor.Singleton(new ScopeAccessor(_repoId, _repository, commit));
+                model.Scope = scopeAccessor.Result.Value;
             }
 
             return model;
@@ -207,33 +184,8 @@ namespace GitCandy.Git
 
             var blob = (Blob)entry.Target;
 
-            var lastCommitSha = GitCache.Get<string>(blob.Sha, "affectedcommit");
-            if (lastCommitSha == null)
-            {
-                var hs = new HashSet<string>();
-                var queue = new Queue<Commit>();
-                queue.Enqueue(commit);
-                hs.Add(commit.Sha);
-                while (queue.Count > 0)
-                {
-                    commit = queue.Dequeue();
-                    var has = false;
-                    foreach (var parent in commit.Parents)
-                    {
-                        var tree = parent[path];
-                        if (tree == null)
-                            continue;
-                        var eq = tree.Target.Sha == blob.Sha;
-                        if (eq && hs.Add(parent.Sha))
-                            queue.Enqueue(parent);
-                        has = has || eq;
-                    }
-                    if (!has)
-                        break;
-                }
-                lastCommitSha = commit.Sha;
-                GitCache.Set(blob.Sha, "affectedcommit", lastCommitSha);
-            }
+            var cacheAccessor = GitCacheAccessor.Singleton(new LastCommitAccessor(_repoId, _repository, commit, path));
+            var lastCommitSha = cacheAccessor.Result.Value;
             if (lastCommitSha != commit.Sha)
                 commit = _repository.Lookup<Commit>(lastCommitSha);
 
@@ -251,8 +203,8 @@ namespace GitCandy.Git
                     Sha = commit.Sha,
                     Author = commit.Author,
                     Committer = commit.Committer,
-                    CommitMessage = commit.Message.RepetitionIfEmpty(NoCommitMessage),
-                    CommitMessageShort = commit.MessageShort.RepetitionIfEmpty(NoCommitMessage),
+                    CommitMessage = commit.Message.RepetitionIfEmpty(UnknowString),
+                    CommitMessageShort = commit.MessageShort.RepetitionIfEmpty(UnknowString),
                     Parents = commit.Parents.Select(s => s.Sha).ToArray()
                 },
                 EntryType = entry.TargetType,
@@ -331,7 +283,7 @@ namespace GitCandy.Git
                 {
                     Sha = s.Sha,
                     Committer = s.Committer,
-                    CommitMessageShort = s.MessageShort.RepetitionIfEmpty(NoCommitMessage),
+                    CommitMessageShort = s.MessageShort.RepetitionIfEmpty(UnknowString),
                 })
                 .ToArray();
 
@@ -354,53 +306,24 @@ namespace GitCandy.Git
             if (commit == null)
                 return null;
 
-            var tree = commit[path];
-            if (!string.IsNullOrEmpty(path) && tree == null)
-                return null;
-
-            var cacheKey = commit.Sha;
-            if (tree != null)
-                cacheKey += "-" + tree.Target.Sha;
-            var commits = GitCache.Get<RevisionSummaryCacheItem[]>(cacheKey, "commits");
-            if (commits == null)
-            {
-                var ancestors = _repository.Commits
-                    .QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological | CommitSortStrategies.Time })
-                    .PathFilter(path)
-                    .ToList();
-
-                commits = ancestors.Select(s => new RevisionSummaryCacheItem
-                {
-                    Sha = s.Sha,
-                    MessageShort = s.MessageShort.RepetitionIfEmpty(NoCommitMessage),
-                    AuthorName = s.Author.Name,
-                    AuthorEmail = s.Author.Email,
-                    AuthorWhen = s.Author.When,
-                    CommitterName = s.Committer.Name,
-                    CommitterEmail = s.Committer.Email,
-                    CommitterWhen = s.Committer.When,
-                }).ToArray();
-
-                GitCache.Set(cacheKey, "commits", commits);
-            }
+            var commitsAccessor = GitCacheAccessor.Singleton(new CommitsAccessor(_repoId, _repository, commit, path, page, pagesize));
+            var scopeAccessor = GitCacheAccessor.Singleton(new ScopeAccessor(_repoId, _repository, commit, path));
 
             var model = new CommitsModel
             {
                 ReferenceName = referenceName,
                 Sha = commit.Sha,
-                Commits = commits
-                    .Skip((page - 1) * pagesize)
-                    .Take(pagesize)
+                Commits = commitsAccessor.Result.Value
                     .Select(s => new CommitModel
                     {
                         CommitMessageShort = s.MessageShort,
-                        Sha = s.Sha,
-                        Author = new Signature(s.AuthorName, s.AuthorEmail, s.AuthorWhen),
-                        Committer = new Signature(s.CommitterName, s.CommitterEmail, s.CommitterWhen),
+                        Sha = s.CommitSha,
+                        Author = CreateSafeSignature(s.AuthorName, s.AuthorEmail, s.AuthorWhen),
+                        Committer = CreateSafeSignature(s.CommitterName, s.CommitterEmail, s.CommitterWhen),
                     })
                     .ToList(),
                 CurrentPage = page,
-                ItemCount = commits.Count(),
+                ItemCount = scopeAccessor.Result.Value.Commits,
                 Path = string.IsNullOrEmpty(path) ? "" : path,
                 PathBar = new PathBarModel
                 {
@@ -409,7 +332,7 @@ namespace GitCandy.Git
                     Path = path,
                     ReferenceName = referenceName,
                     ReferenceSha = commit.Sha,
-                    HideLastSlash = path != "" && commit[path].TargetType == TreeEntryTargetType.Blob,
+                    HideLastSlash = true, // I want a improvement here
                 },
             };
 
@@ -428,32 +351,9 @@ namespace GitCandy.Git
                 return null;
 
             var blob = (Blob)entry.Target;
-            var bytes = blob.GetContentStream().ToBytes();
-            var encoding = FileHelper.DetectEncoding(bytes, CpToEncoding(commit.Encoding), _i18n.Value);
-            if (encoding == null)
-                return null;
 
-            var code = FileHelper.ReadToEnd(bytes, encoding);
-            var reader = new StringReader(code);
-
-            var hunks = GitCache.Get<BlameHunkModel[]>(blob.Sha, "blame");
-            if (hunks == null)
-            {
-                var blame = _repository.Blame(path, new BlameOptions { StartingAt = commit });
-                hunks = blame.Select(s => new BlameHunkModel
-                {
-                    Code = reader.ReadLines(s.LineCount),
-                    StartLine = s.FinalStartLineNumber,
-                    EndLine = s.LineCount,
-                    MessageShort = s.FinalCommit.MessageShort.RepetitionIfEmpty(NoCommitMessage),
-                    Sha = s.FinalCommit.Sha,
-                    Author = s.FinalCommit.Author.Name,
-                    AuthorEmail = s.FinalCommit.Author.Email,
-                    AuthorDate = s.FinalCommit.Author.When,
-                })
-                .ToArray();
-                GitCache.Set(blob.Sha, "blame", hunks);
-            }
+            var accessor = GitCacheAccessor.Singleton(new BlameAccessor(_repoId, _repository, commit, path, CpToEncoding(commit.Encoding), _i18n.Value));
+            var hunks = accessor.Result.Value;
 
             var model = new BlameModel
             {
@@ -487,60 +387,9 @@ namespace GitCandy.Git
             if (referenceName == null)
                 referenceName = commit.Sha;
 
-            var key = "archive";
-            if (newline != null)
-                key += newline.GetHashCode().ToString("x");
-            bool exist;
-            var filename = GitCache.GetCacheFilename(commit.Sha, key, out exist, true);
-            if (exist)
-                return filename;
+            var accessor = GitCacheAccessor.Singleton(new ArchiverAccessor(_repoId, _repository, commit, newline, CpToEncoding(commit.Encoding), _i18n.Value));
 
-            using (var zipOutputStream = new ZipOutputStream(new FileStream(filename, FileMode.Create)))
-            {
-                var stack = new Stack<Tree>();
-
-                stack.Push(commit.Tree);
-                while (stack.Count != 0)
-                {
-                    var tree = stack.Pop();
-                    foreach (var entry in tree)
-                    {
-                        byte[] bytes;
-                        switch (entry.TargetType)
-                        {
-                            case TreeEntryTargetType.Blob:
-                                zipOutputStream.PutNextEntry(new ZipEntry(entry.Path));
-                                var blob = (Blob)entry.Target;
-                                bytes = blob.GetContentStream().ToBytes();
-                                if (newline == null)
-                                    zipOutputStream.Write(bytes, 0, bytes.Length);
-                                else
-                                {
-                                    var encoding = FileHelper.DetectEncoding(bytes, CpToEncoding(commit.Encoding), _i18n.Value);
-                                    if (encoding == null)
-                                        zipOutputStream.Write(bytes, 0, bytes.Length);
-                                    else
-                                    {
-                                        bytes = FileHelper.ReplaceNewline(bytes, encoding, newline);
-                                        zipOutputStream.Write(bytes, 0, bytes.Length);
-                                    }
-                                }
-                                break;
-                            case TreeEntryTargetType.Tree:
-                                stack.Push((Tree)entry.Target);
-                                break;
-                            case TreeEntryTargetType.GitLink:
-                                zipOutputStream.PutNextEntry(new ZipEntry(entry.Path + "/.gitsubmodule"));
-                                bytes = Encoding.ASCII.GetBytes(entry.Target.Sha);
-                                zipOutputStream.Write(bytes, 0, bytes.Length);
-                                break;
-                        }
-                    }
-                }
-                zipOutputStream.SetComment(commit.Sha);
-            }
-
-            return filename;
+            return accessor.Result.Value;
         }
 
         public TagsModel GetTags()
@@ -555,7 +404,7 @@ namespace GitCandy.Git
                             ReferenceName = tag.Name,
                             Sha = tag.Target.Sha,
                             When = ((Commit)tag.Target).Author.When,
-                            MessageShort = ((Commit)tag.Target).MessageShort.RepetitionIfEmpty(NoCommitMessage),
+                            MessageShort = ((Commit)tag.Target).MessageShort.RepetitionIfEmpty(UnknowString),
                         })
                         .OrderByDescending(s => s.When)
                         .ToArray()
@@ -570,33 +419,8 @@ namespace GitCandy.Git
                 return new BranchesModel();
 
             var sha = CalcBranchesSha();
-            var aheadBehinds = GitCache.Get<RevisionSummaryCacheItem[]>(sha, "branches");
-            if (aheadBehinds == null)
-            {
-                aheadBehinds = _repository.Branches
-                    .Where(s => s != head && s.Name != "HEAD")
-                    .OrderByDescending(s => s.Tip.Author.When)
-                    .Select(branch =>
-                    {
-                        var commit = branch.Tip;
-                        var divergence = _repository.ObjectDatabase.CalculateHistoryDivergence(commit, head.Tip);
-                        return new RevisionSummaryCacheItem
-                        {
-                            Ahead = divergence.AheadBy ?? 0,
-                            Behind = divergence.BehindBy ?? 0,
-                            Name = branch.Name,
-                            Sha = commit.Sha,
-                            AuthorName = commit.Author.Name,
-                            AuthorEmail = commit.Author.Email,
-                            AuthorWhen = commit.Author.When,
-                            CommitterName = commit.Committer.Name,
-                            CommitterEmail = commit.Committer.Email,
-                            CommitterWhen = commit.Committer.When,
-                        };
-                    })
-                    .ToArray();
-                GitCache.Set(sha, "branches", aheadBehinds);
-            }
+            var accessor = GitCacheAccessor.Singleton(new HistoryDivergenceAccessor(_repoId, _repository, sha));
+            var aheadBehinds = accessor.Result.Value;
             var model = new BranchesModel
             {
                 Commit = ToCommitModel(head.Tip, head.Name),
@@ -607,8 +431,8 @@ namespace GitCandy.Git
                     Commit = new CommitModel
                     {
                         ReferenceName = s.Name,
-                        Author = new Signature(s.AuthorName, s.AuthorEmail, s.AuthorWhen),
-                        Committer = new Signature(s.CommitterName, s.CommitterEmail, s.CommitterWhen),
+                        Author = CreateSafeSignature(s.AuthorName, s.AuthorEmail, s.AuthorWhen),
+                        Committer = CreateSafeSignature(s.CommitterName, s.CommitterEmail, s.CommitterWhen),
                     },
                 }).ToArray(),
             };
@@ -627,71 +451,22 @@ namespace GitCandy.Git
             if (commit == null)
                 return null;
 
-            var ancestors = _repository.Commits
-              .QueryBy(new CommitFilter { Since = commit });
-
-            var contributors = GitCache.Get<ContributorCommitsModel[]>(commit.Sha, "contributors");
-            if (contributors == null)
-            {
-                contributors = ancestors.GroupBy(s => s.Author.ToString())
-                    .Select(s => new ContributorCommitsModel
-                    {
-                        Author = s.Key,
-                        CommitsCount = s.Count(),
-                    })
-                    .OrderByDescending(s => s.CommitsCount)
-                    .ThenBy(s => s.Author, new StringLogicalComparer())
-                    .ToArray();
-                GitCache.Set(commit.Sha, "contributors", contributors);
-            }
-
+            var contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, commit, UserConfiguration.Current.NumberOfRepositoryContributors));
+            var contributors = contributorsAccessor.Result.Value.Item1;
             var statistics = new RepositoryStatisticsModel();
-            var stats = GitCache.Get<RepositoryStatisticsModel.Statistics>(commit.Sha, "statistics");
-            int size;
-            if (stats == null)
-            {
-                stats = new RepositoryStatisticsModel.Statistics
-                {
-                    Branch = referenceName,
-                    Commits = ancestors.Count(),
-                    Contributors = ancestors.Select(s => s.Author.ToString()).Distinct().Count(),
-                    Files = FilesInCommit(commit, out size),
-                    SourceSize = size,
-                };
-
-                GitCache.Set(commit.Sha, "statistics", stats);
-            }
-            statistics.Current = stats;
+            statistics.Current = contributorsAccessor.Result.Value.Item2;
+            statistics.Current.Branch = referenceName;
 
             if (_repository.Head.Tip != commit)
             {
-                commit = _repository.Head.Tip;
-                stats = GitCache.Get<RepositoryStatisticsModel.Statistics>(commit.Sha, "statistics");
-                if (stats == null)
-                {
-                    ancestors = _repository.Commits.QueryBy(new CommitFilter { Since = commit });
-                    stats = new RepositoryStatisticsModel.Statistics
-                    {
-                        Branch = _repository.Head.Name,
-                        Commits = ancestors.Count(),
-                        Contributors = ancestors.Select(s => s.Author.ToString()).Distinct().Count(),
-                        Files = FilesInCommit(commit, out size),
-                        SourceSize = size,
-                    };
-
-                    GitCache.Set(commit.Sha, "statistics", stats);
-                }
-                statistics.Default = stats;
+                contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, _repository.Head.Tip, UserConfiguration.Current.NumberOfRepositoryContributors));
+                statistics.Default = contributorsAccessor.Result.Value.Item2;
+                statistics.Default.Branch = _repository.Head.Name;
             }
 
             var sha = CalcBranchesSha(true);
-            var sizeOfRepo = GitCache.Get<long>(sha, "size");
-            if (sizeOfRepo == 0)
-            {
-                sizeOfRepo = SizeOfRepository();
-                GitCache.Set(sha, "size", sizeOfRepo);
-            }
-            statistics.RepositorySize = sizeOfRepo;
+            var repositorySizeAccessor = GitCacheAccessor.Singleton(new RepositorySizeAccessor(_repoId, _repository, sha));
+            statistics.RepositorySize = repositorySizeAccessor.Result.Value;
 
             var model = new ContributorsModel
             {
@@ -729,108 +504,6 @@ namespace GitCandy.Git
         #endregion
 
         #region Private Methods
-        private RevisionSummaryCacheItem[] CalculateRevisionSummary(IList<TreeEntryModel> entries, IEnumerable<Commit> ancestors, RevisionSummaryCacheItem[] summary)
-        {
-            if (summary != null)
-            {
-                foreach (var entry in entries)
-                {
-                    var commitModel = entry.Commit;
-                    var item = summary.First(s => s.Name == entry.Name);
-                    commitModel.Sha = item.Sha;
-                    commitModel.CommitMessageShort = item.MessageShort;
-                    commitModel.Author = new Signature(item.AuthorName, item.AuthorEmail, item.AuthorWhen);
-                    commitModel.Committer = new Signature(item.CommitterName, item.CommitterEmail, item.CommitterWhen);
-                }
-                return summary;
-            }
-
-            // null, continue search current reference
-            // true, have found, done
-            // false, search has been interrupted, but waiting for next match
-            var status = new bool?[entries.Count];
-            var done = entries.Count;
-            Commit lastCommit = null;
-            foreach (var ancestor in ancestors)
-            {
-                for (var index = 0; index < entries.Count; index++)
-                {
-                    if (status[index] == true)
-                        continue;
-                    var entryModel = entries[index];
-                    var ancestorEntry = ancestor[entryModel.Path];
-                    if (ancestorEntry != null && ancestorEntry.Target.Sha == entryModel.Sha)
-                    {
-                        var commitModel = entryModel.Commit;
-                        commitModel.Sha = ancestor.Sha;
-                        commitModel.CommitMessageShort = ancestor.MessageShort.RepetitionIfEmpty(NoCommitMessage);
-                        commitModel.Author = ancestor.Author;
-                        commitModel.Committer = ancestor.Committer;
-
-                        status[index] = null;
-                    }
-                    else if (status[index] == null)
-                    {
-                        var over = true;
-                        foreach (var parent in lastCommit.Parents) // Backtracking
-                        {
-                            if (parent.Sha == ancestor.Sha)
-                                continue;
-                            var entry = parent[entryModel.Path];
-                            if (entry != null && entry.Target.Sha == entryModel.Sha)
-                            {
-                                over = false;
-                                break;
-                            }
-                        }
-                        status[index] = over;
-                        if (over)
-                            done--;
-                    }
-                }
-                if (done == 0)
-                    break;
-                lastCommit = ancestor;
-            }
-
-            return entries.Select(s => new RevisionSummaryCacheItem
-            {
-                Name = s.Name,
-                Sha = s.Commit.Sha,
-                MessageShort = s.Commit.CommitMessageShort,
-                AuthorName = s.Commit.Author.Name,
-                AuthorEmail = s.Commit.Author.Email,
-                AuthorWhen = s.Commit.Author.When,
-                CommitterName = s.Commit.Committer.Name,
-                CommitterEmail = s.Commit.Committer.Email,
-                CommitterWhen = s.Commit.Committer.When,
-            }).ToArray();
-        }
-
-        private void LazyLoadTree(IList<TreeEntryModel> entries, Commit commit, string path, double scale)
-        {
-            var tree = string.IsNullOrEmpty(path)
-                ? commit.Tree
-                : commit[path].Target as Tree;
-
-            var sha = tree.Sha;
-            if (GitCache.Exists(sha, "summary"))
-                return;
-
-            var job = new SingleJob(() =>
-            {
-                Task.Delay(1000).Wait(); // let's the page going on
-
-                using (var repo = new Repository(_repositoryPath))
-                {
-                    var ancestors = repo.Commits.QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological });
-                    var summary = CalculateRevisionSummary(entries, ancestors, null);
-                    GitCache.Set(sha, "summary", summary, true);
-                }
-            }, scale / 10000);
-            Scheduler.Instance.AddJob(job, string.Format("LazyLoadTree {0}/{1}/{2}", this.Name, commit.Sha, path));
-        }
-
         private BranchSelectorModel GetBranchSelectorModel(string referenceName, string refer, string path)
         {
             var model = new BranchSelectorModel
@@ -889,8 +562,8 @@ namespace GitCandy.Git
             {
                 ReferenceName = referenceName,
                 Sha = commit.Sha,
-                CommitMessageShort = commit.MessageShort.RepetitionIfEmpty(NoCommitMessage),
-                CommitMessage = commit.Message.RepetitionIfEmpty(NoCommitMessage),
+                CommitMessageShort = commit.MessageShort.RepetitionIfEmpty(UnknowString),
+                CommitMessage = commit.Message.RepetitionIfEmpty(UnknowString),
                 Author = commit.Author,
                 Committer = commit.Committer,
                 Parents = commit.Parents.Select(e => e.Sha).ToArray(),
@@ -980,40 +653,9 @@ namespace GitCandy.Git
             return sb.ToString().CalcSha();
         }
 
-        private int FilesInCommit(Commit commit, out int sourceSize)
+        private Signature CreateSafeSignature(string name, string email, DateTimeOffset when)
         {
-            var count = 0;
-            var stack = new Stack<Tree>();
-            sourceSize = 0;
-
-            stack.Push(commit.Tree);
-            while (stack.Count != 0)
-            {
-                var tree = stack.Pop();
-                foreach (var entry in tree)
-                    switch (entry.TargetType)
-                    {
-                        case TreeEntryTargetType.Blob:
-                            count++;
-                            sourceSize += ((Blob)entry.Target).Size;
-                            break;
-                        case TreeEntryTargetType.Tree:
-                            stack.Push((Tree)entry.Target);
-                            break;
-                    }
-            }
-            return count;
-        }
-
-        private long SizeOfRepository()
-        {
-            var size = 0L;
-            var info = new DirectoryInfo(_repositoryPath);
-            foreach (var file in info.GetFiles("*", SearchOption.AllDirectories))
-            {
-                size += file.Length;
-            }
-            return size;
+            return new Signature(name.RepetitionIfEmpty(UnknowString), email, when);
         }
         #endregion
 

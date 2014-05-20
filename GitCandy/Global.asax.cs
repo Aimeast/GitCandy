@@ -1,6 +1,6 @@
 ﻿using GitCandy.Base;
 using GitCandy.Configuration;
-using GitCandy.Git;
+using GitCandy.Git.Cache;
 using GitCandy.Log;
 using System;
 using System.Globalization;
@@ -34,7 +34,7 @@ namespace GitCandy
             MefConfig.RegisterMef();
             ScheduleConfig.RegisterScheduler();
 
-            GitCache.Initialize();
+            GitCacheAccessor.Initialize();
 
             Logger.Info(AppInfomation.GetAppStartedInfo());
 

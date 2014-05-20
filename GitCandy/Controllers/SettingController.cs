@@ -31,6 +31,7 @@ namespace GitCandy.Controllers
                 GitExePath = config.GitExePath,
                 NumberOfCommitsPerPage = config.NumberOfCommitsPerPage,
                 NumberOfItemsPerList = config.NumberOfItemsPerList,
+                NumberOfRepositoryContributors = config.NumberOfRepositoryContributors,
             };
             return View(model);
         }
@@ -64,6 +65,7 @@ namespace GitCandy.Controllers
                 config.GitExePath = model.GitExePath;
                 config.NumberOfCommitsPerPage = model.NumberOfCommitsPerPage;
                 config.NumberOfItemsPerList = model.NumberOfItemsPerList;
+                config.NumberOfRepositoryContributors = model.NumberOfRepositoryContributors;
                 config.Save();
                 ModelState.Clear();
             }

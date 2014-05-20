@@ -1247,6 +1247,15 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of repository contributors.
+        /// </summary>
+        public static string Setting_NumberOfRepositoryContributors {
+            get {
+                return ResourceManager.GetString("Setting_NumberOfRepositoryContributors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path of repositories.
         /// </summary>
         public static string Setting_RepositoryPath {

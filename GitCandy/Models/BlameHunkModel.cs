@@ -6,8 +6,6 @@ namespace GitCandy.Models
     public class BlameHunkModel
     {
         public string Code { get; set; }
-        public int StartLine { get; set; }
-        public int EndLine { get; set; }
         public string MessageShort { get; set; }
         public string Sha { get; set; }
         public string Author { get; set; }

@@ -9,7 +9,7 @@ namespace GitCandy.Extensions
 {
     public static class HtmlHelperExtension
     {
-        public static RouteValueDictionary OverRoute(this HtmlHelper helper, object routeValues = null, bool withQuery = true)
+        public static RouteValueDictionary OverRoute(this HtmlHelper helper, object routeValues = null, bool withQuery = false)
         {
             var old = helper.ViewContext.RouteData.Values;
 
