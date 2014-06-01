@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace GitCandy.Git.Cache
         protected static readonly Type[] accessors;
         protected static readonly object locker = new object();
         protected static readonly List<GitCacheAccessor> runningList = new List<GitCacheAccessor>();
+
+        protected static bool enabled;
 
         protected Task task;
 
@@ -59,26 +62,52 @@ namespace GitCandy.Git.Cache
 
         public static void Initialize()
         {
+            enabled = false;
+
             var cachePath = UserConfiguration.Current.CachePath;
-            DirectoryInfo info = new DirectoryInfo(cachePath);
-            if (!info.Exists)
-                info.Create();
+            if (string.IsNullOrEmpty(cachePath))
+                return;
 
-            var path = typeof(GitCacheAccessor).Assembly.Location;
-            var md5 = new MD5CryptoServiceProvider();
-            var data = md5.ComputeHash(File.ReadAllBytes(path));
-            var hash = data.BytesToString();
-
-            var filename = Path.Combine(cachePath, "version");
-            if (!File.Exists(filename) || File.ReadAllText(filename) != hash)
+            var expectation = accessors.Select(t =>
             {
-                foreach (var dir in info.GetDirectories())
-                    dir.Delete(true);
-                foreach (var file in info.GetFiles())
-                    file.Delete();
+                var block = new List<byte>();
+                var methods = t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                foreach (var method in methods)
+                {
+                    var body = method.GetMethodBody();
+                    if (body == null)
+                        continue;
+                    block.AddRange(body.GetILAsByteArray());
+                }
 
-                File.WriteAllText(filename, hash);
+                using (var md5 = new MD5CryptoServiceProvider())
+                {
+                    return md5.ComputeHash(block.ToArray()).BytesToString();
+                }
+            })
+            .ToArray();
+
+            var reality = new string[accessors.Length];
+            var filename = Path.Combine(cachePath, "version");
+            if (File.Exists(filename))
+            {
+                var lines = File.ReadAllLines(filename);
+                Array.Copy(lines, reality, Math.Min(lines.Length, reality.Length));
             }
+
+            for (int i = 0; i < accessors.Length; i++)
+            {
+                if (reality[i] != expectation[i])
+                {
+                    var path = Path.Combine(cachePath, (i + 1).ToString());
+                    if (Directory.Exists(path))
+                        Directory.Delete(path, true);
+                }
+            }
+
+            File.WriteAllLines(filename, expectation);
+
+            enabled = true;
         }
 
         protected void RemoveFromRunningPool()
@@ -93,7 +122,7 @@ namespace GitCandy.Git.Cache
 
         protected virtual void LoadOrCalculate()
         {
-            var loaded = Load();
+            var loaded = enabled && Load();
             task = loaded
                 ? Task.Run(() => { })
                 : new Task(() =>
@@ -101,7 +130,8 @@ namespace GitCandy.Git.Cache
                     try
                     {
                         Calculate();
-                        Save();
+                        if (enabled)
+                            Save();
                     }
                     catch (Exception ex)
                     {
