@@ -688,4 +688,7 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Validation_StringLengthRange" xml:space="preserve">
     <value>"{0}" should be smaller than {1} chars and large then {2} chars</value>
   </data>
+  <data name="Repository_TagDeletionWords" xml:space="preserve">
+    <value>Do you conform to delete the tag "{0}"?</value>
+  </data>
 </root>

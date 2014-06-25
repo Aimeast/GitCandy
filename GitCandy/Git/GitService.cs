@@ -444,6 +444,11 @@ namespace GitCandy.Git
             _repository.Branches.Remove(branch);
         }
 
+        public void DeleteTag(string tag)
+        {
+            _repository.Tags.Remove(tag);
+        }
+
         public ContributorsModel GetContributors(string path)
         {
             string referenceName;

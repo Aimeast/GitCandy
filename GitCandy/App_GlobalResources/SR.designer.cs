@@ -1758,5 +1758,14 @@ namespace GitCandy.App_GlobalResources {
                 return ResourceManager.GetString("Validation_StringLengthRange", resourceCulture);
             }
         }
+        
+		/// <summary>
+        ///   Looks up a localized string similar Do you conform to delete the tag &quot;{0}&quot;? chars。
+        /// </summary>
+        public static string Repository_TagDeletionWords {
+            get {
+                return ResourceManager.GetString("Repository_TagDeletionWords", resourceCulture);
+            }
+        }		
     }
 }

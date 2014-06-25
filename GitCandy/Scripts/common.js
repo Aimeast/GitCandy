@@ -173,6 +173,17 @@
             });
         }
     });
+    // delete a tag
+    $('[data-tag]').click(function () {        
+        var $this = $(this),
+            name = $this.data('tag');
+        if (confirm($.stringFormat(deleteTag_params.words, name))) {
+            $this.disabled = true;
+            $.post(deleteTag_params.url, { path: name }, function () {
+                $this.closest('div .row').remove();
+            });
+        }
+    });
     // chooser
     typeof chooser_params !== 'undefined'
         && chooser_params instanceof Array

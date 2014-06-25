@@ -370,7 +370,20 @@ namespace GitCandy.Controllers
                 if (model == null)
                     throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
                 model.RepositoryName = name;
+                model.CanDelete = Token != null && Token.IsSystemAdministrator
+                    || RepositoryService.CanWriteRepository(name, Token == null ? null : Token.Username);
                 return View(model);
+            }
+        }
+
+        [HttpPost]
+        [ReadRepository(requireWrite: true)]
+        public ActionResult Tags(string name, string path)
+        {
+            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            {
+                git.DeleteTag(path);
+                return Json("success");
             }
         }
 

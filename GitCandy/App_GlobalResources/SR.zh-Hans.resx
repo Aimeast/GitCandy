@@ -688,4 +688,7 @@
   <data name="Validation_StringLengthRange" xml:space="preserve">
     <value>"{0}" 必须介于 {1} 和 {2} 个字符之间</value>
   </data>
+  <data name="Repository_TagDeletionWords" xml:space="preserve">
+    <value>你确认要删除标签 "{0}" 吗？</value>
+  </data>
 </root>
