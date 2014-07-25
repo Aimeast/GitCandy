@@ -141,32 +141,21 @@
             $blocks = $section.find('.no-highlight'),
             brush = $section.data('brush'),
             language = hljs.getLanguage(brush),
-            code = '',
-            queue = [];
+            state = null;
         if (!language)
             return;
         $blocks.each(function () {
-            var text = $(this).text();
-            var numOfLines = text.split(/\r\n|\r|\n/).length;
-            queue.push(numOfLines);
-            code += text + '\n';
-        });
-        var lines = hljs.highlight(brush, code).value.split(/\r\n|\r|\n/);
-        $blocks.each(function () {
-            var $cell = $(this),
-                num = queue.shift(),
-                html = '';
-            for (var i = 0; i < num; i++)
-                html += (i ? '\n' : '') + lines.shift();
-            $cell.html(html);
-        });
+            var $this = $(this),
+                result = hljs.highlight(brush, $this.text(), true, state);
+            state = result.top;
+            $this$(e).html(result.value);
+        })
     });
     // delete a branch
     $('[data-branch]').click(function () {
         var $this = $(this),
             name = $this.data('branch');
-        if (confirm($.stringFormat(deleteBranch_params.words, name)))
-        {
+        if (confirm($.stringFormat(deleteBranch_params.words, name))) {
             $this.disabled = true;
             $.post(deleteBranch_params.url, { path: name }, function () {
                 $this.closest('tr').remove();
@@ -174,7 +163,7 @@
         }
     });
     // delete a tag
-    $('[data-tag]').click(function () {        
+    $('[data-tag]').click(function () {
         var $this = $(this),
             name = $this.data('tag');
         if (confirm($.stringFormat(deleteTag_params.words, name))) {
