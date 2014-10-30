@@ -1,4 +1,15 @@
-﻿## Git Candy
+﻿## Git Candy 修改
+原项目： [http://github.com/Aimeast/GitCandy](http://github.com/Aimeast/GitCandy).
+
+###目前所做的改动：
+* 升级nuget引用到最近版本
+* 升级Bootstrap到3.2
+
+###TODO
+* 修改界面，提高美观度和易用性
+* 将来会基于此Git服务器制作一个.net版本的前端代码库管理系统
+
+## Git Candy
 Git Candy© is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
 
 Visit a demo on [http://gitcandy.com](http://gitcandy.com).
