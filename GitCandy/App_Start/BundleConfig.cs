@@ -22,7 +22,8 @@ namespace GitCandy
                         "~/Scripts/highlight.pack.js",
                         "~/Scripts/marked.js",
                         "~/Scripts/ZeroClipboard.js",
-                        "~/Scripts/common.js"
+                        "~/Scripts/common.js",
+                        "~/Scripts/bootstrap3-typeahead.js"
                         ));
         }
     }

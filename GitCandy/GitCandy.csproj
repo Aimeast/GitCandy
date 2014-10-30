@@ -192,6 +192,7 @@
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap3-typeahead.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
@@ -363,7 +364,6 @@
     <Compile Include="Models\BranchesModel.cs" />
     <Compile Include="Models\BranchSelectorModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
-    <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CollaborationModel.cs" />
     <Compile Include="Models\CommitChangeModel.cs" />
     <Compile Include="Models\CommitModel.cs" />

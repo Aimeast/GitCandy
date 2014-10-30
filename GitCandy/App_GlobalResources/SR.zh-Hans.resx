@@ -437,13 +437,13 @@
     <value>代码库大小</value>
   </data>
   <data name="Repository_ShortAllowRead" xml:space="preserve">
-    <value>读</value>
+    <value>读权限</value>
   </data>
   <data name="Repository_ShortAllowWrite" xml:space="preserve">
-    <value>写</value>
+    <value>写权限</value>
   </data>
   <data name="Repository_ShortIsOwner" xml:space="preserve">
-    <value>我的</value>
+    <value>拥有者</value>
   </data>
   <data name="Repository_ShortNonAllowRead" xml:space="preserve">
     <value>否</value>
@@ -690,5 +690,8 @@
   </data>
   <data name="Repository_TagDeletionWords" xml:space="preserve">
     <value>你确认要删除标签 "{0}" 吗？</value>
+  </data>
+  <data name="List_Back" xml:space="preserve">
+    <value>返回列表</value>
   </data>
 </root>

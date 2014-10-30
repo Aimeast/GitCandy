@@ -1,4 +1,13 @@
 ﻿
+.dl-horizontal dt {
+    white-space: normal;
+    padding:5px 0;
+}
+.dl-horizontal dd {
+    white-space: normal;
+    padding:5px 0;
+}
+
 .page-divider {
     margin: 20px 0 10px 0;
     border: 0;
@@ -29,8 +38,8 @@
 }
 
 .remover {
-    color: #d00;
-    text-decoration: underline;
+    /*color: #d00;
+    text-decoration: underline;*/
 }
 
 .disable-mask {
@@ -82,4 +91,9 @@
     a[href]:after {
         content: none !important;
     }
+}
+
+
+.halfwidth {
+    width:50%;
 }
