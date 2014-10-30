@@ -180,6 +180,7 @@
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.flatly.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -362,6 +363,7 @@
     <Compile Include="Models\BranchesModel.cs" />
     <Compile Include="Models\BranchSelectorModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
+    <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CollaborationModel.cs" />
     <Compile Include="Models\CommitChangeModel.cs" />
     <Compile Include="Models\CommitModel.cs" />

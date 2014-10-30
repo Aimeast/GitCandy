@@ -10,38 +10,66 @@
     @Styles.Render("~/bundles/css")
 </head>
 <body>
-    <div class="navbar navbar-static-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="brand" href="~/">@SR.Shared_AppTitle <span class="label">Alpha</span></a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav nav-pills">
+    <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">@SR.Shared_AppTitle</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">@Html.ActionLink(SR.Shared_Repositories, "Index", "Repository")</li>
+                    <li>@Html.ActionLink(SR.Shared_About, "About", "Home")</li>
+                    @if (token != null && token.IsSystemAdministrator)
+                    {
                         <li class="divider-vertical"></li>
-                        <li class="">@Html.ActionLink(SR.Shared_Repositories, "Index", "Repository")</li>
-                        <li class="">@Html.ActionLink(SR.Shared_About, "About", "Home")</li>
-
-                        @if (token != null && token.IsSystemAdministrator)
-                        {
-                            <li class="divider-vertical"></li>
-                            <li class="">@Html.ActionLink(SR.Shared_Users, "Index", "Account")</li>
-                            <li class="">@Html.ActionLink(SR.Shared_Teams, "Index", "Team")</li>
-                            <li class="">@Html.ActionLink(SR.Shared_Settings, "Edit", "Setting")</li>
-                        }
-                    </ul>
-
-                    <ul class="nav nav-pills pull-right">
-                        @if (token == null)
-                        {
-                            <li class="">@Html.ActionLink(SR.Shared_Register, "Create", "Account")</li>
-                            <li class="">@Html.ActionLink(SR.Shared_Login, "Login", "Account", new { ReturnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, null)</li>
-                        }
-                        else
-                        {
-                            <li class="">@Html.ActionLink(token.Nickname, "Detail", "Account", new { name = token.Username }, null)</li>
-                            <li class="">@Html.ActionLink(SR.Shared_Logout, "Logout", "Account", new { ReturnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, null)</li>
-                        }
-                    </ul>
-                </div>
+                        <li class="">@Html.ActionLink(SR.Shared_Users, "Index", "Account")</li>
+                        <li class="">@Html.ActionLink(SR.Shared_Teams, "Index", "Team")</li>
+                        <li class="">@Html.ActionLink(SR.Shared_Settings, "Edit", "Setting")</li>
+                    }
+                    @*<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Dropdown header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>*@
+                </ul>
+                @*<form class="navbar-form navbar-left">
+                    <input type="text" class="form-control col-lg-8" placeholder="Search">
+                </form>*@
+                <ul class="nav navbar-nav navbar-right">
+                    @if (token == null)
+                    {
+                        <li class="">@Html.ActionLink(SR.Shared_Register, "Create", "Account")</li>
+                        <li class="">@Html.ActionLink(SR.Shared_Login, "Login", "Account", new { ReturnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, null)</li>
+                    }
+                    else
+                    {
+                        <li class="">@Html.ActionLink(token.Nickname, "Detail", "Account", new { name = token.Username }, null)</li>
+                        <li class="">@Html.ActionLink(SR.Shared_Logout, "Logout", "Account", new { ReturnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, null)</li>
+                    }
+                    @*<li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>*@
+                </ul>
             </div>
         </div>
     </div>
