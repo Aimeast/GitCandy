@@ -9,7 +9,7 @@ namespace GitCandy.Models
     {
         [Required(ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_Required")]
         [StringLength(20, MinimumLength = 2, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_StringLengthRange")]
-        [RegularExpression(RegularExpression.Teamname, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_Name")]
+        //[RegularExpression(RegularExpression.Teamname, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_Name")]
         [Display(ResourceType = typeof(SR), Name = "Team_Name")]
         public string Name { get; set; }
 

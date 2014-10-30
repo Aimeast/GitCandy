@@ -4,17 +4,18 @@
     ViewBag.Title = string.Format(SR.Shared_TitleFormat, SR.Team_ListTitle);
 }
 
-<h4>@SR.Team_ListTitle</h4>
+<h3>@SR.Team_ListTitle</h3>
 
 @using (Html.BeginForm("Index", "Team", FormMethod.Get))
 {
-    <fieldset>
-        <legend class="hide"></legend>
-        <div class="input-append focus">
-            <input type="text" name="query" />
-            <button type="submit" class="btn">@SR.Shared_Search</button>
+    <div class="form-group halfwidth">
+        <div class="input-group">
+            <input type="text" name="query" class="form-control" />
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default">@SR.Shared_Search</button>
+            </span>
         </div>
-    </fieldset>
+    </div>
 }
 
 <div>

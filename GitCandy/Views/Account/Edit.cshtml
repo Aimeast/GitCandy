@@ -5,92 +5,100 @@
     var token = GitCandy.Security.Token.Current;
 }
 
-<h4>@string.Format(SR.Account_EditTitle, Model.Name)</h4>
+<h3>@string.Format(SR.Account_EditTitle, Model.Name)</h3>
 
-<div class="span8">
+
     @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
     {
-        <div class="row">
-            @Html.LabelFor(s => s.Name, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            <span class="span4 text-left lead">@Model.Name</span>
-            @Html.HiddenFor(s => s.Name, new { @class = "span4 text-left lead" })
+        <div class="form-group">
+            @Html.LabelFor(s => s.Name, new { @class = "col-md-3 control-label" })
+            <div class="col-lg-6">
+            <input type="text" class="form-control" disabled value="@Model.Name" />
+            @Html.HiddenFor(s => s.Name)
+			</div>
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.Password, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.PasswordFor(s => s.Password, new { @class = "span4 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span5 offset4">
+        <div class="form-group">
+            @Html.LabelFor(s => s.Password, new { @class = "col-md-3 control-label" })
+            <div class="col-lg-6">
+            @Html.PasswordFor(s => s.Password, new { @class = "form-control" })
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.Password)
             </span>
+			</div>
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.Nickname, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.Nickname, new { @class = "span4 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span5 offset4">
+        <div class="form-group">
+            @Html.LabelFor(s => s.Nickname, new { @class = "col-md-3 control-label" })
+            <div class="col-lg-6">
+            @Html.TextBoxFor(s => s.Nickname, new { @class = "form-control" })
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.Nickname)
             </span>
+			</div>
+        </div>
+        <div class="form-group">
+
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.Email, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.Email, new { @class = "span4 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span5 offset4">
+        <div class="form-group">
+            @Html.LabelFor(s => s.Email, new { @class = "col-md-3 control-label" })
+            <div class="col-lg-6">
+            @Html.TextBoxFor(s => s.Email, new { @class = "form-control" })
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.Email)
             </span>
+			</div>
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.Description, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "span4 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span5 offset4">
+        <div class="form-group">
+            @Html.LabelFor(s => s.Description, new { @class = "col-md-3 control-label" })
+            <div class="col-lg-6">
+            @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "form-control" })
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.Description)
             </span>
+			</div>
         </div>
 
         if (token.IsSystemAdministrator)
         {
-            <div class="row">
-                @Html.LabelFor(s => s.IsSystemAdministrator, new { @class = "span3 text-right lead muted" })
-                <span class="span1"></span>
-                <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+            <div class="form-group">
+                @Html.LabelFor(s => s.IsSystemAdministrator, new { @class = "col-md-3 control-label" })
+                <div class="col-lg-6">
+                <div class="switch switch-larger" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                     @Html.CheckBoxFor(s => s.IsSystemAdministrator)
                 </div>
-            </div>
-            <div class="row">
-                <span class="text-error span5 offset4">
+				<span class="text-danger">
                     @Html.ValidationMessageFor(s => s.IsSystemAdministrator)
                 </span>
+				</div>
             </div>
         }
 
-        @Html.ValidationSummary(true, SR.Account_UpdateUnsuccessfull, new { @class = "alert alert-error" })
+        @Html.ValidationSummary(true, SR.Account_UpdateUnsuccessfull, new { @class = "alert alert-dismissable alert-danger" })
+
+		<div class="form-group">
+            <div class="col-lg-6 col-lg-offset-3">
+				<button type="submit" class="btn btn-primary">@SR.Shared_Save</button>
+				<button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
+			</div>
+        </div>
+
+
 
         <div class="form-actions">
             <div class="pull-left">
-                @Html.ActionLink(SR.Shared_Back, "Detail", new { Model.Name }, new { @class = "btn" })
+                @Html.ActionLink(SR.Shared_Back, "Detail", new { Model.Name }, new { @class = "btn btn-primary" })
             </div>
             <div class="pull-right">
                 @if (token.IsSystemAdministrator)
                 {
-                    @Html.ActionLink(SR.Shared_Delete, "Delete", new { Model.Name }, new { @class = "btn" })
+                    @Html.ActionLink(SR.Shared_Delete, "Delete", new { Model.Name }, new { @class = "btn btn-danger" })
                 }
-                <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
-                <button type="submit" class="btn btn-primary">@SR.Shared_Save</button>
+                
+                
             </div>
         </div>
     }
-</div>
+

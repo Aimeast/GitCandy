@@ -1766,6 +1766,8 @@ namespace GitCandy.App_GlobalResources {
             get {
                 return ResourceManager.GetString("Repository_TagDeletionWords", resourceCulture);
             }
-        }		
+        }
+
+
     }
 }

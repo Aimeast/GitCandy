@@ -10,14 +10,14 @@
     @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
     {
         <div class="row focus">
-            @Html.LabelFor(s => s.ID, new { @class = "span3 text-right lead muted" })
+            @Html.LabelFor(s => s.ID, new { @class = "col-md-3 text-right muted" })
             <span class="span1"></span>
-            @Html.TextBoxFor(s => s.ID, new { @class = "span3 text-left lead" })
+            @Html.TextBoxFor(s => s.ID, new { @class = "col-md-3 text-left" })
         </div>
         <div class="row">
-            @Html.LabelFor(s => s.Password, new { @class = "span3 text-right lead muted" })
+            @Html.LabelFor(s => s.Password, new { @class = "col-md-3 text-right muted" })
             <span class="span1"></span>
-            @Html.PasswordFor(s => s.Password, new { @class = "span3 text-left lead" })
+            @Html.PasswordFor(s => s.Password, new { @class = "col-md-3 text-left" })
         </div>
 
         @Html.ValidationSummary(true, SR.Account_LoginFailed, new { @class = "alert alert-error" })

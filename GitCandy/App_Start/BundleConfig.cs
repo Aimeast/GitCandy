@@ -8,7 +8,8 @@ namespace GitCandy
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                        "~/Content/bootstrap.css",
+                        //"~/Content/bootstrap.css",
+                        "~/Content/bootstrap.flatly.css",
                         "~/Content/bootstrapSwitch.css",
                         "~/Content/highlight.css",
                         "~/Content/site.css"
@@ -21,7 +22,8 @@ namespace GitCandy
                         "~/Scripts/highlight.pack.js",
                         "~/Scripts/marked.js",
                         "~/Scripts/ZeroClipboard.js",
-                        "~/Scripts/common.js"
+                        "~/Scripts/common.js",
+                        "~/Scripts/bootstrap3-typeahead.js"
                         ));
         }
     }

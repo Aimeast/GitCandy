@@ -203,8 +203,8 @@
             var $container = $(params.container),
                 $searcher = $('<input type="text" autocomplete="off">'),
                 $add_btn = $('<button type="button" class="btn btn-primary">' + params.add_label + '</button>'),
-                $alert_holder = $('<div class="span6 alert_placeholder">'),
-                $grid = $('<div class="span10 offset1">');
+                $alert_holder = $('<div class="col-md-6 alert_placeholder">'),
+                $grid = $('<div class="col-md-10 offset1">');
 
             var warning = function (message) {
                 $alert_holder.html('<div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a><span>' + message + '</span></div>')
@@ -222,14 +222,14 @@
             var add_row = function (item) {
                 var row_html =
                     '<div class="row border-area">'
-                        + '<div class="span2"><a href="/' + params.controller + '/Detail/' + item.Name + '">' + item.Name + '</a></div>'
+                        + '<div class="col-md-2"><a href="/' + params.controller + '/Detail/' + item.Name + '">' + item.Name + '</a></div>'
                     + '</div>',
                     $row = $(row_html);
 
                 params.action_array.forEach(function (action) {
                     var cell_html =
-                        '<div class="span2">'
-                           + '<div class="switch switch-small" tabindex="0" data-on-label="' + action.on_label + '" data-off-label="' + action.off_label + '">'
+                        '<div class="col-md-2">'
+                           + '<div class="switch switch-larger" tabindex="0" data-on-label="' + action.on_label + '" data-off-label="' + action.off_label + '">'
                                + '<input type="checkbox"/>'
                            + '</div>'
                        + '</div>';
@@ -265,8 +265,8 @@
                 });
 
                 var remover_html =
-                    '<div class="span1">'
-                        + '<a href="#" class="remover">(' + params.del_label + ')</a>'
+                    '<div class="col-md-1">'
+                        + '<a href="#" class="remover btn btn-danger">' + params.del_label + '</a>'
                     + '</div>',
                     $remover = $(remover_html);
 
@@ -308,10 +308,11 @@
                 });
             });
 
-            var $row = $('<div class="row">');
+            var $row = $('<div class="form-group halfwidth">');
 
-            $row.append($searcher.wrap('<div class="span3">').parent());
-            $row.append($add_btn.wrap('<div class="span2">').parent());
+			$searcher.addClass("form-control");
+            $row.append($searcher.wrap('<div class="input-group">').parent());
+            $('.input-group', $row).append($add_btn.wrap('<span class="input-group-btn">').parent());
 
             $container.append($row);
             $container.append($alert_holder.wrap('<div class="row">').parent());
