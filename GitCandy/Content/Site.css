@@ -20,7 +20,7 @@
 .border-area {
     position: relative;
     margin: 5px 0;
-    padding: 5px 0;
+    padding: 5px 10px;
     background-color: #fff;
     border: 1px solid #ddd;
     -webkit-border-radius: 4px;
@@ -29,8 +29,8 @@
 }
 
 .remover {
-    color: #d00;
-    text-decoration: underline;
+    /*color: #d00;
+    text-decoration: underline;*/
 }
 
 .disable-mask {
@@ -77,9 +77,24 @@
     width: 300px;
 }
 
+@media (min-width: 768px) {
+  .w-half { width:50%; }
+}
+
+.clear { clear:both; }
+
+
+
 /* override bootstrap */
 @media print {
     a[href]:after {
         content: none !important;
     }
 }
+
+.dl-horizontal dt { padding:5px 0; }
+.dl-horizontal dd { padding:5px 0; }
+
+.input-groung-w4 { width:300px; }
+.btn-mid-text {  display:inline-block; padding:0 10px; height:43px; line-height:43px; }
+.row { margin:0; }

@@ -1,7 +1,7 @@
 ﻿@model GitCandy.Models.PathBarModel
 
 <ul class="breadcrumb">
-    <li>@Html.ActionLink(Model.Name, Model.Action, Html.OverRoute(new { path = (Model.ReferenceName ?? Model.ReferenceSha) }))<span class="divider">/</span></li>
+    <li>@Html.ActionLink(Model.Name, Model.Action, Html.OverRoute(new { path = (Model.ReferenceName ?? Model.ReferenceSha) }))</li>
 
     @if (!string.IsNullOrEmpty(Model.Path))
     {
@@ -22,15 +22,12 @@
             {
                 <li class="active">
                     @dirs[i]
-                    @if (!Model.HideLastSlash)
-                    {
-                        <span class="divider">/</span>
-                    }
+                   
                 </li>
             }
             else
             {
-                <li>@Html.ActionLink(dirs[i], Model.Action, Html.OverRoute(new { path = (Model.ReferenceName ?? Model.ReferenceSha) + "/" + currentPath })) <span class="divider">/</span></li>
+                <li>@Html.ActionLink(dirs[i], Model.Action, Html.OverRoute(new { path = (Model.ReferenceName ?? Model.ReferenceSha) + "/" + currentPath })) </li>
             }
         }
     }

@@ -19,11 +19,11 @@
             <div class="pull-left keep-space">@SR.Repository_CommittedAt <span title="@Model.Committer.When">@Model.Committer.When.LocalDateTime</span></div>
         }
     </div>
-    <div class="span1 pull-right">
-        <div class="pull-right">@Html.ActionLink(Model.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = Model.Sha }))</div>
-        <div class="pull-right">@Html.ActionLink(SR.Repository_Tree, "Tree", Html.OverRoute(new { path = Model.Sha }))</div>
-    </div>
+
     <div class="span3 pull-right text-right">
+		
+		<div class="">@Html.ActionLink(Model.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = Model.Sha }))</div>
+		<div class="">@Html.ActionLink(SR.Repository_Tree, "Tree", Html.OverRoute(new { path = Model.Sha }))</div>
         @Model.Parents.Length @SR.Repository_Parents
         @for (var index = 0; index < Model.Parents.Length; index++)
         {
@@ -34,6 +34,8 @@
             var parent = Model.Parents[index];
             @Html.ActionLink(parent.ToShortSha(), "Commit", Html.OverRoute(new { path = parent }))
         }
+        
+        
     </div>
 </div>
 
