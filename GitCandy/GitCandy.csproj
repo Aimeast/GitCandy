@@ -175,7 +175,10 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="packages.config" />
-    <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Scripts\_references.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -201,9 +204,6 @@
     <Content Include="Scripts\bootstrapSwitch.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\highlight.pack.js" />
-    <Content Include="Scripts\jquery-2.0.3.js" />
-    <Content Include="Scripts\jquery-2.0.3.min.js" />
-    <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Scripts\marked.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\ZeroClipboard.js" />
