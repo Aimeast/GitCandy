@@ -10,7 +10,7 @@ namespace GitCandy
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                         //"~/Content/bootstrap.flatly.css",
                         "~/Content/bootstrap.cosmo.css",
-                        "~/Content/bootstrap-switch.css",
+                        "~/Content/bootstrapSwitch.css",
                         "~/Content/highlight.css",
                         "~/Content/site.css"
                         ));
@@ -18,7 +18,7 @@ namespace GitCandy
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
-                        "~/Scripts/bootstrap-switch.js",
+                        "~/Scripts/bootstrapSwitch.js",
                         "~/Scripts/bootstrap3-typeahead.js",
                         "~/Scripts/highlight.pack.js",
                         "~/Scripts/marked.js",
