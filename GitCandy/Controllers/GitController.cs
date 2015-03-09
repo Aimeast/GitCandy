@@ -99,9 +99,9 @@ namespace GitCandy.Controllers
         {
             if (Request.Headers["Content-Encoding"] == "gzip")
             {
-                return new GZipStream(Request.InputStream, CompressionMode.Decompress);
+                return new GZipStream(Request.GetBufferlessInputStream(true), CompressionMode.Decompress);
             }
-            return Request.InputStream;
+            return Request.GetBufferlessInputStream(true);
         }
 
         private static string FormatMessage(string input)
