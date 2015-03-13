@@ -68,25 +68,7 @@ namespace GitCandy.Git.Cache
             if (string.IsNullOrEmpty(cachePath))
                 return;
 
-            var expectation = accessors.Select(t =>
-            {
-                var block = new List<byte>();
-                var methods = t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-                foreach (var method in methods)
-                {
-                    var body = method.GetMethodBody();
-                    if (body == null)
-                        continue;
-                    block.AddRange(body.GetILAsByteArray());
-                }
-
-                using (var md5 = new MD5CryptoServiceProvider())
-                {
-                    return md5.ComputeHash(block.ToArray()).BytesToString();
-                }
-            })
-            .ToArray();
-
+            var expectation = GetExpectation();
             var reality = new string[accessors.Length];
             var filename = Path.Combine(cachePath, "version");
             if (File.Exists(filename))
@@ -101,13 +83,52 @@ namespace GitCandy.Git.Cache
                 {
                     var path = Path.Combine(cachePath, (i + 1).ToString());
                     if (Directory.Exists(path))
-                        Directory.Delete(path, true);
+                    {
+                        var tmpPath = path + "." + DateTime.Now.Ticks + ".del";
+                        Directory.Move(path, tmpPath);
+                    }
                 }
             }
 
             File.WriteAllLines(filename, expectation);
 
+            Scheduler.Instance.AddJob(new SingleJob(() =>
+            {
+                var dirs = Directory.GetDirectories(cachePath, "*.del");
+                foreach (var dir in dirs)
+                {
+                    Logger.Info("Delete cache directory {0}", dir);
+                    Directory.Delete(dir, true);
+                }
+            }, 60));
+
             enabled = true;
+        }
+
+        private static string[] GetExpectation()
+        {
+            var assembly = typeof(AppInfomation).Assembly;
+            var name = assembly.GetManifestResourceNames().Single(s => s.EndsWith(".CacheVersion"));
+            using (var stream = assembly.GetManifestResourceStream(name))
+            using (var reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+
+        public static void Delete(string project)
+        {
+            Scheduler.Instance.AddJob(new SingleJob(() =>
+            {
+                var cachePath = UserConfiguration.Current.CachePath;
+                for (int i = 0; i < accessors.Length; i++)
+                {
+                    var path = Path.Combine(cachePath, (i + 1).ToString(), project);
+                    if (Directory.Exists(path))
+                        Directory.Delete(path, true);
+                }
+
+            }, 60));
         }
 
         protected void RemoveFromRunningPool()

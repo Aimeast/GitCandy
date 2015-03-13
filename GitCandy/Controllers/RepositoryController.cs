@@ -4,6 +4,7 @@ using GitCandy.Configuration;
 using GitCandy.Data;
 using GitCandy.Filters;
 using GitCandy.Git;
+using GitCandy.Git.Cache;
 using GitCandy.Log;
 using GitCandy.Models;
 using System;
@@ -196,6 +197,7 @@ namespace GitCandy.Controllers
             {
                 RepositoryService.Delete(name);
                 GitService.DeleteRepository(name);
+                GitCacheAccessor.Delete(name);
                 Logger.Info("Repository {0} deleted by {1}#{2}", name, Token.Username, Token.UserID);
                 return RedirectToAction("Index");
             }
