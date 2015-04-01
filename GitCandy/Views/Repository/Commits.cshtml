@@ -21,8 +21,8 @@
                 }
             </div>
             <div class="span1 pull-right">
-                <div class="pull-right">@Html.ActionLink(commit.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = commit.Sha }))</div>
-                <div class="pull-right">@Html.ActionLink(SR.Repository_Tree, "Tree", Html.OverRoute(new { path = commit.Sha }))</div>
+                <div class="text-right">@Html.ActionLink(commit.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = commit.Sha }))</div>
+                <div class="text-right">@Html.ActionLink(SR.Repository_Tree, "Tree", Html.OverRoute(new { path = commit.Sha }))</div>
             </div>
         </div>
     </div>

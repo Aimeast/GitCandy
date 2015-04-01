@@ -4,13 +4,13 @@
     ViewBag.Title = string.Format(SR.Shared_TitleFormat, string.Format(SR.Repository_TreeTitle, Model.RepositoryName, Model.ReferenceName ?? Model.Commit.Sha.ToShortSha(), Model.Path));
 }
 
-<h4>@Html.ActionLink(Model.RepositoryName, "Tree", Html.OverRoute(new { path = "" }))</h4>
+<h3>@Html.ActionLink(Model.RepositoryName, "Tree", Html.OverRoute(new { path = "" }))</h3>
 
 @if (Model.Entries == null)
 {
     <div class="clearfix">
         <div class="pull-right">
-            @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(), new { @class = "btn" })
+            @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(), new { @class = "btn btn-primary" })
         </div>
     </div>
     <div class="alert alert-info">
@@ -47,27 +47,31 @@ else
                 <div class="pull-left keep-space">
                     @(Model.IsRoot
                     ? Html.Partial("_ZipButton", Model.ReferenceName ?? Model.Commit.Sha)
-                    : Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Commit.Sha) + "/" + Model.Path }), new { @class = "btn" }))
+                    : Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Commit.Sha) + "/" + Model.Path }), new { @class = "btn btn-default" }))
                 </div>
                 @if (Model.IsRoot)
                 {
                     <div class="pull-left">
-                        <a href="@Url.Action("Compare", Html.OverRoute(new { path = "" }))" class="btn pull-left"><i class="icon-retweet"></i>@SR.Repository_Compare</a>
-                        <label class="pull-left">@SR.Repository_GitUrl</label>
-                        <div class="input-append">
-                            <input type="text" class="git-text" readonly value="@Model.GitUrl" />
-                            <a class="btn copy-clip" data-clipboard-text="@Model.GitUrl" data-tips="@SR.Repository_CopyToClipboard" data-copied="@SR.Repository_Copied"><i class="icon-check"></i></a>
+                        <a href="@Url.Action("Compare", Html.OverRoute(new { path = "" }))" class="btn btn-default pull-left"><span class="glyphicon glyphicon-retweet"></span>@SR.Repository_Compare</a>
+                        <label class="pull-left btn-mid-text">@SR.Repository_GitUrl</label>
+                        <div class="pull-left input-group input-groung-w4">
+                            <input type="text" class="git-text form-control col-lg-10" readonly value="@Model.GitUrl" />
+							<span class="input-group-btn">
+							  <a class="btn btn-default copy-clip" data-clipboard-text="@Model.GitUrl" data-tips="@SR.Repository_CopyToClipboard" data-copied="@SR.Repository_Copied"><span class="glyphicon glyphicon-check"></span></a>
+							</span>
+                            
                         </div>
+						
                     </div>
                     <div class="pull-right">
-                        @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(new { path = "" }), new { @class = "btn" })
+                        @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(new { path = "" }), new { @class = "btn btn-default" })
                     </div>
                 }
             </div>
         </div>
         @Html.Partial("_PathBar", Model.PathBar)
         <div class="border-area">
-            <table class="table table-hover">
+            <table class="table table-hover table-striped">
                 <caption>
                     <div class="clearfix">
                         <div title="@Model.Commit.CommitMessageShort" class="pull-left">@Html.ActionLink(Model.Commit.CommitMessageShort.ShortString(80), "Commit", Html.OverRoute(new { path = Model.Commit.Sha }))</div>
@@ -90,13 +94,13 @@ else
                             <td>
                                 <span title="@entry.Name">
                                     @if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.Tree)
-                                    { <i class="icon-folder-close"></i> }
+                                    { <span class="glyphicon glyphicon-folder-close"></span> }
                                     else if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.Blob)
-                                    { <i class="icon-file"></i> }
+                                    { <span class="glyphicon glyphicon-file"></span> }
                                     else if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.GitLink)
                                     { <i class="icon-bookmark"></i> }
                                     else
-                                    { <i class="icon-leaf"></i> }
+                                    { <span class="glyphicon glyphicon-leaf"></span> }
                                     @if (entry.EntryType == LibGit2Sharp.TreeEntryTargetType.GitLink)
                                     { @entry.Name.ShortString(25) }
                                     else

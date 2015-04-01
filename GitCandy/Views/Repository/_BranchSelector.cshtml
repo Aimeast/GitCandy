@@ -5,8 +5,9 @@
     var noLink = Model.Path == null;
     var identity = Html.GetRootViewBag().Identity++;
 }
-<div class="dropdown">
-    <a class="btn dropdown-toggle" data-toggle="dropdown"><i class="@Model.CurrentIsBranch.ToFlagString("icon-random", "icon-tag")"></i><span class="branch-name">@Model.Current</span> <span class="caret"></span></a>
+<div class="dropdown btn-group">
+    <a class="btn btn-default" data-toggle="dropdown"><i class="@Model.CurrentIsBranch.ToFlagString("icon-random", "icon-tag")"></i><span class="branch-name"><span class="glyphicon glyphicon-random"></span> @Model.Current</span></a>
+	<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
     <div class="dropdown-menu">
         <form>
             <ul class="nav nav-tabs">
