@@ -299,7 +299,10 @@ namespace GitCandy.Git.Cache
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) {
+                    Logger.Error("GitCacheAccess Load error");
+                    Logger.Error(ex.ToString());
+                }
             }
             return false;
         }

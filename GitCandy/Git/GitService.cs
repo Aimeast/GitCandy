@@ -676,13 +676,19 @@ namespace GitCandy.Git
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Error("CreateRepository error");
+                Logger.Error(ex.ToString());
                 try
                 {
                     Directory.Delete(path, true);
                 }
-                catch { }
+                catch (Exception ex2)
+                {
+                    Logger.Error("CreateRepository Directory Delete error");
+                    Logger.Error(ex2.ToString());
+                }
                 return false;
             }
         }
@@ -692,19 +698,23 @@ namespace GitCandy.Git
             var path = Path.Combine(UserConfiguration.Current.RepositoryPath, name);
             var temp = Path.Combine(UserConfiguration.Current.RepositoryPath, name + "." + DateTime.Now.Ticks + ".del");
 
-            var retry = 3;
-            for (; retry > 0; retry--)
+            var retryLimit = 3;
+            var retry1 = retryLimit;
+            for (; retry1 > 0; retry1--)
                 try
                 {
                     Directory.Move(path, temp);
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Logger.Error("CreateRepository Directory Move error");
+                    Logger.Error(ex.ToString());
                     Task.Delay(1000).Wait();
                 }
 
-            for (; retry > 0; retry--)
+            var retry2 = retryLimit;
+            for (; retry2 > 0; retry2--)
                 try
                 {
                     var di = new DirectoryInfo(temp);
@@ -714,23 +724,28 @@ namespace GitCandy.Git
 
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Logger.Error("CreateRepository DirectoryInfo error");
+                    Logger.Error(ex.ToString());
                     Task.Delay(1000).Wait();
                 }
 
-            for (; retry > 0; retry--)
+            var retry3 = retryLimit;
+            for (; retry3 > 0; retry3--)
                 try
                 {
                     Directory.Delete(temp, true);
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Logger.Error("CreateRepository Directory Delete error (inner)");
+                    Logger.Error(ex.ToString());
                     Task.Delay(1000).Wait();
                 }
 
-            return retry > 0;
+            return retry1 > 0 || retry2 > 0 || retry3 > 0;
         }
 
         public static DirectoryInfo GetDirectoryInfo(string project)
@@ -790,8 +805,10 @@ namespace GitCandy.Git
                     return output.StartsWith("git version");
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Error("VerifyGit error");
+                Logger.Error(ex.ToString());
                 return false;
             }
         }

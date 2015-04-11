@@ -59,7 +59,7 @@ namespace GitCandy.Git
                         statistics.Contributors++;
                     }
                 }
-                var size = 0;
+                long size = 0;
                 statistics.Files = FilesInCommit(commit, out size);
                 statistics.SourceSize = size;
 
@@ -74,7 +74,7 @@ namespace GitCandy.Git
             }
         }
 
-        private int FilesInCommit(Commit commit, out int sourceSize)
+        private int FilesInCommit(Commit commit, out long sourceSize)
         {
             var count = 0;
             var stack = new Stack<Tree>();
