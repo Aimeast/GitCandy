@@ -14,7 +14,7 @@ namespace GitCandy.Models
             public string Branch { get; set; }
             public int Files { get; set; }
             public int Commits { get; set; }
-            public int SourceSize { get; set; }
+            public long SourceSize { get; set; }
             public int Contributors { get; set; }
         }
     }
