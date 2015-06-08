@@ -12,6 +12,7 @@ namespace GitCandy.Controllers
             return RedirectToStartPage();
         }
 
+        [AllowAnonymous]
         public ActionResult About()
         {
             return View();

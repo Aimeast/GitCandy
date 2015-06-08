@@ -76,9 +76,9 @@ namespace GitCandy.Schedules
                         context.UtcStart = utcStart;
 
                         context.OnExecuting(this, context);
+                        context.ExecutionTimes++;
                         Logger.Info("Job {0} executing on runner #{1}", jobName, ID);
                         context.Job.Execute(context);
-                        context.ExecutionTimes++;
                         context.UtcLastEnd = DateTime.UtcNow;
                         context.UtcLastStart = utcStart;
                         context.UtcStart = null;
