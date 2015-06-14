@@ -127,6 +127,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Data.SQLite.EF6.1.0.92.0\lib\net45\System.Data.SQLite.EF6.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
@@ -381,6 +382,69 @@
     <Compile Include="Security\PasswordProviderV2.cs" />
     <Compile Include="Security\PasswordProviderVersionAttribute.cs" />
     <Compile Include="Security\Token.cs" />
+    <Compile Include="Ssh\Algorithms\CipherInfo.cs" />
+    <Compile Include="Ssh\Algorithms\CipherModeEx.cs" />
+    <Compile Include="Ssh\Algorithms\CompressionAlgorithm.cs" />
+    <Compile Include="Ssh\Algorithms\CompressionAlgorithmContract.cs" />
+    <Compile Include="Ssh\Algorithms\CtrModeCryptoTransform.cs" />
+    <Compile Include="Ssh\Algorithms\DiffieHellman.cs" />
+    <Compile Include="Ssh\Algorithms\DiffieHellmanGroupSha1.cs" />
+    <Compile Include="Ssh\Algorithms\DssKey.cs" />
+    <Compile Include="Ssh\Algorithms\EncryptionAlgorithm.cs" />
+    <Compile Include="Ssh\Algorithms\HmacAlgorithm.cs" />
+    <Compile Include="Ssh\Algorithms\HmacInfo.cs" />
+    <Compile Include="Ssh\Algorithms\KexAlgorithm.cs" />
+    <Compile Include="Ssh\Algorithms\KexAlgorithmContract.cs" />
+    <Compile Include="Ssh\Algorithms\NoCompression.cs" />
+    <Compile Include="Ssh\Algorithms\PublicKeyAlgorithm.cs" />
+    <Compile Include="Ssh\Algorithms\PublicKeyAlgorithmContract.cs" />
+    <Compile Include="Ssh\Algorithms\RsaKey.cs" />
+    <Compile Include="Ssh\ChannelOpenFailureReason.cs" />
+    <Compile Include="Ssh\DisconnectReason.cs" />
+    <Compile Include="Ssh\KeyUtils.cs" />
+    <Compile Include="Ssh\Messages\ConnectionServiceMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelCloseMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelDataMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelEofMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelFailureMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelOpenConfirmationMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelOpenFailureMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelOpenMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelRequestMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelSuccessMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ChannelWindowAdjustMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\CommandRequestMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\ExitStatusMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\SessionOpenConfirmationMessage.cs" />
+    <Compile Include="Ssh\Messages\Connection\SessionOpenMessage.cs" />
+    <Compile Include="Ssh\Messages\DisconnectMessage.cs" />
+    <Compile Include="Ssh\Messages\KeyExchangeDhInitMessage.cs" />
+    <Compile Include="Ssh\Messages\KeyExchangeDhReplyMessage.cs" />
+    <Compile Include="Ssh\Messages\KeyExchangeInitMessage.cs" />
+    <Compile Include="Ssh\Messages\Message.cs" />
+    <Compile Include="Ssh\Messages\MessageAttribute.cs" />
+    <Compile Include="Ssh\Messages\NewKeysMessage.cs" />
+    <Compile Include="Ssh\Messages\ServiceAcceptMessage.cs" />
+    <Compile Include="Ssh\Messages\ServiceRequestMessage.cs" />
+    <Compile Include="Ssh\Messages\UnimplementedMessage.cs" />
+    <Compile Include="Ssh\Messages\UserauthServiceMessage.cs" />
+    <Compile Include="Ssh\Messages\Userauth\FailureMessage.cs" />
+    <Compile Include="Ssh\Messages\Userauth\PublicKeyOkMessage.cs" />
+    <Compile Include="Ssh\Messages\Userauth\PublicKeyRequestMessage.cs" />
+    <Compile Include="Ssh\Messages\Userauth\RequestMessage.cs" />
+    <Compile Include="Ssh\Messages\Userauth\SuccessMessage.cs" />
+    <Compile Include="Ssh\Services\Channel.cs" />
+    <Compile Include="Ssh\Services\ConnectionService.cs" />
+    <Compile Include="Ssh\Services\SessionChannel.cs" />
+    <Compile Include="Ssh\Services\SessionRequestedArgs.cs" />
+    <Compile Include="Ssh\Services\SshService.cs" />
+    <Compile Include="Ssh\Services\UserauthArgs.cs" />
+    <Compile Include="Ssh\Services\UserauthService.cs" />
+    <Compile Include="Ssh\Session.cs" />
+    <Compile Include="Ssh\SshConnectionException.cs" />
+    <Compile Include="Ssh\SshDataWorker.cs" />
+    <Compile Include="Ssh\SshServer.cs" />
+    <Compile Include="Ssh\StartingInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\SR.resx">
