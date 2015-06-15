@@ -18,6 +18,7 @@ namespace GitCandy.DAL
 
         public DbSet<AuthorizationLog> AuthorizationLogs { get; set; }
         public DbSet<Repository> Repositories { get; set; }
+        public DbSet<SshKey> SshKeys { get; set; }
         public DbSet<TeamRepositoryRole> TeamRepositoryRoles { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<UserRepositoryRole> UserRepositoryRoles { get; set; }
@@ -28,6 +29,7 @@ namespace GitCandy.DAL
         {
             modelBuilder.Configurations.Add(new AuthorizationLogMap());
             modelBuilder.Configurations.Add(new RepositoryMap());
+            modelBuilder.Configurations.Add(new SshKeyMap());
             modelBuilder.Configurations.Add(new TeamRepositoryRoleMap());
             modelBuilder.Configurations.Add(new TeamMap());
             modelBuilder.Configurations.Add(new UserRepositoryRoleMap());

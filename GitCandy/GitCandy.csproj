@@ -294,12 +294,14 @@
     <Compile Include="DAL\GitCandyContext.cs" />
     <Compile Include="DAL\Mapping\AuthorizationLogMap.cs" />
     <Compile Include="DAL\Mapping\RepositoryMap.cs" />
+    <Compile Include="DAL\Mapping\SshKeyMap.cs" />
     <Compile Include="DAL\Mapping\TeamMap.cs" />
     <Compile Include="DAL\Mapping\TeamRepositoryRoleMap.cs" />
     <Compile Include="DAL\Mapping\UserMap.cs" />
     <Compile Include="DAL\Mapping\UserRepositoryRoleMap.cs" />
     <Compile Include="DAL\Mapping\UserTeamRoleMap.cs" />
     <Compile Include="DAL\Repository.cs" />
+    <Compile Include="DAL\SshKey.cs" />
     <Compile Include="DAL\Team.cs" />
     <Compile Include="DAL\TeamRepositoryRole.cs" />
     <Compile Include="DAL\User.cs" />
