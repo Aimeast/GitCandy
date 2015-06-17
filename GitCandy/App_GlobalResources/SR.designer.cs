@@ -304,6 +304,24 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SSH.
+        /// </summary>
+        public static string Account_SSH {
+            get {
+                return ResourceManager.GetString("Account_SSH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSH Key.
+        /// </summary>
+        public static string Account_SshKeys {
+            get {
+                return ResourceManager.GetString("Account_SshKeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teams.
         /// </summary>
         public static string Account_Teams {
@@ -1067,6 +1085,15 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you conform to delete the tag &quot;{0}&quot;?.
+        /// </summary>
+        public static string Repository_TagDeletionWords {
+            get {
+                return ResourceManager.GetString("Repository_TagDeletionWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tags.
         /// </summary>
         public static string Repository_Tags {
@@ -1193,6 +1220,15 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable SSH.
+        /// </summary>
+        public static string Setting_EnableSsh {
+            get {
+                return ResourceManager.GetString("Setting_EnableSsh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force HTTPS connection.
         /// </summary>
         public static string Setting_ForceSsl {
@@ -1202,11 +1238,11 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Path of git.exe.
+        ///   Looks up a localized string similar to Path of git core.
         /// </summary>
-        public static string Setting_GitExePath {
+        public static string Setting_GitCorePath {
             get {
-                return ResourceManager.GetString("Setting_GitExePath", resourceCulture);
+                return ResourceManager.GetString("Setting_GitCorePath", resourceCulture);
             }
         }
         
@@ -1256,6 +1292,33 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Re-generate ssh key.
+        /// </summary>
+        public static string Setting_ReGenSsh {
+            get {
+                return ResourceManager.GetString("Setting_ReGenSsh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conform to Re-generate ssh key.
+        /// </summary>
+        public static string Setting_ReGenSshTitle {
+            get {
+                return ResourceManager.GetString("Setting_ReGenSshTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you conform to Re-generate ssh key?.
+        /// </summary>
+        public static string Setting_ReGenSshWords {
+            get {
+                return ResourceManager.GetString("Setting_ReGenSshWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path of repositories.
         /// </summary>
         public static string Setting_RepositoryPath {
@@ -1279,6 +1342,15 @@ namespace GitCandy.App_GlobalResources {
         public static string Setting_RestartWords {
             get {
                 return ResourceManager.GetString("Setting_RestartWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSH connection port.
+        /// </summary>
+        public static string Setting_SshPort {
+            get {
+                return ResourceManager.GetString("Setting_SshPort", resourceCulture);
             }
         }
         
@@ -1378,6 +1450,15 @@ namespace GitCandy.App_GlobalResources {
         public static string Shared_Edit {
             get {
                 return ResourceManager.GetString("Shared_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate.
+        /// </summary>
+        public static string Shared_Generate {
+            get {
+                return ResourceManager.GetString("Shared_Generate", resourceCulture);
             }
         }
         
@@ -1758,14 +1839,5 @@ namespace GitCandy.App_GlobalResources {
                 return ResourceManager.GetString("Validation_StringLengthRange", resourceCulture);
             }
         }
-        
-		/// <summary>
-        ///   Looks up a localized string similar Do you conform to delete the tag &quot;{0}&quot;? chars。
-        /// </summary>
-        public static string Repository_TagDeletionWords {
-            get {
-                return ResourceManager.GetString("Repository_TagDeletionWords", resourceCulture);
-            }
-        }		
     }
 }

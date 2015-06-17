@@ -2,6 +2,7 @@
 using GitCandy.DAL;
 using GitCandy.Models;
 using GitCandy.Security;
+using GitCandy.Ssh;
 using System;
 using System.Composition;
 using System.Linq;
@@ -256,6 +257,7 @@ namespace GitCandy.Data
                     user.UserTeamRoles.Clear();
                     user.UserRepositoryRoles.Clear();
                     user.AuthorizationLogs.Clear();
+                    user.Sshkeys.Clear();
                     ctx.Users.Remove(user);
                     ctx.SaveChanges();
                 }
@@ -307,6 +309,66 @@ namespace GitCandy.Data
                     .Take(10)
                     .Select(s => s.Name)
                     .ToArray();
+            }
+        }
+
+        public string AddSshKey(string name, string sshkey)
+        {
+            var seg = sshkey.Split();
+            var type = seg[0];
+            sshkey = seg[1];
+            var fingerprint = KeyUtils.GetFingerprint(sshkey);
+
+            using (var ctx = new GitCandyContext())
+            {
+                var user = ctx.Users.FirstOrDefault(s => s.Name == name);
+                if (user == null)
+                    return null;
+
+                var key = new SshKey
+                {
+                    UserID = user.ID,
+                    KeyType = type,
+                    Fingerprint = fingerprint,
+                    PublicKey = sshkey,
+                    ImportData = DateTime.UtcNow,
+                    LastUse = DateTime.UtcNow,
+                };
+
+                ctx.SshKeys.Add(key);
+                ctx.SaveChanges();
+            }
+            return fingerprint;
+        }
+
+        public void DeleteSshKey(string name, string sshkey)
+        {
+            using (var ctx = new GitCandyContext())
+            {
+                var key = ctx.SshKeys.FirstOrDefault(s => s.User.Name == name && s.Fingerprint == sshkey);
+                ctx.SshKeys.Remove(key);
+                ctx.SaveChanges();
+            }
+        }
+
+        public bool HasSshKey(string fingerprint)
+        {
+            using (var ctx = new GitCandyContext())
+            {
+                return ctx.SshKeys.Any(s => s.Fingerprint == fingerprint);
+            }
+        }
+
+        public SshModel GetSshList(string name)
+        {
+            using (var ctx = new GitCandyContext())
+            {
+                var keys = ctx.SshKeys
+                    .Where(s => s.User.Name == name)
+                    .Select(s => new SshModel.SshKey { Name = s.Fingerprint })
+                    .ToArray();
+
+                return new SshModel { Username = name, SshKeys = keys };
             }
         }
         #endregion

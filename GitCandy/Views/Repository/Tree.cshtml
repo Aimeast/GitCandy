@@ -13,15 +13,8 @@
             @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(), new { @class = "btn" })
         </div>
     </div>
-    <div class="alert alert-info">
-        @SR.Repository_EmptyWords<br />
-        <pre>touch README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin <strong class="text-info">@Model.GitUrl</strong>
-git push -u origin master</pre>
-    </div>
+    <div class="alert alert-info">@SR.Repository_EmptyWords</div>
+    @Html.Partial("_GitUrlButton", Model.GitUrls)
 }
 else
 {
@@ -53,11 +46,9 @@ else
                 {
                     <div class="pull-left">
                         <a href="@Url.Action("Compare", Html.OverRoute(new { path = "" }))" class="btn pull-left"><i class="icon-retweet"></i>@SR.Repository_Compare</a>
-                        <label class="pull-left">@SR.Repository_GitUrl</label>
-                        <div class="input-append">
-                            <input type="text" class="git-text" readonly value="@Model.GitUrl" />
-                            <a class="btn copy-clip" data-clipboard-text="@Model.GitUrl" data-tips="@SR.Repository_CopyToClipboard" data-copied="@SR.Repository_Copied"><i class="icon-check"></i></a>
-                        </div>
+                    </div>
+                    <div class="pull-left keep-space">
+                        @Html.Partial("_GitUrlButton", Model.GitUrls)
                     </div>
                     <div class="pull-right">
                         @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(new { path = "" }), new { @class = "btn" })

@@ -198,6 +198,9 @@
   <data name="Account_Repositories" xml:space="preserve">
     <value>Respositories</value>
   </data>
+  <data name="Account_SshKeys" xml:space="preserve">
+    <value>SSH Key</value>
+  </data>
   <data name="Account_Teams" xml:space="preserve">
     <value>Teams</value>
   </data>
@@ -212,6 +215,9 @@
   </data>
   <data name="Account_UsersFound" xml:space="preserve">
     <value>{0} user(s) found</value>
+  </data>
+  <data name="Account_SSH" xml:space="preserve">
+    <value>SSH</value>
   </data>
   <data name="Home_AboutDescription" xml:space="preserve">
     <value>Git Candy&amp;copy; is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
@@ -499,11 +505,14 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Setting_EditTitle" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="Setting_EnableSsh" xml:space="preserve">
+    <value>Enable SSH</value>
+  </data>
   <data name="Setting_ForceSsl" xml:space="preserve">
     <value>Force HTTPS connection</value>
   </data>
-  <data name="Setting_GitExePath" xml:space="preserve">
-    <value>Path of git.exe</value>
+  <data name="Setting_GitCorePath" xml:space="preserve">
+    <value>Path of git core</value>
   </data>
   <data name="Setting_IsPublicServer" xml:space="preserve">
     <value>Is public server</value>
@@ -520,6 +529,15 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   <data name="Setting_NumberOfRepositoryContributors" xml:space="preserve">
     <value>Number of repository contributors</value>
   </data>
+  <data name="Setting_ReGenSsh" xml:space="preserve">
+    <value>Re-generate ssh key</value>
+  </data>
+  <data name="Setting_ReGenSshTitle" xml:space="preserve">
+    <value>Conform to Re-generate ssh key</value>
+  </data>
+  <data name="Setting_ReGenSshWords" xml:space="preserve">
+    <value>Do you conform to Re-generate ssh key?</value>
+  </data>
   <data name="Setting_RepositoryPath" xml:space="preserve">
     <value>Path of repositories</value>
   </data>
@@ -528,6 +546,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   </data>
   <data name="Setting_RestartWords" xml:space="preserve">
     <value>Do you conform to restart this application?</value>
+  </data>
+  <data name="Setting_SshPort" xml:space="preserve">
+    <value>SSH connection port</value>
   </data>
   <data name="Setting_SslPort" xml:space="preserve">
     <value>HTTPS connection port</value>
@@ -561,6 +582,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
   </data>
   <data name="Shared_Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="Shared_Generate" xml:space="preserve">
+    <value>Generate</value>
   </data>
   <data name="Shared_Lanuages" xml:space="preserve">
     <value>Lanuages</value>

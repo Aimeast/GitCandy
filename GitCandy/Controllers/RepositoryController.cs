@@ -7,7 +7,9 @@ using GitCandy.Git;
 using GitCandy.Git.Cache;
 using GitCandy.Log;
 using GitCandy.Models;
+using GitCandy.Ssh;
 using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Net;
 using System.Web;
@@ -215,7 +217,7 @@ namespace GitCandy.Controllers
                 if (model.Entries == null && model.ReferenceName != "HEAD")
                     return RedirectToAction("Tree", new { path = model.ReferenceName });
 
-                model.GitUrl = GetGitUrl(name);
+                model.GitUrls = GetGitUrl(name);
                 model.RepositoryName = name;
                 if (model.IsRoot)
                 {
@@ -427,12 +429,26 @@ namespace GitCandy.Controllers
             }
         }
 
-        private string GetGitUrl(string name)
+        private GitUrl[] GetGitUrl(string name)
         {
             var url = Request.Url;
             string path = VirtualPathUtility.ToAbsolute("~/git/" + name + ".git");
             UriBuilder ub = new UriBuilder(url.Scheme, url.Host, url.Port, path);
-            return ub.Uri.ToString();
+            var httpUrl = ub.Uri.ToString();
+
+            var sshPort = UserConfiguration.Current.SshPort;
+            var sshUrl = sshPort == StartingInfo.DefaultPort
+                ? string.Format("git@{0}:git/{1}.git", url.Host, name)
+                : string.Format("ssh://git@{0}:{1}/git/{2}.git", url.Host, sshPort, name);
+
+            var result = new List<GitUrl>(4);
+            result.Add(new GitUrl { Type = url.Scheme, Url = httpUrl });
+            if (UserConfiguration.Current.EnableSsh)
+                result.Add(new GitUrl { Type = "ssh", Url = sshUrl });
+
+            return result.ToArray();
         }
+
+        public int sshPort { get; set; }
     }
 }

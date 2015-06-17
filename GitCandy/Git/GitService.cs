@@ -748,7 +748,7 @@ namespace GitCandy.Git
                 args += " --advertise-refs";
             args += " \"" + _repositoryPath + "\"";
 
-            var info = new System.Diagnostics.ProcessStartInfo(UserConfiguration.Current.GitExePath, args)
+            var info = new System.Diagnostics.ProcessStartInfo(Path.Combine(UserConfiguration.Current.GitCorePath, "git.exe"), args)
             {
                 CreateNoWindow = true,
                 RedirectStandardError = true,
@@ -765,34 +765,6 @@ namespace GitCandy.Git
                 process.StandardOutput.BaseStream.CopyTo(outStream);
 
                 process.WaitForExit();
-            }
-        }
-
-        public static bool VerifyGit(string path)
-        {
-            var args = "--version";
-
-            var info = new System.Diagnostics.ProcessStartInfo(path, args)
-            {
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = Path.GetDirectoryName(UserConfiguration.Current.RepositoryPath),
-            };
-
-            try
-            {
-                using (var process = System.Diagnostics.Process.Start(info))
-                {
-                    var output = process.StandardOutput.ReadToEnd();
-                    return output.StartsWith("git version");
-                }
-            }
-            catch
-            {
-                return false;
             }
         }
         #endregion

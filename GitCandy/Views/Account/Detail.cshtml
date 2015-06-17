@@ -45,6 +45,7 @@
             <div class="form-actions">
                 <div class="pull-right">
                     @Html.ActionLink(SR.Account_ChangePassword, "Change", new { Model.Name })
+                    @Html.ActionLink(SR.Account_SSH, "Ssh", new { Model.Name }, new { @class = "btn btn" })
                     @Html.ActionLink(SR.Shared_Edit, "Edit", new { Model.Name }, new { @class = "btn btn-primary" })
                 </div>
             </div>

@@ -1,9 +1,15 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace GitCandy.Configuration
 {
     [ConfigurationKey("UserConfiguration")]
     public class UserConfiguration : ConfigurationEntry<UserConfiguration>
     {
+        public UserConfiguration()
+        {
+            HostKeys = new List<HostKey>();
+        }
+
         [RecommendedValue(true)]
         public bool IsPublicServer { get; set; }
 
@@ -26,7 +32,7 @@ namespace GitCandy.Configuration
 
         public string CachePath { get; set; }
 
-        public string GitExePath { get; set; }
+        public string GitCorePath { get; set; }
 
         [RecommendedValue(30)]
         public int NumberOfCommitsPerPage { get; set; }
@@ -36,5 +42,13 @@ namespace GitCandy.Configuration
 
         [RecommendedValue(50)]
         public int NumberOfRepositoryContributors { get; set; }
+
+        [RecommendedValue(22)]
+        public int SshPort { get; set; }
+
+        [RecommendedValue(true)]
+        public bool EnableSsh { get; set; }
+
+        public List<HostKey> HostKeys { get; set; }
     }
 }

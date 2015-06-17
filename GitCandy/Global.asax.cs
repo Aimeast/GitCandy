@@ -3,6 +3,7 @@ using GitCandy.Configuration;
 using GitCandy.Git.Cache;
 using GitCandy.Log;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -35,6 +36,7 @@ namespace GitCandy
             ScheduleConfig.RegisterScheduler();
 
             GitCacheAccessor.Initialize();
+            SshServerConfig.StartSshServer();
 
             Logger.Info(AppInfomation.GetAppStartedInfo());
 
@@ -43,8 +45,11 @@ namespace GitCandy
 
         protected void Application_End()
         {
+            SshServerConfig.StopSshServer();
             ScheduleConfig.StopAndWait();
             Logger.Info(AppInfomation.GetAppEndInfo());
+
+            Process.GetCurrentProcess().Kill();
         }
 
         protected void Application_Error()

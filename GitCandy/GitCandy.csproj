@@ -212,6 +212,7 @@
     <Content Include="Views\Account\Forgot.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Ssh.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Repository\Blame.cshtml" />
     <Content Include="Views\Repository\Blob.cshtml" />
@@ -231,9 +232,11 @@
     <Content Include="Views\Repository\_BlobPreview.cshtml" />
     <Content Include="Views\Repository\_BranchSelector.cshtml" />
     <Content Include="Views\Repository\_Diff.cshtml" />
+    <Content Include="Views\Repository\_GitUrlButton.cshtml" />
     <Content Include="Views\Repository\_PathBar.cshtml" />
     <Content Include="Views\Repository\_ZipButton.cshtml" />
     <Content Include="Views\Setting\Edit.cshtml" />
+    <Content Include="Views\Setting\ReGenSsh.cshtml" />
     <Content Include="Views\Setting\Restart.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Members.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YesNo.cshtml" />
@@ -272,6 +275,7 @@
     <Compile Include="App_Start\MefConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ScheduleConfig.cs" />
+    <Compile Include="App_Start\SshServerConfig.cs" />
     <Compile Include="Base\FileHelper.cs" />
     <Compile Include="Base\MefDependencyResolver.cs" />
     <Compile Include="Base\Pager.cs" />
@@ -281,6 +285,7 @@
     <Compile Include="Base\StringLogicalComparer.cs" />
     <Compile Include="Configuration\ConfigurationEntry.cs" />
     <Compile Include="Configuration\ConfigurationKeyAttribute.cs" />
+    <Compile Include="Configuration\HostKey.cs" />
     <Compile Include="Configuration\RecommendedValueAttribute.cs" />
     <Compile Include="Configuration\UserConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -330,6 +335,7 @@
     <Compile Include="Git\CommitsAccessor.cs" />
     <Compile Include="Git\ContributorsAccessor.cs" />
     <Compile Include="Git\GitService.cs" />
+    <Compile Include="Git\GitSshService.cs" />
     <Compile Include="Git\HistoryDivergenceAccessor.cs" />
     <Compile Include="Git\LastCommitAccessor.cs" />
     <Compile Include="Git\RepositorySizeAccessor.cs" />
@@ -355,6 +361,7 @@
     <Compile Include="Models\CompareModel.cs" />
     <Compile Include="Models\ContributorCommitsModel.cs" />
     <Compile Include="Models\ContributorsModel.cs" />
+    <Compile Include="Models\GitUrl.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PathBarModel.cs" />
     <Compile Include="Models\RepositoryListModel.cs" />
@@ -363,6 +370,7 @@
     <Compile Include="Models\RepositoryScope.cs" />
     <Compile Include="Models\RepositoryStatisticsModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
+    <Compile Include="Models\SshModel.cs" />
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\TagsModel.cs" />
     <Compile Include="Models\TeamListModel.cs" />

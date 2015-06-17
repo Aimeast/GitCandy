@@ -1,0 +1,19 @@
+﻿@model GitUrl[]
+
+@{
+    var first = Model.First();
+}
+
+<div class="input-prepend input-append">
+    <div class="btn-group">
+        <button class="btn dropdown-toggle" data-toggle="dropdown">@first.Type <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            @foreach (var item in Model)
+            {
+                <li data-giturl="@item.Url"><a href="#">@item.Type</a></li>
+            }
+        </ul>
+    </div>
+    <input class="span3" type="text" value="@first.Url">
+    <a class="btn copy-clip" data-tips="@SR.Repository_CopyToClipboard" data-copied="@SR.Repository_Copied"><i class="icon-check"></i></a>
+</div>

@@ -90,14 +90,18 @@
     $('.focus :text').focus();
     $('.focus :text[name=query]').val($.queryString.get('query', true));
     $('.copy-clip').each(function () {
-        var $clip = $(this);
-        $clip.parent().children(':text').click(function () { $(this).select(); });
+        var $clip = $(this),
+            $text = $clip.parent().children(':text');
+        $text.click(function () { $(this).select(); });
         var zero = new ZeroClipboard($clip, {
             moviePath: '/Content/ZeroClipboard.swf',
             //useNoCache: false, // Be careful!! Not supported by IE?
         });
         var $tip = $(zero.htmlBridge);
-        zero.on('complete', function () {
+        zero.on('dataRequested', function () {
+            zero.setText($text.val());
+        })
+        .on('complete', function () {
             $tip.tooltip('destroy').tooltip({ title: $clip.data('copied'), placement: 'right' }).tooltip('show');
         })
         .on('mouseover', function () {
@@ -106,6 +110,15 @@
         .on('noflash wrongflash', function () {
             console.error('No flash or wrong flash version');
         });
+    });
+    // switch git url
+    $('[data-giturl]').click(function () {
+        var $this = $(this),
+            $group = $this.closest('.input-append'),
+            url = $this.data('giturl'),
+            type = $this.text();
+        $group.find(':text').val(url);
+        $group.find('button').html(type + ' <span class="caret"></span>');
     });
     // prevent all empty link
     $('a[href=#]').click(function () {
@@ -183,7 +196,9 @@
                     controller  -> controller for anchor
                     container   -> container selector
                     add_label   -> add
-                    del_label-> remove
+                    del_label   -> remove
+                    use_ret_val -> if true, show return value as text
+                    first_width -> width of first column
                     add_action
                         -> [action object]
                     del_action
@@ -220,9 +235,12 @@
                 }
             };
             var add_row = function (item) {
-                var row_html =
+                var first_column_class = 'span' + (isNaN(params.first_width) ? 2 : params.first_width),
+                    row_html =
                     '<div class="row border-area">'
-                        + '<div class="span2"><a href="/' + params.controller + '/Detail/' + item.Name + '">' + item.Name + '</a></div>'
+                        + (params.controller
+                            ? '<div class="' + first_column_class + '"><a href="/' + params.controller + '/Detail/' + item.Name + '">' + item.Name + '</a></div>'
+                            : '<div class="' + first_column_class + '">' + item.Name + '</div>')
                     + '</div>',
                     $row = $(row_html);
 
@@ -288,7 +306,7 @@
 
                 $grid.append($row);
             };
-            $searcher.typeahead({
+            params.controller && $searcher.typeahead({
                 source: function (query, process) {
                     return $.post('/' + params.controller + '/Search', { query: query }, function (data) {
                         return process(data);
@@ -300,7 +318,7 @@
                 clearWarning();
                 var name = $searcher.val();
                 var xhr = $.post(params.add_action.url, params.add_action.query(name), function (data) {
-                    add_row($.extend({}, { Name: name }, data));
+                    add_row($.extend({}, { Name: params.use_ret_val ? data : name }));
                     $searcher.val('');
                 })
                 .fail(function () {
