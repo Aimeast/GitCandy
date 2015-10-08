@@ -20,7 +20,11 @@ namespace GitCandy
 
             _server = new SshServer(new StartingInfo(IPAddress.IPv6Any, UserConfiguration.Current.SshPort));
             _server.ConnectionAccepted += (s, e) => new GitSshService(e);
-            _server.ExceptionRasied += (s, e) => Logger.Error(e.ToString());
+            _server.ExceptionRasied += (s, e) =>
+            {
+                if (!(e is SshConnectionException))
+                    Logger.Error(e.ToString());
+            };
             foreach (var key in UserConfiguration.Current.HostKeys)
             {
                 _server.AddHostKey(key.KeyType, key.KeyXml);
