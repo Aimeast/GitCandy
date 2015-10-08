@@ -335,12 +335,12 @@ namespace GitCandy.Data
                 var q0 = ctx.Repositories.Where(s => s.Name == reponame && s.AllowAnonymousRead).Select(s => 0);
                 var q1 = ctx.UserRepositoryRoles
                     .Where(s => s.Repository.Name == reponame
-                        && s.User.Sshkeys.Any(t => t.Fingerprint == fingerprint && t.PublicKey == publickey)
+                        && s.User.SshKeys.Any(t => t.Fingerprint == fingerprint && t.PublicKey == publickey)
                         && s.AllowRead)
                     .Select(s => 0);
                 var q2 = ctx.TeamRepositoryRoles
                     .Where(s => s.Repository.Name == reponame
-                        && s.Team.UserTeamRoles.Any(t => t.User.Sshkeys.Any(z => z.Fingerprint == fingerprint && z.PublicKey == publickey))
+                        && s.Team.UserTeamRoles.Any(t => t.User.SshKeys.Any(z => z.Fingerprint == fingerprint && z.PublicKey == publickey))
                         && s.AllowRead)
                     .Select(s => 0);
                 return q0.Concat(q1).Concat(q2).Any();
@@ -354,12 +354,12 @@ namespace GitCandy.Data
                 var q0 = ctx.Repositories.Where(s => s.Name == reponame && s.AllowAnonymousRead && s.AllowAnonymousWrite).Select(s => 0);
                 var q1 = ctx.UserRepositoryRoles
                     .Where(s => s.Repository.Name == reponame
-                        && s.User.Sshkeys.Any(t => t.Fingerprint == fingerprint && t.PublicKey == publickey)
+                        && s.User.SshKeys.Any(t => t.Fingerprint == fingerprint && t.PublicKey == publickey)
                         && s.AllowRead && s.AllowWrite)
                     .Select(s => 0);
                 var q2 = ctx.TeamRepositoryRoles
                     .Where(s => s.Repository.Name == reponame
-                        && s.Team.UserTeamRoles.Any(t => t.User.Sshkeys.Any(z => z.Fingerprint == fingerprint && z.PublicKey == publickey))
+                        && s.Team.UserTeamRoles.Any(t => t.User.SshKeys.Any(z => z.Fingerprint == fingerprint && z.PublicKey == publickey))
                         && s.AllowRead && s.AllowWrite)
                     .Select(s => 0);
                 return q0.Concat(q1).Concat(q2).Any();

@@ -257,7 +257,7 @@ namespace GitCandy.Data
                     user.UserTeamRoles.Clear();
                     user.UserRepositoryRoles.Clear();
                     user.AuthorizationLogs.Clear();
-                    user.Sshkeys.Clear();
+                    user.SshKeys.Clear();
                     ctx.Users.Remove(user);
                     ctx.SaveChanges();
                 }

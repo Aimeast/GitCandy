@@ -36,7 +36,7 @@ namespace GitCandy.DAL.Mapping
 
             // Relationships
             this.HasRequired(t => t.User)
-                .WithMany(t => t.Sshkeys)
+                .WithMany(t => t.SshKeys)
                 .HasForeignKey(d => d.UserID);
 
         }
