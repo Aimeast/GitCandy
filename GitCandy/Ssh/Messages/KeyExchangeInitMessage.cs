@@ -43,7 +43,7 @@ namespace GitCandy.Ssh.Messages
 
         public uint Reserved { get; set; }
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnLoad(SshDataWorker reader)
         {

@@ -2,6 +2,7 @@
 using GitCandy.Ssh.Messages;
 using GitCandy.Ssh.Services;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -17,9 +18,9 @@ namespace GitCandy.Ssh
     {
         private const byte CarriageReturn = 0x0d;
         private const byte LineFeed = 0x0a;
-        internal const int MaximumSshPacketSize = LocalChannelDataPacketSize + 3000;
+        internal const int MaximumSshPacketSize = LocalChannelDataPacketSize;
         internal const int InitialLocalWindowSize = LocalChannelDataPacketSize * 32;
-        internal const int LocalChannelDataPacketSize = 1024 * 64;
+        internal const int LocalChannelDataPacketSize = 1024 * 32;
 
         private static readonly RandomNumberGenerator _rng = new RNGCryptoServiceProvider();
         private static readonly Dictionary<byte, Type> _messagesMetadata;
@@ -34,6 +35,7 @@ namespace GitCandy.Ssh
         internal static readonly Dictionary<string, Func<CompressionAlgorithm>> _compressionAlgorithms =
             new Dictionary<string, Func<CompressionAlgorithm>>();
 
+        private readonly object _locker = new object();
         private readonly Socket _socket;
 #if DEBUG
         private readonly TimeSpan _timeout = TimeSpan.FromDays(1);
@@ -44,9 +46,13 @@ namespace GitCandy.Ssh
 
         private uint _outboundPacketSequence;
         private uint _inboundPacketSequence;
+        private uint _outboundFlow;
+        private uint _inboundFlow;
         private Algorithms _algorithms = null;
-        private ExchangeContext _exchangeContext = new ExchangeContext();
+        private ExchangeContext _exchangeContext = null;
         private List<SshService> _services = new List<SshService>();
+        private ConcurrentQueue<Message> _blockedMessages = new ConcurrentQueue<Message>();
+        private EventWaitHandle _hasBlockedMessagesWaitHandle = new ManualResetEvent(true);
 
         public string ServerVersion { get; private set; }
         public string ClientVersion { get; private set; }
@@ -111,13 +117,22 @@ namespace GitCandy.Ssh
                     DisconnectReason.ProtocolVersionNotSupported);
             }
 
-            var kexInitMessage = LoadKexInitMessage();
-            SendMessage(kexInitMessage);
+            ConsiderReExchange(true);
 
-            while (_socket != null && _socket.Connected)
+            try
             {
-                var message = ReceiveMessage();
-                HandleMessageCore(message);
+                while (_socket != null && _socket.Connected)
+                {
+                    var message = ReceiveMessage();
+                    HandleMessageCore(message);
+                }
+            }
+            finally
+            {
+                foreach (var service in _services)
+                {
+                    service.CloseService();
+                }
             }
         }
 
@@ -150,6 +165,7 @@ namespace GitCandy.Ssh
         {
             const int socketBufferSize = 2 * MaximumSshPacketSize;
             _socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
+            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
             _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendBuffer, socketBufferSize);
             _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, socketBufferSize);
         }
@@ -212,7 +228,7 @@ namespace GitCandy.Ssh
                         Thread.Sleep(30);
                     }
                     else
-                        throw;
+                        throw new SshConnectionException("Connection lost", DisconnectReason.ConnectionLost);
                 }
             }
 
@@ -241,7 +257,7 @@ namespace GitCandy.Ssh
                         Thread.Sleep(30);
                     }
                     else
-                        throw;
+                        throw new SshConnectionException("Connection lost", DisconnectReason.ConnectionLost);
                 }
             }
         }
@@ -255,6 +271,7 @@ namespace GitCandy.Ssh
         }
         #endregion
 
+        #region Message operations
         private Message ReceiveMessage()
         {
             var useAlg = _algorithms != null;
@@ -295,7 +312,13 @@ namespace GitCandy.Ssh
             if (implemented)
                 message.Load(data);
 
-            _inboundPacketSequence++;
+            lock (_locker)
+            {
+                _inboundPacketSequence++;
+                _inboundFlow += (uint)packetLength;
+            }
+
+            ConsiderReExchange();
 
             return message;
         }
@@ -304,6 +327,19 @@ namespace GitCandy.Ssh
         {
             Contract.Requires(message != null);
 
+            if (_exchangeContext != null
+                && message.MessageType > 4 && (message.MessageType < 20 || message.MessageType > 49))
+            {
+                _blockedMessages.Enqueue(message);
+                return;
+            }
+
+            _hasBlockedMessagesWaitHandle.WaitOne();
+            SendMessageInternal(message);
+        }
+
+        private void SendMessageInternal(Message message)
+        {
             var useAlg = _algorithms != null;
 
             var blockSize = (byte)(useAlg ? Math.Max(8, _algorithms.ServerEncryption.BlockBytesSize) : 8);
@@ -343,7 +379,45 @@ namespace GitCandy.Ssh
 
             SocketWrite(payload);
 
-            _outboundPacketSequence++;
+            lock (_locker)
+            {
+                _outboundPacketSequence++;
+                _outboundFlow += packetLength;
+            }
+
+            ConsiderReExchange();
+        }
+
+        private void ConsiderReExchange(bool force = false)
+        {
+            var kex = false;
+            lock (_locker)
+                if (_exchangeContext == null
+                    && (force || _inboundFlow + _outboundFlow > 1024 * 1024 * 512)) // 0.5 GiB
+                {
+                    _exchangeContext = new ExchangeContext();
+                    kex = true;
+                }
+
+            if (kex)
+            {
+                var kexInitMessage = LoadKexInitMessage();
+                _exchangeContext.ServerKexInitPayload = kexInitMessage.GetPacket();
+
+                SendMessage(kexInitMessage);
+            }
+        }
+
+        private void ContinueSendBlockedMessages()
+        {
+            if (_blockedMessages.Count > 0)
+            {
+                Message message;
+                while (_blockedMessages.TryDequeue(out message))
+                {
+                    SendMessageInternal(message);
+                }
+            }
         }
 
         internal bool TrySendMessage(Message message)
@@ -377,10 +451,9 @@ namespace GitCandy.Ssh
             message.FirstKexPacketFollows = false;
             message.Reserved = 0;
 
-            _exchangeContext.ServerKexInitPayload = message.GetPacket();
-
             return message;
         }
+        #endregion
 
         #region Handle messages
         private void HandleMessageCore(Message message)
@@ -395,6 +468,8 @@ namespace GitCandy.Ssh
 
         private void HandleMessage(KeyExchangeInitMessage message)
         {
+            ConsiderReExchange(true);
+
             _exchangeContext.KeyExchange = ChooseAlgorithm(_keyExchangeAlgorithms.Keys.ToArray(), message.KeyExchangeAlgorithms);
             _exchangeContext.PublicKey = ChooseAlgorithm(_publicKeyAlgorithms.Keys.ToArray(), message.ServerHostKeyAlgorithms);
             _exchangeContext.ClientEncryption = ChooseAlgorithm(_encryptionAlgorithms.Keys.ToArray(), message.EncryptionAlgorithmsClientToServer);
@@ -457,8 +532,18 @@ namespace GitCandy.Ssh
 
         private void HandleMessage(NewKeysMessage message)
         {
-            _algorithms = _exchangeContext.NewAlgorithms;
-            _exchangeContext = null;
+            _hasBlockedMessagesWaitHandle.Reset();
+
+            lock (_locker)
+            {
+                _inboundFlow = 0;
+                _outboundFlow = 0;
+                _algorithms = _exchangeContext.NewAlgorithms;
+                _exchangeContext = null;
+            }
+
+            ContinueSendBlockedMessages();
+            _hasBlockedMessagesWaitHandle.Set();
         }
 
         private void HandleMessage(UnimplementedMessage message)

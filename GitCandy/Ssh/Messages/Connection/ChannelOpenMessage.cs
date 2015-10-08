@@ -13,7 +13,7 @@ namespace GitCandy.Ssh.Messages.Connection
         public uint InitialWindowSize { get; private set; }
         public uint MaximumPacketSize { get; private set; }
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnLoad(SshDataWorker reader)
         {

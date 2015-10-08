@@ -11,7 +11,7 @@ namespace GitCandy.Ssh.Messages.Userauth
         public string KeyAlgorithmName { get; set; }
         public byte[] PublicKey { get; set; }
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnGetPacket(SshDataWorker writer)
         {

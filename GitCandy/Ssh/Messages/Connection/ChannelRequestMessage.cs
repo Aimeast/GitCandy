@@ -11,7 +11,7 @@ namespace GitCandy.Ssh.Messages.Connection
         public string RequestType { get; set; }
         public bool WantReply { get; set; }
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnLoad(SshDataWorker reader)
         {

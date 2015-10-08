@@ -1,12 +1,14 @@
 ﻿using GitCandy.Ssh.Messages.Connection;
 using System;
 using System.Diagnostics.Contracts;
+using System.Threading;
 
 namespace GitCandy.Ssh.Services
 {
     public abstract class Channel
     {
         protected ConnectionService _connectionService;
+        protected EventWaitHandle _sendingWindowWaitHandle = new ManualResetEvent(false);
 
         public Channel(ConnectionService connectionService,
             uint clientChannelId, uint clientInitialWindowSize, uint clientMaxPacketSize,
@@ -59,6 +61,12 @@ namespace GitCandy.Ssh.Services
             do
             {
                 var packetSize = Math.Min(Math.Min(ClientWindowSize, ClientMaxPacketSize), total);
+                if (packetSize == 0)
+                {
+                    _sendingWindowWaitHandle.WaitOne();
+                    continue;
+                }
+
                 if (buf == null || packetSize != buf.Length)
                     buf = new byte[packetSize];
                 Array.Copy(data, offset, buf, 0, packetSize);
@@ -126,6 +134,12 @@ namespace GitCandy.Ssh.Services
         internal void ClientAdjustWindow(uint bytesToAdd)
         {
             ClientWindowSize += bytesToAdd;
+
+            // pulse multithreadings in same time and unsignal until thread switched
+            // don't try to use AutoResetEvent
+            _sendingWindowWaitHandle.Set();
+            Thread.Sleep(1);
+            _sendingWindowWaitHandle.Reset();
         }
 
         private void ServerAttemptAdjustWindow(uint messageLength)
@@ -146,8 +160,15 @@ namespace GitCandy.Ssh.Services
         {
             if (ClientClosed && ServerClosed)
             {
-                _connectionService.RemoveChannel(this);
+                ForceClose();
             }
+        }
+
+        internal void ForceClose()
+        {
+            _connectionService.RemoveChannel(this);
+            _sendingWindowWaitHandle.Set();
+            _sendingWindowWaitHandle.Close();
         }
     }
 }

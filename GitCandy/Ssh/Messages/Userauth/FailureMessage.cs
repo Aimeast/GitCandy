@@ -8,7 +8,7 @@ namespace GitCandy.Ssh.Messages.Userauth
     {
         private const byte MessageNumber = 51;
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnGetPacket(SshDataWorker writer)
         {

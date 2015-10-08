@@ -27,13 +27,14 @@ namespace GitCandy.Ssh.Messages
         public string Description { get; private set; }
         public string Language { get; private set; }
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnLoad(SshDataWorker reader)
         {
             ReasonCode = (DisconnectReason)reader.ReadUInt32();
             Description = reader.ReadString(Encoding.UTF8);
-            Language = reader.ReadString(Encoding.UTF8);
+            if (reader.DataAvailable >= 4)
+                Language = reader.ReadString(Encoding.UTF8);
         }
 
         protected override void OnGetPacket(SshDataWorker writer)

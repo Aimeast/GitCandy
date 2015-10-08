@@ -26,6 +26,15 @@ namespace GitCandy.Ssh.Services
 
         public event EventHandler<SessionRequestedArgs> CommandOpened;
 
+        protected internal override void CloseService()
+        {
+            lock (_locker)
+                foreach (var channel in _channels.ToArray())
+                {
+                    channel.ForceClose();
+                }
+        }
+
         internal void HandleMessageCore(ConnectionServiceMessage message)
         {
             Contract.Requires(message != null);
@@ -48,7 +57,7 @@ namespace GitCandy.Ssh.Services
                         ReasonCode = ChannelOpenFailureReason.UnknownChannelType,
                         Description = string.Format("Unknown channel type: {0}.", message.ChannelType),
                     });
-                    break;
+                    throw new SshConnectionException(string.Format("Unknown channel type: {0}.", message.ChannelType));
             }
         }
 
@@ -66,7 +75,7 @@ namespace GitCandy.Ssh.Services
                         {
                             RecipientChannel = FindChannelByServerId<Channel>(message.RecipientChannel).ClientChannelId
                         });
-                    break;
+                    throw new SshConnectionException(string.Format("Unknown request type: {0}.", message.RequestType));
             }
         }
 

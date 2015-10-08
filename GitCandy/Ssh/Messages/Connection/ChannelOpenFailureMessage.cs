@@ -12,7 +12,7 @@ namespace GitCandy.Ssh.Messages.Connection
         public string Description { get; set; }
         public string Language { get; set; }
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnGetPacket(SshDataWorker writer)
         {

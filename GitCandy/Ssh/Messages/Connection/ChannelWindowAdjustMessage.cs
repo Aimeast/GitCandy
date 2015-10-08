@@ -9,7 +9,7 @@ namespace GitCandy.Ssh.Messages.Connection
         public uint RecipientChannel { get; set; }
         public uint BytesToAdd { get; set; }
 
-        protected override byte MessageType { get { return MessageNumber; } }
+        public override byte MessageType { get { return MessageNumber; } }
 
         protected override void OnLoad(SshDataWorker reader)
         {
