@@ -64,8 +64,22 @@ namespace GitCandy.Log
             {
                 if (_writer == null)
                 {
-                    _writer = new StreamWriter(new FileStream(LogFilePath, FileMode.Append, FileAccess.Write, FileShare.Read), Encoding.UTF8);
+                    for (var times = 0; times < 5; times++)
+                    {
+                        try
+                        {
+                            _writer = new StreamWriter(new FileStream(LogFilePath, FileMode.Append, FileAccess.Write, FileShare.Read), Encoding.UTF8);
+                            break;
+                        }
+                        catch
+                        {
+                            Thread.Sleep(130);
+                        }
+                    }
                 }
+
+                if (_writer == null)
+                    return;
 
                 _writer.Write(">> " + DateTimeOffset.Now.ToString("MM/dd/yyyy HH:mm:ss.fff zzz") + " " + level + ", ");
 

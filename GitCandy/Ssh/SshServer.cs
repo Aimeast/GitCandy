@@ -122,6 +122,10 @@ namespace GitCandy.Ssh
                             ConnectionAccepted(this, session);
                         session.EstablishConnection();
                     }
+                    catch (ThreadAbortException ex)
+                    {
+                        Stop();
+                    }
                     catch (SshConnectionException ex)
                     {
                         session.Disconnect(ex.DisconnectReason, ex.Message);

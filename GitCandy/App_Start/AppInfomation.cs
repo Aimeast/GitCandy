@@ -13,6 +13,7 @@ namespace GitCandy
         public static readonly Version Version = typeof(AppInfomation).Assembly.GetName().Version;
         public static readonly string AssemblyConfiguration;
         public static readonly string BuildingInformation;
+        public static readonly DateTimeOffset StartingTime = DateTimeOffset.Now;
 
         static AppInfomation()
         {

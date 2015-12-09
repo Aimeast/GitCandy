@@ -8,9 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace GitCandy.Git.Cache
@@ -160,6 +158,12 @@ namespace GitCandy.Git.Cache
                     }
                 });
 
+            task.ContinueWith(t =>
+            {
+                Task.Delay(TimeSpan.FromMinutes(1.0)).Wait();
+                RemoveFromRunningPool();
+            });
+
             if (!loaded)
             {
                 if (IsAsync)
@@ -171,12 +175,6 @@ namespace GitCandy.Git.Cache
                     task.Start();
                 }
             }
-
-            task.ContinueWith(t =>
-            {
-                Task.Delay(TimeSpan.FromMinutes(1.0)).Wait();
-                RemoveFromRunningPool();
-            });
         }
 
         protected abstract bool Load();
