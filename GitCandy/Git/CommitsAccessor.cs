@@ -9,7 +9,7 @@ namespace GitCandy.Git
     public class CommitsAccessor : GitCacheAccessor<RevisionSummaryCacheItem[], CommitsAccessor>
     {
         private readonly Commit commit;
-        private readonly string path, key1, key2;
+        private readonly string path;
         private readonly int page, pageSize;
 
         public CommitsAccessor(string repoId, Repository repo, Commit commit, string path, int page, int pageSize)
@@ -24,15 +24,13 @@ namespace GitCandy.Git
             this.path = path;
             this.page = page;
             this.pageSize = pageSize;
-            this.key1 = commit.Sha;
-            this.key2 = path.Replace('/', ';');
         }
 
         public override bool IsAsync { get { return false; } }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key1, key2, page, pageSize);
+            return GetCacheKey(commit.Sha, path, page, pageSize);
         }
 
         protected override void Init()
@@ -63,22 +61,6 @@ namespace GitCandy.Git
                     .ToArray();
             }
             resultDone = true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as CommitsAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key1 == accessor.key1
-                && path == accessor.path
-                && page == accessor.page
-                && pageSize == accessor.pageSize;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(CommitsAccessor).GetHashCode() ^ (repoId + key1 + path + page + pageSize).GetHashCode();
         }
     }
 }

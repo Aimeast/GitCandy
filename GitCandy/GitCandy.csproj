@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -359,7 +360,6 @@
     <Compile Include="Models\CommitModel.cs" />
     <Compile Include="Models\CommitsModel.cs" />
     <Compile Include="Models\CompareModel.cs" />
-    <Compile Include="Models\ContributorCommitsModel.cs" />
     <Compile Include="Models\ContributorsModel.cs" />
     <Compile Include="Models\GitUrl.cs" />
     <Compile Include="Models\LoginModel.cs" />

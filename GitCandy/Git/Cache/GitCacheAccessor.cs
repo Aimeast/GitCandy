@@ -220,6 +220,7 @@ namespace GitCandy.Git.Cache
 
         protected TReturn result;
         protected bool resultDone;
+        protected string cacheKey;
 
         public GitCacheReturn<TReturn> Result
         {
@@ -259,23 +260,25 @@ namespace GitCandy.Git.Cache
             this.repoPath = repo.Info.Path;
         }
 
-        protected abstract string GetCacheFile();
+        protected abstract string GetCacheKey();
 
-        protected virtual string GetCacheFile(params object[] keys)
+        protected virtual string GetCacheKey(params object[] keys)
         {
             Contract.Requires(keys != null);
             Contract.Requires(keys.Length > 0);
-            Contract.Requires(keys.Select(s => s.SafyToString())
-                .All(s => string.IsNullOrEmpty(s) || s.All(c => c != '\\' && c != '/')));
+            Contract.Requires(keys.All(s => s != null));
 
-            var str = AccessorId + "\\" + repoId + "\\" + keys[0];
-            for (int i = 1; i < keys.Length; i++)
-            {
-                var one = keys[i].SafyToString();
-                if (!string.IsNullOrEmpty(one))
-                    str += "-" + one;
-            }
-            return str;
+            if (cacheKey != null)
+                return cacheKey;
+
+            var key = typeof(TAccessor).Name + string.Concat(keys);
+            cacheKey = key.CalcSha();
+            return cacheKey;
+        }
+
+        protected virtual string GetCacheFile()
+        {
+            return AccessorId + "\\" + repoId + "\\" + GetCacheKey();
         }
 
         protected override bool Load()
@@ -317,6 +320,17 @@ namespace GitCandy.Git.Cache
                 formatter.Serialize(fs, result);
                 fs.Flush();
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var accessor = obj as TAccessor;
+            return accessor != null && GetCacheKey() == accessor.GetCacheKey();
+        }
+
+        public override int GetHashCode()
+        {
+            return typeof(TAccessor).GetHashCode() ^ GetCacheKey().GetHashCode();
         }
     }
 }

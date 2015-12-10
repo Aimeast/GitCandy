@@ -7,19 +7,19 @@ namespace GitCandy.Git
 {
     public class HistoryDivergenceAccessor : GitCacheAccessor<RevisionSummaryCacheItem[], HistoryDivergenceAccessor>
     {
-        private readonly string branchesSha;
+        private readonly string key;
 
-        public HistoryDivergenceAccessor(string repoId, Repository repo, string branchesSha)
+        public HistoryDivergenceAccessor(string repoId, Repository repo, string key)
             : base(repoId, repo)
         {
-            Contract.Requires(branchesSha != null);
+            Contract.Requires(key != null);
 
-            this.branchesSha = branchesSha;
+            this.key = key;
         }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(branchesSha);
+            return GetCacheKey(key);
         }
 
         protected override void Init()
@@ -65,19 +65,6 @@ namespace GitCandy.Git
                 }
             }
             resultDone = true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as HistoryDivergenceAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && branchesSha == accessor.branchesSha;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(HistoryDivergenceAccessor).GetHashCode() ^ (repoId + branchesSha).GetHashCode();
         }
     }
 }

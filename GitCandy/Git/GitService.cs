@@ -130,7 +130,7 @@ namespace GitCandy.Git
             model.Entries = entries;
             model.Readme = entries.FirstOrDefault(s => s.EntryType == TreeEntryTargetType.Blob
                 && (string.Equals(s.Name, "readme", StringComparison.OrdinalIgnoreCase)
-                //|| string.Equals(s.Name, "readme.txt", StringComparison.OrdinalIgnoreCase)
+                    //|| string.Equals(s.Name, "readme.txt", StringComparison.OrdinalIgnoreCase)
                     || string.Equals(s.Name, "readme.md", StringComparison.OrdinalIgnoreCase)));
 
             if (model.Readme != null)
@@ -418,8 +418,8 @@ namespace GitCandy.Git
             if (head.Tip == null)
                 return new BranchesModel();
 
-            var sha = CalcBranchesSha();
-            var accessor = GitCacheAccessor.Singleton(new HistoryDivergenceAccessor(_repoId, _repository, sha));
+            var key = CalcBranchesKey();
+            var accessor = GitCacheAccessor.Singleton(new HistoryDivergenceAccessor(_repoId, _repository, key));
             var aheadBehinds = accessor.Result.Value;
             var model = new BranchesModel
             {
@@ -456,27 +456,29 @@ namespace GitCandy.Git
             if (commit == null)
                 return null;
 
-            var contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, commit, UserConfiguration.Current.NumberOfRepositoryContributors));
-            var contributors = contributorsAccessor.Result.Value.Item1;
+            var contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, commit));
+            var contributors = contributorsAccessor.Result.Value;
+            contributors.OrderedCommits = contributors.OrderedCommits
+                .Take(UserConfiguration.Current.NumberOfRepositoryContributors)
+                .ToArray();
             var statistics = new RepositoryStatisticsModel();
-            statistics.Current = contributorsAccessor.Result.Value.Item2;
+            statistics.Current = contributors;
             statistics.Current.Branch = referenceName;
 
             if (_repository.Head.Tip != commit)
             {
-                contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, _repository.Head.Tip, UserConfiguration.Current.NumberOfRepositoryContributors));
-                statistics.Default = contributorsAccessor.Result.Value.Item2;
+                contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, _repository.Head.Tip));
+                statistics.Default = contributorsAccessor.Result.Value;
                 statistics.Default.Branch = _repository.Head.Name;
             }
 
-            var sha = CalcBranchesSha(true);
-            var repositorySizeAccessor = GitCacheAccessor.Singleton(new RepositorySizeAccessor(_repoId, _repository, sha));
+            var key = CalcBranchesKey(true);
+            var repositorySizeAccessor = GitCacheAccessor.Singleton(new RepositorySizeAccessor(_repoId, _repository, key));
             statistics.RepositorySize = repositorySizeAccessor.Result.Value;
 
             var model = new ContributorsModel
             {
                 RepositoryName = Name,
-                Contributors = contributors,
                 Statistics = statistics,
             };
             return model;
@@ -628,7 +630,7 @@ namespace GitCandy.Git
             }
         }
 
-        private string CalcBranchesSha(bool includeTags = false)
+        private string CalcBranchesKey(bool includeTags = false)
         {
             var sb = new StringBuilder();
             var head = _repository.Head;
@@ -655,7 +657,7 @@ namespace GitCandy.Git
                         sb.Append(tag.Target.Sha);
                 }
             }
-            return sb.ToString().CalcSha();
+            return sb.ToString();
         }
 
         private Signature CreateSafeSignature(string name, string email, DateTimeOffset when)

@@ -11,7 +11,8 @@ namespace GitCandy.Git
     public class ScopeAccessor : GitCacheAccessor<RepositoryScope, ScopeAccessor>
     {
         private readonly Commit commit;
-        private readonly string key1, key2, path;
+        private readonly string path;
+        private readonly bool pathExist;
 
         public ScopeAccessor(string repoId, Repository repo, Commit commit, string path = "")
             : base(repoId, repo)
@@ -20,15 +21,12 @@ namespace GitCandy.Git
 
             this.commit = commit;
             this.path = path;
-            this.key1 = commit.Sha;
-            var tree = commit[path];
-            if (tree != null)
-                this.key2 = tree.Target.Sha;
+            this.pathExist = commit[path] != null;
         }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key1, key2);
+            return GetCacheKey(commit.Sha, path);
         }
 
         protected override void Init()
@@ -46,9 +44,9 @@ namespace GitCandy.Git
         {
             using (var repo = new Repository(this.repoPath))
             {
-                var ancestors = key2 == null
-                    ? repo.Commits.QueryBy(new CommitFilter { Since = commit })
-                    : repo.Commits.QueryBy(new CommitFilter { Since = commit }).PathFilter(path);
+                var ancestors = pathExist
+                    ? repo.Commits.QueryBy(new CommitFilter { Since = commit }).PathFilter(path)
+                    : repo.Commits.QueryBy(new CommitFilter { Since = commit });
 
                 var set = new HashSet<string>();
                 foreach (var ancestor in ancestors)
@@ -59,20 +57,6 @@ namespace GitCandy.Git
                 }
             }
             resultDone = true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as ScopeAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key1 == accessor.key1
-                && key2 == accessor.key2;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(ScopeAccessor).GetHashCode() ^ (repoId + key1 + key2).GetHashCode();
         }
     }
 }

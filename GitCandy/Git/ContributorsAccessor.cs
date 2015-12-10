@@ -8,31 +8,31 @@ using System.Linq;
 
 namespace GitCandy.Git
 {
-    public class ContributorsAccessor : GitCacheAccessor<Tuple<ContributorCommitsModel[], RepositoryStatisticsModel.Statistics>, ContributorsAccessor>
+    public class ContributorsAccessor : GitCacheAccessor<RepositoryStatisticsModel.Statistics, ContributorsAccessor>
     {
         private Commit commit;
         private string key;
-        private int numbers;
 
-        public ContributorsAccessor(string repoId, Repository repo, Commit commit, int numbersOfTopContributors)
+        public ContributorsAccessor(string repoId, Repository repo, Commit commit)
             : base(repoId, repo)
         {
             Contract.Requires(commit != null);
-            Contract.Requires(numbersOfTopContributors > 0);
 
             this.commit = commit;
             this.key = commit.Sha;
-            this.numbers = numbersOfTopContributors;
         }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key, numbers);
+            return GetCacheKey(key);
         }
 
         protected override void Init()
         {
-            result = Tuple.Create(new ContributorCommitsModel[0], new RepositoryStatisticsModel.Statistics());
+            result = new RepositoryStatisticsModel.Statistics
+            {
+                OrderedCommits = new RepositoryStatisticsModel.ContributorCommits[0]
+            };
         }
 
         protected override void Calculate()
@@ -47,7 +47,7 @@ namespace GitCandy.Git
                 var statistics = new RepositoryStatisticsModel.Statistics();
                 foreach (var ancestor in ancestors)
                 {
-                    statistics.Commits++;
+                    statistics.NumberOfCommits++;
                     var author = ancestor.Author.ToString();
                     if (dict.ContainsKey(author))
                     {
@@ -56,20 +56,21 @@ namespace GitCandy.Git
                     else
                     {
                         dict.Add(author, 1);
-                        statistics.Contributors++;
+                        statistics.NumberOfContributors++;
                     }
                 }
                 var size = 0;
-                statistics.Files = FilesInCommit(commit, out size);
-                statistics.SourceSize = size;
+                statistics.NumberOfFiles = FilesInCommit(commit, out size);
+                statistics.SizeOfSource = size;
 
-                var topN = dict
+                var commits = dict
                     .OrderByDescending(s => s.Value)
-                    .Select(s => new ContributorCommitsModel { Author = s.Key, CommitsCount = s.Value })
-                    .Take(numbers)
+                    .Select(s => new RepositoryStatisticsModel.ContributorCommits { Author = s.Key, CommitsCount = s.Value })
                     .ToArray();
 
-                result = Tuple.Create(topN, statistics);
+                statistics.OrderedCommits = commits;
+
+                result = statistics;
                 resultDone = true;
             }
         }
@@ -97,19 +98,6 @@ namespace GitCandy.Git
                     }
             }
             return count;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as ContributorsAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key == accessor.key;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(ContributorsAccessor).GetHashCode() ^ (repoId + key).GetHashCode();
         }
     }
 }

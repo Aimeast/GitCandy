@@ -96,10 +96,7 @@ namespace GitCandy.Extensions
             var sha = new SHA1CryptoServiceProvider();
             var data = Encoding.UTF8.GetBytes(str);
             data = sha.ComputeHash(data);
-            str = "";
-            foreach (var b in data)
-                str += b.ToString("x2");
-            return str;
+            return data.BytesToString();
         }
 
         public static string RepetitionIfEmpty(this string str, string repetition)
