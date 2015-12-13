@@ -382,6 +382,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedules\IJob.cs" />
     <Compile Include="Schedules\JobContext.cs" />
+    <Compile Include="Schedules\JobType.cs" />
     <Compile Include="Schedules\LogJob.cs" />
     <Compile Include="Schedules\Runner.cs" />
     <Compile Include="Schedules\Scheduler.cs" />

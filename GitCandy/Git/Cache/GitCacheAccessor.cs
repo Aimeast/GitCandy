@@ -98,7 +98,7 @@ namespace GitCandy.Git.Cache
                     Logger.Info("Delete cache directory {0}", dir);
                     Directory.Delete(dir, true);
                 }
-            }, 60));
+            }, JobType.LongRunning));
 
             enabled = true;
         }
@@ -126,7 +126,7 @@ namespace GitCandy.Git.Cache
                         Directory.Delete(path, true);
                 }
 
-            }, 60));
+            }, JobType.LongRunning));
         }
 
         protected void RemoveFromRunningPool()
@@ -143,7 +143,7 @@ namespace GitCandy.Git.Cache
         {
             var loaded = enabled && Load();
             task = loaded
-                ? Task.Run(() => { })
+                ? new Task(() => { })
                 : new Task(() =>
                 {
                     try
@@ -164,16 +164,17 @@ namespace GitCandy.Git.Cache
                 RemoveFromRunningPool();
             });
 
-            if (!loaded)
+            if (loaded)
             {
-                if (IsAsync)
-                {
-                    Scheduler.Instance.AddJob(new SingleJob(task));
-                }
-                else
-                {
-                    task.Start();
-                }
+                task.Start();
+            }
+            else if (IsAsync)
+            {
+                Scheduler.Instance.AddJob(new SingleJob(task));
+            }
+            else
+            {
+                task.Start();
             }
         }
 
@@ -200,12 +201,12 @@ namespace GitCandy.Git.Cache
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            throw new NotImplementedException("Must override this method");
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            throw new NotImplementedException("Must override this method");
         }
     }
 
