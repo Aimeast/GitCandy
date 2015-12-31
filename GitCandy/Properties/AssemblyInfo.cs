@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("GitCandy")]
-[assembly: AssemblyCopyright("Copyright © 2013-2014")]
+[assembly: AssemblyCopyright("Copyright © 2013-2016")]
 
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]

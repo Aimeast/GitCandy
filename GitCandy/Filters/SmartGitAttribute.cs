@@ -84,7 +84,7 @@ namespace GitCandy.Filters
             if (controller == null || controller.Token == null)
             {
                 filterContext.HttpContext.Response.Clear();
-                filterContext.HttpContext.Response.AddHeader("WWW-Authenticate", "Basic realm=\"Git Candy\"");
+                filterContext.HttpContext.Response.AddHeader("WWW-Authenticate", "Basic realm=\"GitCandy\"");
                 filterContext.Result = new HttpUnauthorizedResult();
             }
             else

@@ -220,7 +220,7 @@
     <value>SSH</value>
   </data>
   <data name="Home_AboutDescription" xml:space="preserve">
-    <value>Git Candy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
+    <value>GitCandy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
 
 演示地址：[http://gitcandy.com]()
 
@@ -563,7 +563,7 @@
     <value>添加</value>
   </data>
   <data name="Shared_AppTitle" xml:space="preserve">
-    <value>Git Candy</value>
+    <value>GitCandy</value>
   </data>
   <data name="Shared_Back" xml:space="preserve">
     <value>返回</value>
@@ -629,7 +629,7 @@
     <value>团队</value>
   </data>
   <data name="Shared_TitleFormat" xml:space="preserve">
-    <value>{0} - Git Candy</value>
+    <value>{0} - GitCandy</value>
   </data>
   <data name="Shared_Users" xml:space="preserve">
     <value>用户</value>

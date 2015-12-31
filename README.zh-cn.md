@@ -1,36 +1,36 @@
 ﻿## GitCandy
-GitCandy© is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
+GitCandy© 是一个基于 ASP.NET MVC 的 [Git](http://git-scm.com/documentation) 版本控制服务端，支持公有和私有代码库，可不受限制的创建代码代码库，随时随地的与团队进行协作。
 
-Visit a demo on [http://gitcandy.com](http://gitcandy.com).
+演示网站：[http://gitcandy.com](http://gitcandy.com)
 
-Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com/Aimeast/GitCandy).
+源代码： [http://github.com/Aimeast/GitCandy](http://github.com/Aimeast/GitCandy)
 
 ---
-### Prerequisites
+### 系统要求
 * [IIS 7.0](http://www.iis.net/learn)
 * [.NET Framework 4.5](http://www.microsoft.com/en-us/download/details.aspx?id=30653)
 * [ASP.NET MVC 5](http://www.asp.net/mvc/tutorials/mvc-5)
 * [Git](http://git-for-windows.github.io/)
-* [Sqlite](http://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki) or [Sql Server](http://www.microsoft.com/en-us/sqlserver/get-sql-server/try-it.aspx)
+* [Sqlite](http://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki) 或 [Sql Server](http://www.microsoft.com/en-us/sqlserver/get-sql-server/try-it.aspx)
 
 ---
-### Installation
-* Download last [release](http://github.com/Aimeast/GitCandy/releases) or build [dev](http://github.com/Aimeast/GitCandy/dev) branch by yourself
-* Create a web site on IIS, copy binary and resource files to site path
-* Copy `GitCandy\bin\[NativeBinaries & x86 & x64]` folders to destination if you are publishing the website
-* Create a database by `/Sql/Create.[Sqlite | MsSql].sql`, copy database file to `App_Data` folder if any
-* Update connection string in `Web.config` file
-* Prepare two folders for storage `Repositories` and `Cache`
-* Navigate to your site and login with default username `admin`, password `gitcandy`
-* Go to `Settings` page for set folders path of `Repositories`, `Cache` and `git-core`
-* You are recommended to set `<compilation debug="false" />` in `Web.config`
+### 安装
+* 下载最新[发布](http://github.com/Aimeast/GitCandy/releases)的版本或自己编译最新的[dev](http://github.com/Aimeast/GitCandy/dev)分支源码
+* 在IIS创建一个站点，并把二进制文件和资源文件复制到站点目录
+* 如果用了 Visual Studio 的发布功能，还要复制`GitCandy\bin\[NativeBinaries & x86 & x64]`文件夹到站点目录
+* 用`/Sql/Create.[Sqlite | MsSql].sql`脚本创建一个数据库。如果创建的是Sqlite数据库，还需把数据库文件复制到`App_Data`文件夹
+* 更新`Web.config`文件的数据库连接串
+* 准备两个文件夹分别用来存储`代码库`和`缓存`
+* 打开新建的站点，默认登录用户名是`admin`，密码是`gitcandy`
+* 转到`设置`页面，分别设置`代码库`，`缓存`和`git-core`的路径
+* 推荐在`Web.config`设置`<compilation debug="false" />`
 
-##### *note*
-* The `Repositories` or `Cache` path looks like `x:\Repos` or `x:\Cache`
-* The `git-core` path looks like `x:\PortableGit\libexec\git-core` or `x:\PortableGit\mingw64\libexec\git-core`
+##### *注*
+* `代码库`和`缓存`路径示例：`x:\Repos`，`x:\Cache`
+* `git-core`路径示例：`x:\PortableGit\libexec\git-core`，`x:\PortableGit\mingw64\libexec\git-core`
 
 ---
-### Thanks for (alphabet)
+### 鸣谢 (按字母序)
 * [ASP.NET MVC](http://aspnetwebstack.codeplex.com/) @ [Apache License 2.0](http://aspnetwebstack.codeplex.com/license)
 * [Bootstrap](http://github.com/twbs/bootstrap) @ [MIT License](http://github.com/twbs/bootstrap/blob/master/LICENSE)
 * [Bootstrap-switch](http://github.com/nostalgiaz/bootstrap-switch) @ [Apache License 2.0](http://github.com/nostalgiaz/bootstrap-switch/blob/master/LICENSE)
@@ -45,5 +45,5 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
 * [ZeroClipboard](http://github.com/zeroclipboard/zeroclipboard) @ [MIT License](http://github.com/zeroclipboard/zeroclipboard/blob/master/LICENSE)
 
 ---
-### License
-The MIT license
+### 协议
+MIT 协议
