@@ -45,8 +45,8 @@ namespace GitCandy.Git
             using (var repo = new Repository(this.repoPath))
             {
                 var ancestors = pathExist
-                    ? repo.Commits.QueryBy(new CommitFilter { Since = commit }).PathFilter(path)
-                    : repo.Commits.QueryBy(new CommitFilter { Since = commit });
+                    ? repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = commit }).PathFilter(path)
+                    : repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = commit });
 
                 var set = new HashSet<string>();
                 foreach (var ancestor in ancestors)

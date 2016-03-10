@@ -51,7 +51,7 @@ namespace GitCandy.Git
             using (var repo = new Repository(this.repoPath))
             {
                 var ancestors = repo.Commits
-                    .QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological });
+                    .QueryBy(new CommitFilter { IncludeReachableFrom = commit, SortBy = CommitSortStrategies.Topological });
 
                 // null, continue search current reference
                 // true, have found, done

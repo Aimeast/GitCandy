@@ -43,7 +43,7 @@ namespace GitCandy.Git
             using (var repo = new Repository(this.repoPath))
             {
                 result = repo.Commits
-                    .QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological | CommitSortStrategies.Time })
+                    .QueryBy(new CommitFilter { IncludeReachableFrom = commit, SortBy = CommitSortStrategies.Topological | CommitSortStrategies.Time })
                     .PathFilter(path)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)

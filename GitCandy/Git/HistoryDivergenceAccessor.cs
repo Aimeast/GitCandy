@@ -29,7 +29,7 @@ namespace GitCandy.Git
                 return;
 
             result = repo.Branches
-                .Where(s => s != head && s.Name != "HEAD")
+                .Where(s => s != head && s.FriendlyName != "HEAD")
                 .OrderByDescending(s => s.Tip.Author.When)
                 .Select(branch =>
                 {
@@ -38,7 +38,7 @@ namespace GitCandy.Git
                     {
                         Ahead = 0,
                         Behind = 0,
-                        Name = branch.Name,
+                        Name = branch.FriendlyName,
                         CommitSha = commit.Sha,
                         AuthorName = commit.Author.Name,
                         AuthorEmail = commit.Author.Email,

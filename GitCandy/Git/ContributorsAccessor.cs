@@ -41,7 +41,7 @@ namespace GitCandy.Git
             {
                 var commit = repo.Lookup<Commit>(key);
                 var ancestors = repo.Commits
-                    .QueryBy(new CommitFilter { Since = commit });
+                    .QueryBy(new CommitFilter { IncludeReachableFrom = commit });
 
                 var dict = new Dictionary<string, int>();
                 var statistics = new RepositoryStatisticsModel.Statistics();
@@ -59,7 +59,7 @@ namespace GitCandy.Git
                         statistics.NumberOfContributors++;
                     }
                 }
-                var size = 0;
+                var size = 0L;
                 statistics.NumberOfFiles = FilesInCommit(commit, out size);
                 statistics.SizeOfSource = size;
 
@@ -75,11 +75,13 @@ namespace GitCandy.Git
             }
         }
 
-        private int FilesInCommit(Commit commit, out int sourceSize)
+        private int FilesInCommit(Commit commit, out long sourceSize)
         {
             var count = 0;
             var stack = new Stack<Tree>();
             sourceSize = 0;
+
+            var repo = ((IBelongToARepository)commit).Repository;
 
             stack.Push(commit.Tree);
             while (stack.Count != 0)
@@ -90,7 +92,7 @@ namespace GitCandy.Git
                     {
                         case TreeEntryTargetType.Blob:
                             count++;
-                            sourceSize += ((Blob)entry.Target).Size;
+                            sourceSize += repo.ObjectDatabase.RetrieveObjectMetadata(entry.Target.Id).Size;
                             break;
                         case TreeEntryTargetType.Tree:
                             stack.Push((Tree)entry.Target);
