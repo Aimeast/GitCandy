@@ -6,7 +6,6 @@ using GitCandy.Models;
 using LibGit2Sharp;
 using System;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,13 +26,18 @@ namespace GitCandy.Git
         public Encoding I18n { get { return _i18n.Value; } }
         public string Name { get; private set; }
 
-        public GitService(string path)
+        public GitService(string name)
         {
-            if (!Repository.IsValid(path))
-                throw new RepositoryNotFoundException(String.Format(CultureInfo.InvariantCulture, "Path '{0}' doesn't point at a valid Git repository or workdir.", path));
+            var info = GetDirectoryInfo(name);
+            _repositoryPath = info.FullName;
+            _repoId = Name = info.Name;
 
-            _repositoryPath = path;
-            _repository = new Repository(path);
+            if (!Repository.IsValid(_repositoryPath))
+            {
+                CreateRepository(name);
+            }
+
+            _repository = new Repository(_repositoryPath);
             _i18n = new Lazy<Encoding>(() =>
             {
                 var entry = _repository.Config.Get<string>("i18n.commitEncoding");
@@ -41,7 +45,6 @@ namespace GitCandy.Git
                     ? null
                     : CpToEncoding(entry.Value);
             });
-            _repoId = Name = new DirectoryInfo(path).Name;
         }
 
         #region Git Smart HTTP Transport
@@ -736,7 +739,7 @@ namespace GitCandy.Git
             return retry > 0;
         }
 
-        public static DirectoryInfo GetDirectoryInfo(string project)
+        private static DirectoryInfo GetDirectoryInfo(string project)
         {
             return new DirectoryInfo(Path.Combine(UserConfiguration.Current.RepositoryPath, project));
         }

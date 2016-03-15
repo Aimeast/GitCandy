@@ -79,7 +79,7 @@ namespace GitCandy.Controllers
             var model = RepositoryService.GetRepositoryModel(name, true, Token == null ? null : Token.Username);
             if (model == null)
                 throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 model.DefaultBranch = git.GetHeadBranch();
             }
@@ -92,7 +92,7 @@ namespace GitCandy.Controllers
             var model = RepositoryService.GetRepositoryModel(name, username: Token.Username);
             if (model == null)
                 throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 model.DefaultBranch = git.GetHeadBranch();
                 model.LocalBranches = git.GetLocalBranches();
@@ -111,7 +111,7 @@ namespace GitCandy.Controllers
             {
                 if (!RepositoryService.Update(model))
                     throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
-                using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+                using (var git = new GitService(name))
                 {
                     git.SetHeadBranch(model.DefaultBranch);
                 }
@@ -209,7 +209,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Tree(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetTree(path);
                 if (model == null)
@@ -231,7 +231,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Blob(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetBlob(path);
                 if (model == null)
@@ -244,7 +244,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Blame(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetBlame(path);
                 if (model == null)
@@ -257,7 +257,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Raw(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetBlob(path);
                 if (model == null)
@@ -272,7 +272,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Commit(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetCommit(path);
                 if (model == null)
@@ -285,7 +285,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Compare(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var start = "";
                 var end = "";
@@ -314,7 +314,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Commits(string name, string path, int? page)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetCommits(path, page ?? 1, UserConfiguration.Current.NumberOfCommitsPerPage);
                 if (model == null)
@@ -334,7 +334,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Archive(string name, string path, string eol = null)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 string newline = null;
                 switch (eol)
@@ -368,7 +368,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Tags(string name)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetTags();
                 if (model == null)
@@ -384,7 +384,7 @@ namespace GitCandy.Controllers
         [ReadRepository(requireWrite: true)]
         public ActionResult Tags(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 git.DeleteTag(path);
                 return Json("success");
@@ -394,7 +394,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Branches(string name)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetBranches();
                 if (model == null)
@@ -410,7 +410,7 @@ namespace GitCandy.Controllers
         [ReadRepository(requireWrite: true)]
         public JsonResult Branches(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 git.DeleteBranch(path);
                 return Json("success");
@@ -420,7 +420,7 @@ namespace GitCandy.Controllers
         [ReadRepository]
         public ActionResult Contributors(string name, string path)
         {
-            using (var git = new GitService(GitService.GetDirectoryInfo(name).FullName))
+            using (var git = new GitService(name))
             {
                 var model = git.GetContributors(path);
                 if (model == null)

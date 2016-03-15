@@ -45,7 +45,7 @@ namespace GitCandy.Controllers
 
             try
             {
-                using (var git = new GitService(GitService.GetDirectoryInfo(project).FullName))
+                using (var git = new GitService(project))
                 {
                     var svc = service.Substring(4);
                     git.InfoRefs(svc, GetInputStream(), Response.OutputStream);
@@ -70,7 +70,7 @@ namespace GitCandy.Controllers
 
             try
             {
-                using (var git = new GitService(GitService.GetDirectoryInfo(project).FullName))
+                using (var git = new GitService(project))
                 {
                     var svc = service.Substring(4);
                     git.ExecutePack(svc, GetInputStream(), Response.OutputStream);
