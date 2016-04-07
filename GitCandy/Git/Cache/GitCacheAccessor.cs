@@ -66,6 +66,9 @@ namespace GitCandy.Git.Cache
             if (string.IsNullOrEmpty(cachePath))
                 return;
 
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
+
             var expectation = GetExpectation();
             var reality = new string[accessors.Length];
             var filename = Path.Combine(cachePath, "version");

@@ -288,8 +288,13 @@
     <Compile Include="Base\StringLogicalComparer.cs" />
     <Compile Include="Configuration\ConfigurationEntry.cs" />
     <Compile Include="Configuration\ConfigurationKeyAttribute.cs" />
+    <Compile Include="Configuration\GitCoreResloverAttribute.cs" />
     <Compile Include="Configuration\HostKey.cs" />
+    <Compile Include="Configuration\HostKeyResloverAttribute.cs" />
     <Compile Include="Configuration\RecommendedValueAttribute.cs" />
+    <Compile Include="Configuration\RecommendedValueResloverAttribute.cs" />
+    <Compile Include="Configuration\StoragePathType.cs" />
+    <Compile Include="Configuration\StoragePathResloverAttribute.cs" />
     <Compile Include="Configuration\UserConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CandyControllerBase.cs" />

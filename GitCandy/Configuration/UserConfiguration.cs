@@ -28,10 +28,13 @@ namespace GitCandy.Configuration
         [RecommendedValue(true)]
         public bool AllowRepositoryCreation { get; set; }
 
+        [StoragePathReslover(StoragePathType.Repository)]
         public string RepositoryPath { get; set; }
 
+        [StoragePathReslover(StoragePathType.Cache)]
         public string CachePath { get; set; }
 
+        [GitCoreReslover]
         public string GitCorePath { get; set; }
 
         [RecommendedValue(30)]
@@ -49,6 +52,7 @@ namespace GitCandy.Configuration
         [RecommendedValue(true)]
         public bool EnableSsh { get; set; }
 
+        [HostKeyReslover]
         public List<HostKey> HostKeys { get; set; }
     }
 }
