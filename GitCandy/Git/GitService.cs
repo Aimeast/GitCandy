@@ -2,15 +2,10 @@
 using GitCandy.Configuration;
 using GitCandy.Extensions;
 using GitCandy.Git.Cache;
-using GitCandy.Log;
 using GitCandy.Models;
-using GitCandy.Schedules;
-using ICSharpCode.SharpZipLib.Zip;
 using LibGit2Sharp;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,13 +26,18 @@ namespace GitCandy.Git
         public Encoding I18n { get { return _i18n.Value; } }
         public string Name { get; private set; }
 
-        public GitService(string path)
+        public GitService(string name)
         {
-            if (!Repository.IsValid(path))
-                throw new RepositoryNotFoundException(String.Format(CultureInfo.InvariantCulture, "Path '{0}' doesn't point at a valid Git repository or workdir.", path));
+            var info = GetDirectoryInfo(name);
+            _repositoryPath = info.FullName;
+            _repoId = Name = info.Name;
 
-            _repositoryPath = path;
-            _repository = new Repository(path);
+            if (!Repository.IsValid(_repositoryPath))
+            {
+                CreateRepository(name);
+            }
+
+            _repository = new Repository(_repositoryPath);
             _i18n = new Lazy<Encoding>(() =>
             {
                 var entry = _repository.Config.Get<string>("i18n.commitEncoding");
@@ -45,7 +45,6 @@ namespace GitCandy.Git
                     ? null
                     : CpToEncoding(entry.Value);
             });
-            _repoId = Name = new DirectoryInfo(path).Name;
         }
 
         #region Git Smart HTTP Transport
@@ -76,7 +75,7 @@ namespace GitCandy.Git
                         ?? _repository.Branches.FirstOrDefault();
                     return new TreeModel
                     {
-                        ReferenceName = branch == null ? "HEAD" : branch.Name,
+                        ReferenceName = branch == null ? "HEAD" : branch.FriendlyName,
                     };
                 }
                 return null;
@@ -130,7 +129,7 @@ namespace GitCandy.Git
             model.Entries = entries;
             model.Readme = entries.FirstOrDefault(s => s.EntryType == TreeEntryTargetType.Blob
                 && (string.Equals(s.Name, "readme", StringComparison.OrdinalIgnoreCase)
-                //|| string.Equals(s.Name, "readme.txt", StringComparison.OrdinalIgnoreCase)
+                    //|| string.Equals(s.Name, "readme.txt", StringComparison.OrdinalIgnoreCase)
                     || string.Equals(s.Name, "readme.md", StringComparison.OrdinalIgnoreCase)));
 
             if (model.Readme != null)
@@ -269,16 +268,21 @@ namespace GitCandy.Git
             if (commit1 == null)
             {
                 commit1 = _repository.Head.Tip;
-                name1 = _repository.Head.Name;
+                name1 = _repository.Head.FriendlyName;
             }
             if (commit2 == null)
             {
                 commit2 = _repository.Head.Tip;
-                name2 = _repository.Head.Name;
+                name2 = _repository.Head.FriendlyName;
             }
 
             var walks = _repository.Commits
-                .QueryBy(new CommitFilter { Since = commit2, Until = commit1, SortBy = CommitSortStrategies.Time })
+                .QueryBy(new CommitFilter
+                {
+                    IncludeReachableFrom = commit2,
+                    ExcludeReachableFrom = commit1,
+                    SortBy = CommitSortStrategies.Time
+                })
                 .Select(s => new CommitModel
                 {
                     Sha = s.Sha,
@@ -401,7 +405,7 @@ namespace GitCandy.Git
                         where commit != null
                         select new TagModel
                         {
-                            ReferenceName = tag.Name,
+                            ReferenceName = tag.FriendlyName,
                             Sha = tag.Target.Sha,
                             When = ((Commit)tag.Target).Author.When,
                             MessageShort = ((Commit)tag.Target).MessageShort.RepetitionIfEmpty(UnknowString),
@@ -418,12 +422,12 @@ namespace GitCandy.Git
             if (head.Tip == null)
                 return new BranchesModel();
 
-            var sha = CalcBranchesSha();
-            var accessor = GitCacheAccessor.Singleton(new HistoryDivergenceAccessor(_repoId, _repository, sha));
+            var key = CalcBranchesKey();
+            var accessor = GitCacheAccessor.Singleton(new HistoryDivergenceAccessor(_repoId, _repository, key));
             var aheadBehinds = accessor.Result.Value;
             var model = new BranchesModel
             {
-                Commit = ToCommitModel(head.Tip, head.Name),
+                Commit = ToCommitModel(head.Tip, head.FriendlyName),
                 AheadBehinds = aheadBehinds.Select(s => new AheadBehindModel
                 {
                     Ahead = s.Ahead,
@@ -444,6 +448,11 @@ namespace GitCandy.Git
             _repository.Branches.Remove(branch);
         }
 
+        public void DeleteTag(string tag)
+        {
+            _repository.Tags.Remove(tag);
+        }
+
         public ContributorsModel GetContributors(string path)
         {
             string referenceName;
@@ -451,27 +460,29 @@ namespace GitCandy.Git
             if (commit == null)
                 return null;
 
-            var contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, commit, UserConfiguration.Current.NumberOfRepositoryContributors));
-            var contributors = contributorsAccessor.Result.Value.Item1;
+            var contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, commit));
+            var contributors = contributorsAccessor.Result.Value;
+            contributors.OrderedCommits = contributors.OrderedCommits
+                .Take(UserConfiguration.Current.NumberOfRepositoryContributors)
+                .ToArray();
             var statistics = new RepositoryStatisticsModel();
-            statistics.Current = contributorsAccessor.Result.Value.Item2;
+            statistics.Current = contributors;
             statistics.Current.Branch = referenceName;
 
             if (_repository.Head.Tip != commit)
             {
-                contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, _repository.Head.Tip, UserConfiguration.Current.NumberOfRepositoryContributors));
-                statistics.Default = contributorsAccessor.Result.Value.Item2;
-                statistics.Default.Branch = _repository.Head.Name;
+                contributorsAccessor = GitCacheAccessor.Singleton(new ContributorsAccessor(_repoId, _repository, _repository.Head.Tip));
+                statistics.Default = contributorsAccessor.Result.Value;
+                statistics.Default.Branch = _repository.Head.FriendlyName;
             }
 
-            var sha = CalcBranchesSha(true);
-            var repositorySizeAccessor = GitCacheAccessor.Singleton(new RepositorySizeAccessor(_repoId, _repository, sha));
+            var key = CalcBranchesKey(true);
+            var repositorySizeAccessor = GitCacheAccessor.Singleton(new RepositorySizeAccessor(_repoId, _repository, key));
             statistics.RepositorySize = repositorySizeAccessor.Result.Value;
 
             var model = new ContributorsModel
             {
                 RepositoryName = Name,
-                Contributors = contributors,
                 Statistics = statistics,
             };
             return model;
@@ -484,12 +495,12 @@ namespace GitCandy.Git
             var head = _repository.Head;
             if (head == null)
                 return null;
-            return head.Name;
+            return head.FriendlyName;
         }
 
         public string[] GetLocalBranches()
         {
-            return _repository.Branches.Select(s => s.Name).OrderBy(s => s, new StringLogicalComparer()).ToArray();
+            return _repository.Branches.Select(s => s.FriendlyName).OrderBy(s => s, new StringLogicalComparer()).ToArray();
         }
 
         public bool SetHeadBranch(string name)
@@ -508,8 +519,8 @@ namespace GitCandy.Git
         {
             var model = new BranchSelectorModel
             {
-                Branches = _repository.Branches.Select(s => s.Name).OrderBy(s => s, new StringLogicalComparer()).ToList(),
-                Tags = _repository.Tags.Select(s => s.Name).OrderByDescending(s => s, new StringLogicalComparer()).ToList(),
+                Branches = _repository.Branches.Select(s => s.FriendlyName).OrderBy(s => s, new StringLogicalComparer()).ToList(),
+                Tags = _repository.Tags.Select(s => s.FriendlyName).OrderByDescending(s => s, new StringLogicalComparer()).ToList(),
                 Current = referenceName ?? refer.ToShortSha(),
                 Path = path,
             };
@@ -524,25 +535,25 @@ namespace GitCandy.Git
 
             if (string.IsNullOrEmpty(path))
             {
-                referenceName = _repository.Head.Name;
+                referenceName = _repository.Head.FriendlyName;
                 path = "";
                 return _repository.Head.Tip;
             }
 
             path = path + "/";
             var p = path;
-            var branch = _repository.Branches.FirstOrDefault(s => p.StartsWith(s.Name + "/"));
+            var branch = _repository.Branches.FirstOrDefault(s => p.StartsWith(s.FriendlyName + "/"));
             if (branch != null && branch.Tip != null)
             {
-                referenceName = branch.Name;
+                referenceName = branch.FriendlyName;
                 path = path.Substring(referenceName.Length).Trim('/');
                 return branch.Tip;
             }
 
-            var tag = _repository.Tags.FirstOrDefault(s => p.StartsWith(s.Name + "/"));
+            var tag = _repository.Tags.FirstOrDefault(s => p.StartsWith(s.FriendlyName + "/"));
             if (tag != null && tag.Target is Commit)
             {
-                referenceName = tag.Name;
+                referenceName = tag.FriendlyName;
                 path = path.Substring(referenceName.Length).Trim('/');
                 return (Commit)tag.Target;
             }
@@ -623,7 +634,7 @@ namespace GitCandy.Git
             }
         }
 
-        private string CalcBranchesSha(bool includeTags = false)
+        private string CalcBranchesKey(bool includeTags = false)
         {
             var sb = new StringBuilder();
             var head = _repository.Head;
@@ -650,7 +661,7 @@ namespace GitCandy.Git
                         sb.Append(tag.Target.Sha);
                 }
             }
-            return sb.ToString().CalcSha();
+            return sb.ToString();
         }
 
         private Signature CreateSafeSignature(string name, string email, DateTimeOffset when)
@@ -728,7 +739,7 @@ namespace GitCandy.Git
             return retry > 0;
         }
 
-        public static DirectoryInfo GetDirectoryInfo(string project)
+        private static DirectoryInfo GetDirectoryInfo(string project)
         {
             return new DirectoryInfo(Path.Combine(UserConfiguration.Current.RepositoryPath, project));
         }
@@ -743,7 +754,7 @@ namespace GitCandy.Git
                 args += " --advertise-refs";
             args += " \"" + _repositoryPath + "\"";
 
-            var info = new System.Diagnostics.ProcessStartInfo(UserConfiguration.Current.GitExePath, args)
+            var info = new System.Diagnostics.ProcessStartInfo(Path.Combine(UserConfiguration.Current.GitCorePath, "git.exe"), args)
             {
                 CreateNoWindow = true,
                 RedirectStandardError = true,
@@ -760,34 +771,6 @@ namespace GitCandy.Git
                 process.StandardOutput.BaseStream.CopyTo(outStream);
 
                 process.WaitForExit();
-            }
-        }
-
-        public static bool VerifyGit(string path)
-        {
-            var args = "--version";
-
-            var info = new System.Diagnostics.ProcessStartInfo(path, args)
-            {
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = Path.GetDirectoryName(UserConfiguration.Current.RepositoryPath),
-            };
-
-            try
-            {
-                using (var process = System.Diagnostics.Process.Start(info))
-                {
-                    var output = process.StandardOutput.ReadToEnd();
-                    return output.StartsWith("git version");
-                }
-            }
-            catch
-            {
-                return false;
             }
         }
         #endregion

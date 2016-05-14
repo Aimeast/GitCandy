@@ -15,6 +15,13 @@ namespace GitCandy.Models
         [Display(ResourceType = typeof(SR), Name = "Setting_SslPort")]
         public int SslPort { get; set; }
 
+        [Range(1, 65534, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_NumberRange")]
+        [Display(ResourceType = typeof(SR), Name = "Setting_SshPort")]
+        public int SshPort { get; set; }
+
+        [Display(ResourceType = typeof(SR), Name = "Setting_EnableSsh")]
+        public bool EnableSsh { get; set; }
+
         [Display(ResourceType = typeof(SR), Name = "Setting_LocalSkipCustomError")]
         public bool LocalSkipCustomError { get; set; }
 
@@ -30,8 +37,8 @@ namespace GitCandy.Models
         [Display(ResourceType = typeof(SR), Name = "Setting_CachePath")]
         public string CachePath { get; set; }
 
-        [Display(ResourceType = typeof(SR), Name = "Setting_GitExePath")]
-        public string GitExePath { get; set; }
+        [Display(ResourceType = typeof(SR), Name = "Setting_GitCorePath")]
+        public string GitCorePath { get; set; }
 
         [Range(5, 50, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_NumberRange")]
         [Display(ResourceType = typeof(SR), Name = "Setting_NumberOfCommitsPerPage")]

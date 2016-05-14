@@ -9,7 +9,6 @@ namespace GitCandy.Git
     {
         private readonly Commit commit;
         private readonly string path;
-        private readonly string key1, key2;
 
         public LastCommitAccessor(string repoId, Repository repo, Commit commit, string path)
             : base(repoId, repo)
@@ -22,13 +21,11 @@ namespace GitCandy.Git
             this.path = path;
 
             var treeEntry = commit[path];
-            this.key1 = commit.Sha;
-            this.key2 = treeEntry.Target.Sha;
         }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key1, key2);
+            return GetCacheKey(commit.Sha, path);
         }
 
         protected override void Init()
@@ -40,7 +37,7 @@ namespace GitCandy.Git
         {
             using (var repo = new Repository(this.repoPath))
             {
-                var commit = repo.Lookup<Commit>(key1);
+                var commit = repo.Lookup<Commit>(this.commit.Sha);
                 var treeEntry = commit[path];
                 if (treeEntry == null)
                 {
@@ -74,20 +71,6 @@ namespace GitCandy.Git
                 resultDone = true;
                 return;
             }
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as LastCommitAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key1 == accessor.key1
-                && path == accessor.path;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(LastCommitAccessor).GetHashCode() ^ (repoId + key1 + path).GetHashCode();
         }
     }
 }

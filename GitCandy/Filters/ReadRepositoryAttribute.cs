@@ -17,8 +17,6 @@ namespace GitCandy.Filters
             base.OnAuthorization(filterContext);
 
             var controller = filterContext.Controller as CandyControllerBase;
-            if (controller != null && controller.Token != null && controller.Token.IsSystemAdministrator)
-                return;
 
             var repoController = controller as RepositoryController;
             if (repoController != null)

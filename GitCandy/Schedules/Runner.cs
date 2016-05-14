@@ -7,7 +7,7 @@ namespace GitCandy.Schedules
 {
     internal sealed class Runner
     {
-        private readonly static int IntervalOfTask = Environment.ProcessorCount * 1000;
+        private readonly static int IntervalOfTask = 100;
 
         private readonly object _syncRoot = new object();
         private readonly Scheduler _scheduler;
@@ -17,10 +17,10 @@ namespace GitCandy.Schedules
         private CancellationTokenSource _tokenSource;
         private Task _task;
 
-        public Runner(Scheduler scheduler, RunnerType runnerType)
+        public Runner(Scheduler scheduler, JobType jobType)
         {
             _scheduler = scheduler;
-            RunnerType = runnerType;
+            JobType = jobType;
             ID = Interlocked.Increment(ref _id);
         }
 
@@ -39,7 +39,8 @@ namespace GitCandy.Schedules
         }
 
         public int ID { get; private set; }
-        public RunnerType RunnerType { get; private set; }
+        public JobType JobType { get; private set; }
+        public DateTime LastExecution { get; private set; }
 
         public void Stop()
         {
@@ -64,7 +65,7 @@ namespace GitCandy.Schedules
                 if (_tokenSource.IsCancellationRequested)
                     break;
 
-                var context = _scheduler.GetNextJobContext(RunnerType);
+                var context = _scheduler.GetNextJobContext(JobType);
                 if (context != null)
                 {
                     var jobName = context.Job.GetType().FullName;
@@ -73,12 +74,14 @@ namespace GitCandy.Schedules
                     try
                     {
                         var utcStart = DateTime.UtcNow;
+                        LastExecution = utcStart;
+
                         context.UtcStart = utcStart;
 
                         context.OnExecuting(this, context);
+                        context.ExecutionTimes++;
                         Logger.Info("Job {0} executing on runner #{1}", jobName, ID);
                         context.Job.Execute(context);
-                        context.ExecutionTimes++;
                         context.UtcLastEnd = DateTime.UtcNow;
                         context.UtcLastStart = utcStart;
                         context.UtcStart = null;
@@ -95,21 +98,12 @@ namespace GitCandy.Schedules
                     }
                     context.Scheduler.JobExecuted(context);
                 }
-
-                if (_tokenSource.IsCancellationRequested)
-                    break;
-
-                Task.Delay(IntervalOfTask).Wait();
+                else
+                    Task.Delay(IntervalOfTask).Wait();
             }
 
             _tokenSource = null;
             Logger.Info("Exit schedule runner #{0} loop", ID);
         }
-    }
-
-    internal enum RunnerType
-    {
-        RealTime,
-        LongRunning,
     }
 }

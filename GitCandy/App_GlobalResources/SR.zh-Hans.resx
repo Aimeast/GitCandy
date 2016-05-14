@@ -198,6 +198,9 @@
   <data name="Account_Repositories" xml:space="preserve">
     <value>代码库</value>
   </data>
+  <data name="Account_SshKeys" xml:space="preserve">
+    <value>SSH密钥</value>
+  </data>
   <data name="Account_Teams" xml:space="preserve">
     <value>团队</value>
   </data>
@@ -213,8 +216,11 @@
   <data name="Account_UsersFound" xml:space="preserve">
     <value>发现 {0} 个用户</value>
   </data>
+  <data name="Account_SSH" xml:space="preserve">
+    <value>SSH</value>
+  </data>
   <data name="Home_AboutDescription" xml:space="preserve">
-    <value>Git Candy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
+    <value>GitCandy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
 
 演示地址：[http://gitcandy.com]()
 
@@ -499,11 +505,14 @@
   <data name="Setting_EditTitle" xml:space="preserve">
     <value>设置</value>
   </data>
+  <data name="Setting_EnableSsh" xml:space="preserve">
+    <value>开启SSH</value>
+  </data>
   <data name="Setting_ForceSsl" xml:space="preserve">
     <value>强制使用HTTPS链接</value>
   </data>
-  <data name="Setting_GitExePath" xml:space="preserve">
-    <value>git.exe文件路径</value>
+  <data name="Setting_GitCorePath" xml:space="preserve">
+    <value>git-core文件夹路径</value>
   </data>
   <data name="Setting_IsPublicServer" xml:space="preserve">
     <value>是否为开放服务</value>
@@ -520,6 +529,15 @@
   <data name="Setting_NumberOfRepositoryContributors" xml:space="preserve">
     <value>显示参与者的条目数</value>
   </data>
+  <data name="Setting_ReGenSsh" xml:space="preserve">
+   <value>重新生成SSH密钥</value>
+  </data>
+  <data name="Setting_ReGenSshTitle" xml:space="preserve">
+    <value>确认重新生成SSH密钥</value>
+  </data>
+  <data name="Setting_ReGenSshWords" xml:space="preserve">
+    <value>你确定要重新生成SSH密钥吗？</value>
+  </data>
   <data name="Setting_RepositoryPath" xml:space="preserve">
     <value>代码库存储路径</value>
   </data>
@@ -528,6 +546,9 @@
   </data>
   <data name="Setting_RestartWords" xml:space="preserve">
     <value>你确认要重新本程序吗？</value>
+  </data>
+  <data name="Setting_SshPort" xml:space="preserve">
+    <value>SSH端口</value>
   </data>
   <data name="Setting_SslPort" xml:space="preserve">
     <value>HTTPS 链接端口号</value>
@@ -542,7 +563,7 @@
     <value>添加</value>
   </data>
   <data name="Shared_AppTitle" xml:space="preserve">
-    <value>Git Candy</value>
+    <value>GitCandy</value>
   </data>
   <data name="Shared_Back" xml:space="preserve">
     <value>返回</value>
@@ -561,6 +582,9 @@
   </data>
   <data name="Shared_Edit" xml:space="preserve">
     <value>编辑</value>
+  </data>
+  <data name="Shared_Generate" xml:space="preserve">
+    <value>生成</value>
   </data>
   <data name="Shared_Lanuages" xml:space="preserve">
     <value>语言</value>
@@ -605,7 +629,7 @@
     <value>团队</value>
   </data>
   <data name="Shared_TitleFormat" xml:space="preserve">
-    <value>{0} - Git Candy</value>
+    <value>{0} - GitCandy</value>
   </data>
   <data name="Shared_Users" xml:space="preserve">
     <value>用户</value>
@@ -687,5 +711,8 @@
   </data>
   <data name="Validation_StringLengthRange" xml:space="preserve">
     <value>"{0}" 必须介于 {1} 和 {2} 个字符之间</value>
+  </data>
+  <data name="Repository_TagDeletionWords" xml:space="preserve">
+    <value>你确认要删除标签 "{0}" 吗？</value>
   </data>
 </root>

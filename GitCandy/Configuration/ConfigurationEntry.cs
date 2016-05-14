@@ -63,7 +63,17 @@ namespace GitCandy.Configuration
             {
                 var attr = property.GetCustomAttributes(typeof(RecommendedValueAttribute), false).FirstOrDefault() as RecommendedValueAttribute;
                 if (attr != null)
+                {
                     property.SetValue(entry, attr.DefaultValue ?? attr.RecommendedValue);
+                    continue;
+                }
+
+                var reslover = property.GetCustomAttributes(typeof(RecommendedValueResloverAttribute), true).FirstOrDefault() as RecommendedValueResloverAttribute;
+                if (reslover != null)
+                {
+                    property.SetValue(entry, reslover.GetValue());
+                    continue;
+                }
             }
             entry.IsNew = true;
 

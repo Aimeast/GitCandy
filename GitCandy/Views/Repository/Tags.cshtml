@@ -16,6 +16,7 @@
                     <div class="span5">
                         <div class="span3 pull-right">
                             @Html.Partial("_ZipButton", tag.ReferenceName)
+                            @if (Model.CanDelete) { <a class="btn" data-tag="@tag.ReferenceName" href="#">@SR.Shared_Delete</a>}
                         </div>
                         <div>@Html.ActionLink(tag.ReferenceName, "Tree", Html.OverRoute(new { path = tag.ReferenceName ?? tag.Sha }))</div>
                         <div title="@tag.When">@tag.When.LocalDateTime.ToShortDateString()</div>
@@ -31,3 +32,10 @@
         <div>@SR.Repository_NoTags</div>
     }
 </div>
+
+<script type="text/javascript">
+    var deleteTag_params = {
+        words: '@Html.Raw(SR.Repository_TagDeletionWords)',
+        url: '@Url.Action("Tags", "Repository")'        
+    };
+</script>

@@ -26,9 +26,23 @@
         </div>
 
         <div class="row">
+            @Html.LabelFor(s => s.EnableSsh, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.EnableSsh)
+            </div>
+        </div>
+
+        <div class="row">
             @Html.LabelFor(s => s.SslPort, new { @class = "span4 text-right lead muted" })
             <span class="span1"></span>
             @Html.TextBoxFor(s => s.SslPort, new { @class = "span4 text-left lead" })
+        </div>
+
+        <div class="row">
+            @Html.LabelFor(s => s.SshPort, new { @class = "span4 text-right lead muted" })
+            <span class="span1"></span>
+            @Html.TextBoxFor(s => s.SshPort, new { @class = "span4 text-left lead" })
         </div>
 
         <div class="row">
@@ -68,9 +82,9 @@
         </div>
 
         <div class="row">
-            @Html.LabelFor(s => s.GitExePath, new { @class = "span4 text-right lead muted" })
+            @Html.LabelFor(s => s.GitCorePath, new { @class = "span4 text-right lead muted" })
             <span class="span1"></span>
-            @Html.TextBoxFor(s => s.GitExePath, new { @class = "span4 text-left lead" })
+            @Html.TextBoxFor(s => s.GitCorePath, new { @class = "span4 text-left lead" })
         </div>
 
         <div class="row">
@@ -99,6 +113,7 @@
         <div class="form-actions">
             <div class="pull-left">
                 @Html.ActionLink(SR.Shared_Restart, "Restart", null, new { @class = "btn" })
+                @Html.ActionLink(SR.Setting_ReGenSsh, "ReGenSsh", null, new { @class = "btn" })
             </div>
             <div class="pull-right">
                 <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>

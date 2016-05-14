@@ -13,7 +13,7 @@ namespace GitCandy.Git
     public class BlameAccessor : GitCacheAccessor<BlameHunkModel[], BlameAccessor>
     {
         private readonly Commit commit;
-        private readonly string key1, key2, path, code;
+        private readonly string path, code;
 
         public BlameAccessor(string repoId, Repository repo, Commit commit, string path, params Encoding[] encodings)
             : base(repoId, repo)
@@ -28,8 +28,6 @@ namespace GitCandy.Git
 
             this.commit = commit;
             this.path = path;
-            this.key1 = commit.Sha;
-            this.key2 = treeEntry.Target.Sha;
 
             var blob = (Blob)treeEntry.Target;
             var bytes = blob.GetContentStream().ToBytes();
@@ -37,9 +35,9 @@ namespace GitCandy.Git
             this.code = FileHelper.ReadToEnd(bytes, encoding);
         }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key1, key2);
+            return GetCacheKey(commit.Sha, path);
         }
 
         protected override void Init()
@@ -76,20 +74,6 @@ namespace GitCandy.Git
                 .ToArray();
             }
             resultDone = true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as BlameAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key1 == accessor.key1
-                && key2 == accessor.key2;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(BlameAccessor).GetHashCode() ^ (repoId + key1 + key2).GetHashCode();
         }
     }
 }

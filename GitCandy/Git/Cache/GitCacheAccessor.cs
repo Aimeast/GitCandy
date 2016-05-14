@@ -9,7 +9,6 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace GitCandy.Git.Cache
@@ -19,6 +18,8 @@ namespace GitCandy.Git.Cache
         protected static readonly Type[] accessors;
         protected static readonly object locker = new object();
         protected static readonly List<GitCacheAccessor> runningList = new List<GitCacheAccessor>();
+
+        protected static bool enabled;
 
         protected Task task;
 
@@ -59,26 +60,76 @@ namespace GitCandy.Git.Cache
 
         public static void Initialize()
         {
+            enabled = false;
+
             var cachePath = UserConfiguration.Current.CachePath;
-            DirectoryInfo info = new DirectoryInfo(cachePath);
-            if (!info.Exists)
-                info.Create();
+            if (string.IsNullOrEmpty(cachePath))
+                return;
 
-            var path = typeof(GitCacheAccessor).Assembly.Location;
-            var md5 = new MD5CryptoServiceProvider();
-            var data = md5.ComputeHash(File.ReadAllBytes(path));
-            var hash = data.BytesToString();
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
 
+            var expectation = GetExpectation();
+            var reality = new string[accessors.Length];
             var filename = Path.Combine(cachePath, "version");
-            if (!File.Exists(filename) || File.ReadAllText(filename) != hash)
+            if (File.Exists(filename))
             {
-                foreach (var dir in info.GetDirectories())
-                    dir.Delete(true);
-                foreach (var file in info.GetFiles())
-                    file.Delete();
-
-                File.WriteAllText(filename, hash);
+                var lines = File.ReadAllLines(filename);
+                Array.Copy(lines, reality, Math.Min(lines.Length, reality.Length));
             }
+
+            for (int i = 0; i < accessors.Length; i++)
+            {
+                if (reality[i] != expectation[i])
+                {
+                    var path = Path.Combine(cachePath, (i + 1).ToString());
+                    if (Directory.Exists(path))
+                    {
+                        var tmpPath = path + "." + DateTime.Now.Ticks + ".del";
+                        Directory.Move(path, tmpPath);
+                    }
+                }
+            }
+
+            File.WriteAllLines(filename, expectation);
+
+            Scheduler.Instance.AddJob(new SingleJob(() =>
+            {
+                var dirs = Directory.GetDirectories(cachePath, "*.del");
+                foreach (var dir in dirs)
+                {
+                    Logger.Info("Delete cache directory {0}", dir);
+                    Directory.Delete(dir, true);
+                }
+            }, JobType.LongRunning));
+
+            enabled = true;
+        }
+
+        private static string[] GetExpectation()
+        {
+            var assembly = typeof(AppInfomation).Assembly;
+            var name = assembly.GetManifestResourceNames().Single(s => s.EndsWith(".CacheVersion"));
+            using (var stream = assembly.GetManifestResourceStream(name))
+            using (var reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+
+        public static void Delete(string project)
+        {
+            Scheduler.Instance.AddJob(new SingleJob(() =>
+            {
+                var cachePath = UserConfiguration.Current.CachePath;
+                for (int i = 0; i < accessors.Length; i++)
+                {
+                    var path = Path.Combine(cachePath, (i + 1).ToString(), project);
+                    if (Directory.Exists(path))
+                        Directory.Delete(path, true);
+                }
+
+            }, JobType.LongRunning));
         }
 
         protected void RemoveFromRunningPool()
@@ -93,15 +144,16 @@ namespace GitCandy.Git.Cache
 
         protected virtual void LoadOrCalculate()
         {
-            var loaded = Load();
+            var loaded = enabled && Load();
             task = loaded
-                ? Task.Run(() => { })
+                ? new Task(() => { })
                 : new Task(() =>
                 {
                     try
                     {
                         Calculate();
-                        Save();
+                        if (enabled)
+                            Save();
                     }
                     catch (Exception ex)
                     {
@@ -109,23 +161,24 @@ namespace GitCandy.Git.Cache
                     }
                 });
 
-            if (!loaded)
-            {
-                if (IsAsync)
-                {
-                    Scheduler.Instance.AddJob(new SingleJob(task));
-                }
-                else
-                {
-                    task.Start();
-                }
-            }
-
             task.ContinueWith(t =>
             {
                 Task.Delay(TimeSpan.FromMinutes(1.0)).Wait();
                 RemoveFromRunningPool();
             });
+
+            if (loaded)
+            {
+                task.Start();
+            }
+            else if (IsAsync)
+            {
+                Scheduler.Instance.AddJob(new SingleJob(task));
+            }
+            else
+            {
+                task.Start();
+            }
         }
 
         protected abstract bool Load();
@@ -151,12 +204,12 @@ namespace GitCandy.Git.Cache
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            throw new NotImplementedException("Must override this method");
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            throw new NotImplementedException("Must override this method");
         }
     }
 
@@ -171,6 +224,7 @@ namespace GitCandy.Git.Cache
 
         protected TReturn result;
         protected bool resultDone;
+        protected string cacheKey;
 
         public GitCacheReturn<TReturn> Result
         {
@@ -210,23 +264,25 @@ namespace GitCandy.Git.Cache
             this.repoPath = repo.Info.Path;
         }
 
-        protected abstract string GetCacheFile();
+        protected abstract string GetCacheKey();
 
-        protected virtual string GetCacheFile(params object[] keys)
+        protected virtual string GetCacheKey(params object[] keys)
         {
             Contract.Requires(keys != null);
             Contract.Requires(keys.Length > 0);
-            Contract.Requires(keys.Select(s => s.SafyToString())
-                .All(s => string.IsNullOrEmpty(s) || s.All(c => c != '\\' && c != '/')));
+            Contract.Requires(keys.All(s => s != null));
 
-            var str = AccessorId + "\\" + repoId + "\\" + keys[0];
-            for (int i = 1; i < keys.Length; i++)
-            {
-                var one = keys[i].SafyToString();
-                if (!string.IsNullOrEmpty(one))
-                    str += "-" + one;
-            }
-            return str;
+            if (cacheKey != null)
+                return cacheKey;
+
+            var key = typeof(TAccessor).Name + string.Concat(keys);
+            cacheKey = key.CalcSha();
+            return cacheKey;
+        }
+
+        protected virtual string GetCacheFile()
+        {
+            return AccessorId + "\\" + repoId + "\\" + GetCacheKey();
         }
 
         protected override bool Load()
@@ -268,6 +324,17 @@ namespace GitCandy.Git.Cache
                 formatter.Serialize(fs, result);
                 fs.Flush();
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var accessor = obj as TAccessor;
+            return accessor != null && GetCacheKey() == accessor.GetCacheKey();
+        }
+
+        public override int GetHashCode()
+        {
+            return typeof(TAccessor).GetHashCode() ^ GetCacheKey().GetHashCode();
         }
     }
 }

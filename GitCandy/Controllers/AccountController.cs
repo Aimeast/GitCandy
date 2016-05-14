@@ -201,6 +201,39 @@ namespace GitCandy.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [CurrentUserOrAdministrator]
+        public JsonResult ChooseSsh(string user, string sshkey, string act)
+        {
+            string message = null;
+            if (act == "add")
+            {
+                var fingerprint = MembershipService.AddSshKey(user, sshkey);
+                if (fingerprint != null)
+                    return Json(fingerprint);
+            }
+            else if (act == "del")
+            {
+                MembershipService.DeleteSshKey(user, sshkey);
+                return Json("success");
+            }
+
+            Response.StatusCode = 400;
+            return Json(message ?? SR.Shared_SomethingWrong);
+        }
+
+        [CurrentUserOrAdministrator]
+        public ActionResult Ssh(string name)
+        {
+            if (string.IsNullOrEmpty(name) && Token != null)
+                name = Token.Username;
+
+            var model = MembershipService.GetSshList(name);
+            if (model == null)
+                throw new HttpException((int)HttpStatusCode.NotFound, string.Empty);
+            return View(model);
+        }
+
         [Administrator]
         public ActionResult Delete(string name, string conform)
         {

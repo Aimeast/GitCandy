@@ -6,6 +6,6 @@ namespace GitCandy.Schedules
     {
         void Execute(JobContext jobContext);
         TimeSpan GetNextInterval(JobContext jobContext);
-        TimeSpan Due { get; }
+        JobType JobType { get; }
     }
 }

@@ -214,7 +214,7 @@
     <value>{0} utilisateur (s) trouvé(s)</value>
   </data>
   <data name="Home_AboutDescription" xml:space="preserve">
-    <value>Git Candy© est une plate-forme [Git](http://git-scm.com/documentation) de contrôle de version distribué, basé sur une application ASP.NET MVC, qui prend en charge les dépôts publics et privés. Vous pouvez créer et collaborer votre dépôt avec votre équipe n'importe quand n'importe où sans aucune limite.
+    <value>GitCandy© est une plate-forme [Git](http://git-scm.com/documentation) de contrôle de version distribué, basé sur une application ASP.NET MVC, qui prend en charge les dépôts publics et privés. Vous pouvez créer et collaborer votre dépôt avec votre équipe n'importe quand n'importe où sans aucune limite.
 
 Visitez une démo sur [http://gitcandy.com]()
 
@@ -524,7 +524,7 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
     <value>Ajouter</value>
   </data>
   <data name="Shared_AppTitle" xml:space="preserve">
-    <value>Git Candy</value>
+    <value>GitCandy</value>
   </data>
   <data name="Shared_Back" xml:space="preserve">
     <value>Retour</value>
@@ -587,7 +587,7 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy]()
     <value>Équipes</value>
   </data>
   <data name="Shared_TitleFormat" xml:space="preserve">
-    <value>{0} - Git Candy</value>
+    <value>{0} - GitCandy</value>
   </data>
   <data name="Shared_Users" xml:space="preserve">
     <value>Utilisateurs</value>

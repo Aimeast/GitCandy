@@ -11,7 +11,7 @@ namespace GitCandy.Models
         public TreeEntryModel Readme { get; set; }
         public bool IsRoot { get { return string.IsNullOrEmpty(Path) || Path == "\\" || Path == "/"; } }
         public RepositoryScope Scope { get; set; }
-        public string GitUrl { get; set; }
+        public GitUrl[] GitUrls { get; set; }
         public string Description { get; set; }
         public PathBarModel PathBar { get; set; }
     }

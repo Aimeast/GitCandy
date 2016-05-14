@@ -7,7 +7,7 @@ namespace GitCandy.Schedules
     {
         public void Execute(JobContext jobContext)
         {
-            if (jobContext.ExecutionTimes != 0)
+            if (jobContext.ExecutionTimes > 1)
                 Logger.SetLogPath();
         }
 
@@ -16,9 +16,9 @@ namespace GitCandy.Schedules
             return TimeSpan.FromSeconds(24 * 3600) - DateTime.Now.TimeOfDay;
         }
 
-        public TimeSpan Due
+        public JobType JobType
         {
-            get { return TimeSpan.FromSeconds(1.0); }
+            get { return JobType.RealTime; }
         }
     }
 }

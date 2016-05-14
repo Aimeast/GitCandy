@@ -8,27 +8,27 @@ namespace GitCandy.Schedules
     public class SingleJob : IJob
     {
         private Task _task;
-        private double _secondDue;
+        private JobType _jobType;
 
         [ImportingConstructor]
         public SingleJob()
-            : this(() => { }, 1.0)
+            : this(() => { }, JobType.RealTime)
         { }
 
-        public SingleJob(Action action, double secondDue = 4.0)
+        public SingleJob(Action action, JobType jobType = JobType.LongRunning)
         {
             Contract.Requires(action != null);
 
             _task = new Task(action);
-            _secondDue = secondDue;
+            _jobType = jobType;
         }
 
-        public SingleJob(Task task, double secondDue = 4.0)
+        public SingleJob(Task task, JobType jobType = JobType.LongRunning)
         {
             Contract.Requires(task != null);
 
             _task = task;
-            _secondDue = secondDue;
+            _jobType = jobType;
         }
 
         public void Execute(JobContext jobContext)
@@ -42,9 +42,9 @@ namespace GitCandy.Schedules
             return TimeSpan.MaxValue;
         }
 
-        public TimeSpan Due
+        public JobType JobType
         {
-            get { return TimeSpan.FromSeconds(_secondDue); }
+            get { return _jobType; }
         }
     }
 }

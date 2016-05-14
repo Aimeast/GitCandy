@@ -15,7 +15,7 @@ namespace GitCandy.Git
     {
         private readonly Commit commit;
         private readonly Encoding[] encodings;
-        private readonly string key1, key2, newline;
+        private readonly string newline;
 
         public ArchiverAccessor(string repoId, Repository repo, Commit commit, string newline, params Encoding[] encodings)
             : base(repoId, repo)
@@ -26,17 +26,13 @@ namespace GitCandy.Git
             this.commit = commit;
             this.encodings = encodings;
             this.newline = newline;
-            this.key1 = commit.Sha;
-            this.key2 = newline == null
-                ? null
-                : Encoding.UTF8.GetBytes(newline).BytesToString();
         }
 
         public override bool IsAsync { get { return false; } }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key1, key2);
+            return GetCacheKey(commit.Sha, newline);
         }
 
         protected override void Init()
@@ -104,20 +100,6 @@ namespace GitCandy.Git
 
         protected override void Save()
         {
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as ArchiverAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key1 == accessor.key1
-                && key2 == accessor.key2;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(ArchiverAccessor).GetHashCode() ^ (repoId + key1 + key2).GetHashCode();
         }
     }
 }

@@ -8,6 +8,7 @@ namespace GitCandy.DAL
         public User()
         {
             this.AuthorizationLogs = new List<AuthorizationLog>();
+            this.SshKeys = new List<SshKey>();
             this.UserRepositoryRoles = new List<UserRepositoryRole>();
             this.UserTeamRoles = new List<UserTeamRole>();
         }
@@ -22,6 +23,7 @@ namespace GitCandy.DAL
         public bool IsSystemAdministrator { get; set; }
         public System.DateTime CreationDate { get; set; }
         public virtual ICollection<AuthorizationLog> AuthorizationLogs { get; set; }
+        public virtual ICollection<SshKey> SshKeys { get; set; }
         public virtual ICollection<UserRepositoryRole> UserRepositoryRoles { get; set; }
         public virtual ICollection<UserTeamRole> UserTeamRoles { get; set; }
     }

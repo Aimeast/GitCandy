@@ -17,9 +17,11 @@ namespace GitCandy.Git
             this.key = key;
         }
 
-        protected override string GetCacheFile()
+        public override bool IsAsync { get { return false; } }
+
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key);
+            return GetCacheKey(key);
         }
 
         protected override void Init()
@@ -35,19 +37,6 @@ namespace GitCandy.Git
                 result += file.Length;
             }
             resultDone = true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as RepositorySizeAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key == accessor.key;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(RepositorySizeAccessor).GetHashCode() ^ (repoId + key).GetHashCode();
         }
     }
 }

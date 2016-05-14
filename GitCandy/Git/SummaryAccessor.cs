@@ -11,7 +11,6 @@ namespace GitCandy.Git
     {
         private readonly Commit commit;
         private readonly Tree tree;
-        private readonly string key;
 
         public SummaryAccessor(string repoId, Repository repo, Commit commit, Tree tree)
             : base(repoId, repo)
@@ -21,12 +20,11 @@ namespace GitCandy.Git
 
             this.commit = commit;
             this.tree = tree;
-            this.key = tree.Sha;
         }
 
-        protected override string GetCacheFile()
+        protected override string GetCacheKey()
         {
-            return GetCacheFile(key);
+            return GetCacheKey(commit.Id, tree.Id);
         }
 
         protected override void Init()
@@ -53,7 +51,7 @@ namespace GitCandy.Git
             using (var repo = new Repository(this.repoPath))
             {
                 var ancestors = repo.Commits
-                    .QueryBy(new CommitFilter { Since = commit, SortBy = CommitSortStrategies.Topological });
+                    .QueryBy(new CommitFilter { IncludeReachableFrom = commit, SortBy = CommitSortStrategies.Topological });
 
                 // null, continue search current reference
                 // true, have found, done
@@ -107,19 +105,6 @@ namespace GitCandy.Git
                 }
             }
             resultDone = true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var accessor = obj as SummaryAccessor;
-            return accessor != null
-                && repoId == accessor.repoId
-                && key == accessor.key;
-        }
-
-        public override int GetHashCode()
-        {
-            return typeof(SummaryAccessor).GetHashCode() ^ (repoId + key).GetHashCode();
         }
     }
 }

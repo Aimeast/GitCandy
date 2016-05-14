@@ -68,6 +68,17 @@ CREATE TABLE [AuthorizationLog] (
   Foreign Key ([UserID]) References [Users]([ID])
 );
 
+CREATE TABLE [SshKeys] (
+  [ID] INTEGER PRIMARY KEY NOT NULL,
+  [UserID] INTEGER NOT NULL,
+  [KeyType] VarChar(20) NOT NULL,
+  [Fingerprint] Char(47) NOT NULL,
+  [PublicKey] VarChar(600) NOT NULL,
+  [ImportData] Datetime NOT NULL,
+  [LastUse] Datetime NOT NULL,
+  Foreign Key ([UserID]) References [Users]([ID])
+);
+
 CREATE UNIQUE INDEX [Users_IX_User_Email] ON [Users] ([Name] ASC);
 CREATE UNIQUE INDEX [Users_IX_User_Name] ON [Users] ([Email] ASC);
 CREATE UNIQUE INDEX [Teams_IX_Team_Name] ON [Teams] ([Name] ASC);

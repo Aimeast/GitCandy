@@ -12,10 +12,18 @@ namespace GitCandy.Models
         public class Statistics
         {
             public string Branch { get; set; }
-            public int Files { get; set; }
-            public int Commits { get; set; }
-            public int SourceSize { get; set; }
-            public int Contributors { get; set; }
+            public int NumberOfFiles { get; set; }
+            public int NumberOfCommits { get; set; }
+            public long SizeOfSource { get; set; }
+            public int NumberOfContributors { get; set; }
+            public ContributorCommits[] OrderedCommits { get; set; }
+        }
+
+        [Serializable]
+        public class ContributorCommits
+        {
+            public string Author { get; set; }
+            public int CommitsCount { get; set; }
         }
     }
 }
