@@ -31,7 +31,7 @@
                 <a class="navbar-brand" href="~/">@SR.Shared_AppTitle <span class="label">Alpha</span></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav nav-pills pull-left">
+                <ul class="nav navbar-nav nav-pills pull-left">
                     <li class="divider-vertical"></li>
                     <li class="">@Html.ActionLink(SR.Shared_Repositories, "Index", "Repository")</li>
                     <li class="">@Html.ActionLink(SR.Shared_About, "About", "Home")</li>
@@ -44,7 +44,7 @@
                         <li class="">@Html.ActionLink(SR.Shared_Settings, "Edit", "Setting")</li>
                     }
                 </ul>
-                <ul class="nav nav-pills pull-right">
+                <ul class="nav navbar-nav nav-pills pull-right">
                     @if (token == null)
                     {
                         <li class="">@Html.ActionLink(SR.Shared_Register, "Create", "Account")</li>

@@ -18,6 +18,7 @@ namespace GitCandy
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/bootstrapSwitch.js",
+                        "~/Scripts/bootstrap3-typeahead.js",
                         "~/Scripts/highlight.pack.js",
                         "~/Scripts/marked.js",
                         "~/Scripts/ZeroClipboard.js",

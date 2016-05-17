@@ -10,18 +10,18 @@
     @using (Html.BeginForm("Create", "Repository", FormMethod.Post, new { @class = "form-horizontal" }))
     {
         <div class="form-group">
-            @Html.LabelFor(s => s.Name, new { @class = "col-md-3 control-label lead muted" })
-            <div class="col-md-5">
-                @Html.TextBoxFor(s => s.Name, new { @class = "col-md-4 form-control lead" })
+            @Html.LabelFor(s => s.Name, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
+                @Html.TextBoxFor(s => s.Name, new { @class = "col-sm-4 form-control lead" })
             </div>
-            <span class="text-error col-md-4">
+            <span class="text-error col-sm-4">
                 @Html.ValidationMessageFor(s => s.Name)
             </span>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(s => s.IsPrivate, new { @class = "col-md-3 control-label lead muted" })
-            <div class="col-md-5">
+            @Html.LabelFor(s => s.IsPrivate, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
                 <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                     @Html.CheckBoxFor(s => s.IsPrivate)
                 </div>
@@ -29,8 +29,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(s => s.AllowAnonymousRead, new { @class = "col-md-3 control-label lead muted" })
-            <div class="col-md-5">
+            @Html.LabelFor(s => s.AllowAnonymousRead, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
                 <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                     @Html.CheckBoxFor(s => s.AllowAnonymousRead)
                 </div>
@@ -38,8 +38,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(s => s.AllowAnonymousWrite, new { @class = "col-md-3 control-label lead muted" })
-            <div class="col-md-5">
+            @Html.LabelFor(s => s.AllowAnonymousWrite, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
                 <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                     @Html.CheckBoxFor(s => s.AllowAnonymousWrite)
                 </div>
@@ -47,24 +47,24 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(s => s.Description, new { @class = "col-md-3 control-label lead muted" })
-            <div class="col-md-5">
-                @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "col-md-4 form-control lead" })
+            @Html.LabelFor(s => s.Description, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
+                @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "col-sm-4 form-control lead" })
             </div>
-            <div class="text-error col-md-4 col-md-offset-3">
+            <div class="text-error col-sm-4 col-sm-offset-3">
                 @Html.ValidationMessageFor(s => s.Description)
             </div>
         </div>
 
         <div class="form-group">
-            <span class="text-error col-md-4 col-md-offset-3">
+            <span class="text-error col-sm-4 col-sm-offset-3">
                 @Html.ValidationSummary(true, SR.Repository_CreationUnsuccessfull, new { @class = "alert alert-error" })
             </span>
         </div>
 
 
     <div class="form-group">
-        <div class="col-md-offset-3">
+        <div class="col-sm-offset-3">
             <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
             <button type="submit" class="btn btn-primary">@SR.Shared_Create</button>
         </div>

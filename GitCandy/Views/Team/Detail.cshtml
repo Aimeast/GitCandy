@@ -3,36 +3,51 @@
 @{
     ViewBag.Title = string.Format(SR.Shared_TitleFormat, string.Format(SR.Team_DetailTitle, Model.Name));
 }
-<div class="row">
-    <h4>@string.Format(SR.Team_DetailTitle, Model.Name)</h4>
-</div>
+
+<h4>@string.Format(SR.Team_DetailTitle, Model.Name)</h4>
+
 
 
 @if (Model != null)
 {
 
-    <div class="row">
-        <div class="col-md-3 control-label lead muted">@Html.DisplayNameFor(s => s.Name)</div>
-        <div class="col-md-8 lead">@Model.Name</div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 lead muted">@Html.DisplayNameFor(s => s.Members)</div>
-        <div class="col-md-5 lead">@Html.DisplayFor(s => s.Members)</div>
-    </div>
-    <div class="row">
-        <div class="col-md-3  lead muted">@Html.DisplayNameFor(s => s.Repositories)</div>
-        <div class="col-md-5  lead">@Html.DisplayFor(s => s.Repositories)</div>
-    </div>
-    <div class="row">
-        <div class="col-md-3  lead muted">@Html.DisplayNameFor(s => s.Description)</div>
-        <div class="col-md-5  lead">@Model.Description</div>
-    </div>
+    <dl class="dl-horizontal">
+        <dt class="lead muted">
+            @Html.DisplayNameFor(s => s.Name)
+        </dt>
+        <dd class="lead">
+            @Model.Name
+        </dd>
 
-    <div class="row">
-        <div class="col-md-offset-3">
+
+        <dt class="lead muted">
+            @Html.DisplayNameFor(s => s.Members)
+        </dt>
+        <dd class="lead">
+            @Html.DisplayFor(s => s.Members)
+        </dd>
+
+
+        <dt class="lead muted">
+            @Html.DisplayNameFor(s => s.Repositories)
+        </dt>
+        <dd class="lead">
+            @Html.DisplayFor(s => s.Repositories)
+        </dd>
+
+
+        <dt class="lead muted">
+            @Html.DisplayNameFor(s => s.Description)
+        </dt>
+        <dd class="lead">
+            @Model.Description
+        </dd>
+
+
+        <dt></dt>
+        <dd>
             @Html.ActionLink(SR.Team_Members, "Users", new { name = Model.Name }, new { @class = "btn btn-default" })
             @Html.ActionLink(SR.Shared_Edit, "Edit", new { name = Model.Name }, new { @class = "btn btn-primary" })
-        </div>
-    </div>
-
+        </dd>
+    </dl>
 }
