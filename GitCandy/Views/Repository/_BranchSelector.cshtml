@@ -5,8 +5,12 @@
     var noLink = Model.Path == null;
     var identity = Html.GetRootViewBag().Identity++;
 }
+
 <div class="dropdown">
-    <a class="btn dropdown-toggle" data-toggle="dropdown"><i class="@Model.CurrentIsBranch.ToFlagString("icon-random", "icon-tag")"></i><span class="branch-name">@Model.Current</span> <span class="caret"></span></a>
+    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <i class="@Model.CurrentIsBranch.ToFlagString("glyphicon glyphicon-random", "glyphicon glyphicon-tags")"></i>
+        <span class="branch-name">@Model.Current</span> <span class="caret"></span>
+    </a>
     <div class="dropdown-menu">
         <form>
             <ul class="nav nav-tabs">
@@ -20,15 +24,15 @@
                         {
                             if (noLink)
                             {
-                                <li><a href="#">@branch</a></li>
+                        <li><a href="#">@branch</a></li>
                             }
                             else if (branch == Model.Current)
                             {
-                                <li class="active"><a>@branch</a></li>
+                        <li class="active"><a>@branch</a></li>
                             }
                             else
                             {
-                                <li>@Html.ActionLink(branch, action, Html.OverRoute(new { path = branch + "/" + Model.Path }))</li>
+                        <li>@Html.ActionLink(branch, action, Html.OverRoute(new { path = branch + "/" + Model.Path }))</li>
                             }
                         }
                     </ul>
@@ -39,15 +43,15 @@
                         {
                             if (noLink)
                             {
-                                <li><a href="#">@tag</a></li>
+                        <li><a href="#">@tag</a></li>
                             }
                             else if (tag == Model.Current)
                             {
-                                <li class="active"><a>@tag</a></li>
+                        <li class="active"><a>@tag</a></li>
                             }
                             else
                             {
-                                <li>@Html.ActionLink(tag, action, Html.OverRoute(new { path = tag + "/" + Model.Path }))</li>
+                        <li>@Html.ActionLink(tag, action, Html.OverRoute(new { path = tag + "/" + Model.Path }))</li>
                             }
                         }
                     </ul>

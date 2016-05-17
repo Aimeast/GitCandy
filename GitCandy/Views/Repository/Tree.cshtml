@@ -33,7 +33,7 @@ else
         }
 
         <div class="row">
-            <div class="span12">
+            <div class="col-md-6">
                 <div class="pull-left">
                     @Html.Partial("_BranchSelector", Model.BranchSelector)
                 </div>
@@ -45,15 +45,18 @@ else
                 @if (Model.IsRoot)
                 {
                     <div class="pull-left">
-                        <a href="@Url.Action("Compare", Html.OverRoute(new { path = "" }))" class="btn pull-left"><i class="icon-retweet"></i>@SR.Repository_Compare</a>
+                        <a href="@Url.Action("Compare", Html.OverRoute(new { path = "" }))" class="btn btn-default pull-left"><i class="glyphicon glyphicon-retweet"></i>@SR.Repository_Compare</a>
                     </div>
                     <div class="pull-left keep-space">
-                        @Html.Partial("_GitUrlButton", Model.GitUrls)
-                    </div>
-                    <div class="pull-right">
-                        @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(new { path = "" }), new { @class = "btn" })
+                        @Html.ActionLink(SR.Shared_Detail, "Detail", Html.OverRoute(new { path = "" }), new { @class = "btn btn-default" })
                     </div>
                 }
+            </div>
+            <div class="pull-right col-md-6">
+@if (Model.IsRoot)
+{
+                @Html.Partial("_GitUrlButton", Model.GitUrls)
+}
             </div>
         </div>
         @Html.Partial("_PathBar", Model.PathBar)

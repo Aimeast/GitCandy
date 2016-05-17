@@ -4,9 +4,9 @@
     var first = Model.First();
 }
 
-<div class="input-prepend input-append">
-    <div class="btn-group">
-        <button class="btn dropdown-toggle" data-toggle="dropdown">@first.Type <span class="caret"></span></button>
+<div class="input-group input-prepend input-append">
+    <div class="input-group-btn">
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">@first.Type <span class="caret"></span></button>
         <ul class="dropdown-menu">
             @foreach (var item in Model)
             {
@@ -14,6 +14,8 @@
             }
         </ul>
     </div>
-    <input class="span3" type="text" value="@first.Url">
-    <a class="btn copy-clip" data-tips="@SR.Repository_CopyToClipboard" data-copied="@SR.Repository_Copied"><i class="icon-check"></i></a>
+    <input type="text" class="form-control" value="@first.Url">
+    <div class="input-group-btn">
+        <a class="btn btn-default copy-clip" data-tips="@SR.Repository_CopyToClipboard" data-copied="@SR.Repository_Copied"><i class="glyphicon glyphicon-check"></i></a>
+    </div>
 </div>

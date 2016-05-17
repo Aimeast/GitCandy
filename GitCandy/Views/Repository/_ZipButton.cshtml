@@ -1,8 +1,8 @@
 ﻿@model string
 
 <div class="btn-group">
-    <a href="@Url.Action("Archive", Html.OverRoute(new { path = Model }))" class="btn"><i class="icon-download-alt"></i>@SR.Repository_Zip</a>
-    <button class="btn dropdown-toggle" data-toggle="dropdown">
+    <a href="@Url.Action("Archive", Html.OverRoute(new { path = Model }))" class="btn btn-default"><i class="glyphicon glyphicon-download-alt"></i>@SR.Repository_Zip</a>
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">

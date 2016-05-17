@@ -11,11 +11,9 @@
     </div>
 
     <div class="form-actions">
-        <div class="pull-left">
-            @Html.ActionLink(SR.Shared_Back, "Edit", "Setting", null, new { @class = "btn" })
-        </div>
-        <div class="pull-right">
+        <div class="col-md-12">
             @Html.ActionLink(SR.Shared_Generate, "ReGenSsh", "Setting", new { Conform = "Yes" }, new { @class = "btn btn-danger" })
+            @Html.ActionLink(SR.Shared_Back, "Edit", "Setting", null, new { @class = "btn btn-default" })
         </div>
     </div>
 </div>
