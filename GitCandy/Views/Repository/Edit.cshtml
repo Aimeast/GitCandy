@@ -11,56 +11,56 @@
     @using (Html.BeginForm("Edit", "Repository", FormMethod.Post, new { @class = "form-horizontal" }))
     {
         <div class="row">
-            @Html.LabelFor(s => s.Name, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            <span class="span5 text-left lead">@Model.Name</span>
+            @Html.LabelFor(s => s.Name, new { @class = "col-md-3 control-label lead muted" })
+            <div class="col-md-5"></div>
+            <span class="col-md-5 form-control lead">@Model.Name</span>
             @Html.HiddenFor(s => s.Name)
         </div>
         <div class="row">
-            <span class="text-error span5 offset4">
+            <span class="text-error col-md-4">
                 @Html.ValidationMessageFor(s => s.Name)
             </span>
         </div>
 
         <div class="row">
-            @Html.LabelFor(s => s.IsPrivate, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
+            @Html.LabelFor(s => s.IsPrivate, new { @class = "col-md-3 control-label lead muted" })
+            <div class="col-md-5"></div>
             <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                 @Html.CheckBoxFor(s => s.IsPrivate)
             </div>
         </div>
 
         <div class="row">
-            @Html.LabelFor(s => s.AllowAnonymousRead, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
+            @Html.LabelFor(s => s.AllowAnonymousRead, new { @class = "col-md-3 control-label lead muted" })
+            <div class="col-md-5"></div>
             <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                 @Html.CheckBoxFor(s => s.AllowAnonymousRead)
             </div>
         </div>
 
         <div class="row">
-            @Html.LabelFor(s => s.AllowAnonymousWrite, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
+            @Html.LabelFor(s => s.AllowAnonymousWrite, new { @class = "col-md-3 control-label lead muted" })
+            <div class="col-md-5"></div>
             <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                 @Html.CheckBoxFor(s => s.AllowAnonymousWrite)
             </div>
         </div>
 
         <div class="row">
-            @Html.LabelFor(s => s.DefaultBranch, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
+            @Html.LabelFor(s => s.DefaultBranch, new { @class = "col-md-3 control-label lead muted" })
+            <div class="col-md-5"></div>
             <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
                 @Html.DropDownListFor(s => s.DefaultBranch, Model.LocalBranches.ToSelectListItem(Model.DefaultBranch))
             </div>
         </div>
 
         <div class="row">
-            @Html.LabelFor(s => s.Description, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "span4 text-left lead" })
+            @Html.LabelFor(s => s.Description, new { @class = "col-md-3 control-label lead muted" })
+            <div class="col-md-5"></div>
+            @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "col-md-4 form-control lead" })
         </div>
         <div class="row">
-            <span class="text-error span5 offset4">
+            <span class="text-error col-md-4">
                 @Html.ValidationMessageFor(s => s.Description)
             </span>
         </div>

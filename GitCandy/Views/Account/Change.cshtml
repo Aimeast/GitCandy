@@ -10,7 +10,7 @@
     @using (Html.BeginForm())
     {
         <div class="row">
-            @Html.LabelFor(s => s.OldPassword, new { @class = "span3 text-right lead muted" })
+            @Html.LabelFor(s => s.OldPassword, new { @class = "col-md-3 control-label lead muted" })
             <span class="span1"></span>
             @Html.PasswordFor(s => s.OldPassword, new { @class = "span3 text-left lead" })
         </div>
@@ -20,7 +20,7 @@
             </span>
         </div>
         <div class="row">
-            @Html.LabelFor(s => s.NewPassword, new { @class = "span3 text-right lead muted" })
+            @Html.LabelFor(s => s.NewPassword, new { @class = "col-md-3 control-label lead muted" })
             <span class="span1"></span>
             @Html.PasswordFor(s => s.NewPassword, new { @class = "span3 text-left lead" })
         </div>
@@ -30,7 +30,7 @@
             </span>
         </div>
         <div class="row">
-            @Html.LabelFor(s => s.ConformPassword, new { @class = "span3 text-right lead muted" })
+            @Html.LabelFor(s => s.ConformPassword, new { @class = "col-md-3 control-label lead muted" })
             <span class="span1"></span>
             @Html.PasswordFor(s => s.ConformPassword, new { @class = "span3 text-left lead" })
         </div>

@@ -3,35 +3,36 @@
 @{
     ViewBag.Title = string.Format(SR.Shared_TitleFormat, string.Format(SR.Team_DetailTitle, Model.Name));
 }
-
-<h4>@string.Format(SR.Team_DetailTitle, Model.Name)</h4>
+<div class="row">
+    <h4>@string.Format(SR.Team_DetailTitle, Model.Name)</h4>
+</div>
 
 
 @if (Model != null)
 {
-    <div class="span8">
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Name)</div>
-            <span class="span5 text-left lead">@Model.Name</span>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Members)</div>
-            <span class="span5 text-left lead">@Html.DisplayFor(s => s.Members)</span>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Repositories)</div>
-            <span class="span5 text-left lead">@Html.DisplayFor(s => s.Repositories)</span>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Description)</div>
-            <pre class="span5 text-left lead">@Model.Description</pre>
-        </div>
 
-        <div class="form-actions">
-            <div class="pull-right">
-                @Html.ActionLink(SR.Team_Members, "Users", new { name = Model.Name }, new { @class = "btn" })
-                @Html.ActionLink(SR.Shared_Edit, "Edit", new { name = Model.Name }, new { @class = "btn btn-primary" })
-            </div>
+    <div class="row">
+        <div class="col-md-3 control-label lead muted">@Html.DisplayNameFor(s => s.Name)</div>
+        <div class="col-md-8 lead">@Model.Name</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 lead muted">@Html.DisplayNameFor(s => s.Members)</div>
+        <div class="col-md-5 lead">@Html.DisplayFor(s => s.Members)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3  lead muted">@Html.DisplayNameFor(s => s.Repositories)</div>
+        <div class="col-md-5  lead">@Html.DisplayFor(s => s.Repositories)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3  lead muted">@Html.DisplayNameFor(s => s.Description)</div>
+        <div class="col-md-5  lead">@Model.Description</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-3">
+            @Html.ActionLink(SR.Team_Members, "Users", new { name = Model.Name }, new { @class = "btn btn-default" })
+            @Html.ActionLink(SR.Shared_Edit, "Edit", new { name = Model.Name }, new { @class = "btn btn-primary" })
         </div>
     </div>
+
 }

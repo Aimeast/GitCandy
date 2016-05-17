@@ -13,30 +13,39 @@
     }
 </div>
 <div class="row">
-    <div class="span6">
-        <table class="table border-area">
-            <thead>@SR.Repository_Collaborations</thead>
-            @foreach (var repo in Model.Collaborations)
-            {
-                <tr>
-                    <td>
-                        <div>@Html.ActionLink(repo.Name, "Tree", Html.OverRoute(new { repo.Name }))</div>
-                        <div>@repo.Description</div>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+    <div class="col-md-12">
 
-    <div class="span6">
-        <table class="table border-area">
+        <table class="table border-hover">
+            <thead>@SR.Repository_Collaborations</thead>
+            <tbody>
+                @foreach (var repo in Model.Collaborations)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(repo.Name, "Tree", Html.OverRoute(new { repo.Name }))
+                        </td>
+                        <td>
+                            @repo.Description
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table border-hover">
             <thead>@SR.Repository_PopularRepositories</thead>
             @foreach (var repo in Model.Repositories)
             {
                 <tr>
                     <td>
-                        <div>@Html.ActionLink(repo.Name, "Tree", Html.OverRoute(new { repo.Name }))</div>
-                        <div>@repo.Description</div>
+                        @Html.ActionLink(repo.Name, "Tree", Html.OverRoute(new { repo.Name }))
+                    </td>
+                    <td>
+                        @repo.Description
                     </td>
                 </tr>
             }
