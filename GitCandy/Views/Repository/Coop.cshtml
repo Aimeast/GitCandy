@@ -9,7 +9,7 @@
 @if (Model != null)
 {
     <span>@SR.Shared_Users</span>
-    <div id="choose_user"></div>
+    <div id="choose_user" class="form-inline"></div>
     <div class="hr"></div>
     <span>@SR.Shared_Teams</span>
     <div id="choose_team"></div>
@@ -19,7 +19,7 @@
         var chooser_params = [];
         chooser_params.push(
             {
-                data: @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.Users)),
+                data: @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.Users)) ,
                 controller: "Account",
                 container: "#choose_user",
                 add_label: "@SR.Shared_Add",
@@ -81,6 +81,6 @@
 }
 <div class="form-actions">
     <div class="pull-left">
-        @Html.ActionLink(SR.Shared_Back, "Detail", new { Name = Model.RepositoryName }, new { @class = "btn" })
+        @Html.ActionLink(SR.Shared_Back, "Detail", new { Name = Model.RepositoryName }, new { @class = "btn btn-default" })
     </div>
 </div>

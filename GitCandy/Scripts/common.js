@@ -219,7 +219,7 @@
                 $searcher = $('<input type="text" autocomplete="off">'),
                 $add_btn = $('<button type="button" class="btn btn-primary">' + params.add_label + '</button>'),
                 $alert_holder = $('<div class="span6 alert_placeholder">'),
-                $grid = $('<div class="span10 offset1">');
+                $grid = $('<div class="col-md-10 offset1">');
 
             var warning = function (message) {
                 $alert_holder.html('<div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a><span>' + message + '</span></div>')
@@ -246,7 +246,7 @@
 
                 params.action_array.forEach(function (action) {
                     var cell_html =
-                        '<div class="span2">'
+                        '<div class="col-md-2">'
                            + '<div class="switch switch-small" tabindex="0" data-on-label="' + action.on_label + '" data-off-label="' + action.off_label + '">'
                                + '<input type="checkbox"/>'
                            + '</div>'
@@ -283,7 +283,7 @@
                 });
 
                 var remover_html =
-                    '<div class="span1">'
+                    '<div class="col-md-1">'
                         + '<a href="#" class="remover">(' + params.del_label + ')</a>'
                     + '</div>',
                     $remover = $(remover_html);
@@ -328,8 +328,8 @@
 
             var $row = $('<div class="row">');
 
-            $row.append($searcher.wrap('<div class="span3">').parent());
-            $row.append($add_btn.wrap('<div class="span2">').parent());
+            $row.append($searcher.wrap('<div class="col-md-2">').parent());
+            $row.append($add_btn.wrap('<div class="col-md-2">').parent());
 
             $container.append($row);
             $container.append($alert_holder.wrap('<div class="row">').parent());
