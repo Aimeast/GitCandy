@@ -24,7 +24,7 @@ namespace GitCandy.Configuration
                     val = "Caches";
                     break;
                 default:
-                    throw new ArgumentException(nameof(storageType));
+                    throw new ArgumentException("storageType");
             }
 
             return HttpContext.Current.Server.MapPath("~/App_Data/" + val);

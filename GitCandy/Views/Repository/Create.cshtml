@@ -9,59 +9,65 @@
 <div class="span8">
     @using (Html.BeginForm("Create", "Repository", FormMethod.Post, new { @class = "form-horizontal" }))
     {
-        <div class="row">
-            @Html.LabelFor(s => s.Name, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.Name, new { @class = "span4 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span5 offset4">
+        <div class="form-group">
+            @Html.LabelFor(s => s.Name, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
+                @Html.TextBoxFor(s => s.Name, new { @class = "col-sm-4 form-control lead" })
+            </div>
+            <span class="text-error col-sm-4">
                 @Html.ValidationMessageFor(s => s.Name)
             </span>
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.IsPrivate, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.IsPrivate)
+        <div class="form-group">
+            @Html.LabelFor(s => s.IsPrivate, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
+                <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                    @Html.CheckBoxFor(s => s.IsPrivate)
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.AllowAnonymousRead, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.AllowAnonymousRead)
+        <div class="form-group">
+            @Html.LabelFor(s => s.AllowAnonymousRead, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
+                <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                    @Html.CheckBoxFor(s => s.AllowAnonymousRead)
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.AllowAnonymousWrite, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.AllowAnonymousWrite)
+        <div class="form-group">
+            @Html.LabelFor(s => s.AllowAnonymousWrite, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
+                <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                    @Html.CheckBoxFor(s => s.AllowAnonymousWrite)
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.Description, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "span4 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span5 offset4">
+        <div class="form-group">
+            @Html.LabelFor(s => s.Description, new { @class = "col-sm-3 control-label lead muted" })
+            <div class="col-sm-5">
+                @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "col-sm-4 form-control lead" })
+            </div>
+            <div class="text-error col-sm-4 col-sm-offset-3">
                 @Html.ValidationMessageFor(s => s.Description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="text-error col-sm-4 col-sm-offset-3">
+                @Html.ValidationSummary(true, SR.Repository_CreationUnsuccessfull, new { @class = "alert alert-error" })
             </span>
         </div>
 
-        @Html.ValidationSummary(true, SR.Repository_CreationUnsuccessfull, new { @class = "alert alert-error" })
 
-        <div class="form-actions">
-            <div class="pull-right">
-                <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
-                <button type="submit" class="btn btn-primary">@SR.Shared_Create</button>
-            </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3">
+            <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
+            <button type="submit" class="btn btn-primary">@SR.Shared_Create</button>
         </div>
+    </div>
     }
 </div>

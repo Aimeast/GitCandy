@@ -9,51 +9,49 @@
 
 @if (Model != null)
 {
-    <div class="span8">
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Name)</div>
-            <span class="span5 text-left lead">@Model.Name</span>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.IsPrivate)</div>
-            <pre class="span5 text-left lead">@Html.DisplayFor(s => s.IsPrivate)</pre>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.AllowAnonymousRead)</div>
-            <pre class="span5 text-left lead">@Html.DisplayFor(s => s.AllowAnonymousRead)</pre>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.AllowAnonymousWrite)</div>
-            <pre class="span5 text-left lead">@Html.DisplayFor(s => s.AllowAnonymousWrite)</pre>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.DefaultBranch)</div>
-            <pre class="span5 text-left lead">@Model.DefaultBranch</pre>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Description)</div>
-            <pre class="span5 text-left lead">@Model.Description</pre>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Collaborators)</div>
-            <span class="span5 text-left lead">@Html.DisplayFor(s => s.Collaborators)</span>
-        </div>
-        <div class="row">
-            <div class="span2 text-right lead muted">@Html.DisplayNameFor(s => s.Teams)</div>
-            <span class="span5 text-left lead">@Html.DisplayFor(s => s.Teams)</span>
-        </div>
+    <dl class="dl-horizontal">
 
-        <div class="form-actions">
-            <div class="pull-left">
-                @Html.ActionLink(SR.Repository_Tree, "Tree", new { Model.Name }, new { @class = "btn" })
-            </div>
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.Name)</dt>
+        <dd class="lead">@Model.Name</dd>
+
+
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.IsPrivate)</dt>
+        <dd class="lead">@Html.DisplayFor(s => s.IsPrivate)</dd>
+
+
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.AllowAnonymousRead)</dt>
+        <dd class="lead">@Html.DisplayFor(s => s.AllowAnonymousRead)</dd>
+
+
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.AllowAnonymousWrite)</dt>
+        <dd class="lead">@Html.DisplayFor(s => s.AllowAnonymousWrite)</dd>
+
+
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.DefaultBranch)</dt>
+        <dd class="lead">@Model.DefaultBranch</dd>
+
+
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.Description)</dt>
+        <dd class="lead">@Model.Description</dd>
+
+
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.Collaborators)</dt>
+        <dd class="lead">@Html.DisplayFor(s => s.Collaborators)</dd>
+
+
+        <dt class="lead muted">@Html.DisplayNameFor(s => s.Teams)</dt>
+        <dd class="lead">@Html.DisplayFor(s => s.Teams)</dd>
+
+        <dt>
+        </dt>
+        <dd>
+            @Html.ActionLink(SR.Repository_Tree, "Tree", new { Model.Name }, new { @class = "btn btn-default" })
+
             @if (token != null && (Model.CurrentUserIsOwner || token.IsSystemAdministrator))
             {
-                <div class="pull-right">
-                    @Html.ActionLink(SR.Repository_Relationship, "Coop", new { Model.Name }, new { @class = "btn" })
-                    @Html.ActionLink(SR.Shared_Edit, "Edit", new { Model.Name }, new { @class = "btn btn-primary" })
-                </div>
+                @Html.ActionLink(SR.Repository_Relationship, "Coop", new { Model.Name }, new { @class = "btn btn-default" })
+                @Html.ActionLink(SR.Shared_Edit, "Edit", new { Model.Name }, new { @class = "btn btn-primary" })
             }
-        </div>
-    </div>
+        </dd>
+    </dl>
 }

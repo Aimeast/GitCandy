@@ -6,27 +6,35 @@
 
 <h4>@SR.Account_LoginTitle</h4>
 
-<div class="span7">
-    @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
-    {
-        <div class="row focus">
-            @Html.LabelFor(s => s.ID, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.ID, new { @class = "span3 text-left lead" })
-        </div>
-        <div class="row">
-            @Html.LabelFor(s => s.Password, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.PasswordFor(s => s.Password, new { @class = "span3 text-left lead" })
-        </div>
+<div class="row">
+    <div class="col-md-12">
 
-        @Html.ValidationSummary(true, SR.Account_LoginFailed, new { @class = "alert alert-error" })
-
-        <div class="form-actions">
-            <div class="pull-right">
-                @Html.ActionLink(SR.Account_ForgotPassword, "Forgot")
-                <button type="submit" class="btn btn-primary">@SR.Shared_Login</button>
+        @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="form-group focus">
+                @Html.LabelFor(s => s.ID, new { @class = "col-sm-3 control-label lead muted" })
+                <div class="col-sm-5">
+                    @Html.TextBoxFor(s => s.ID, new { @class = "col-sm-3 form-control lead" })
+                </div>
             </div>
-        </div>
-    }
+            <div class="form-group">
+                @Html.LabelFor(s => s.Password, new { @class = "col-sm-3 control-label lead muted" })
+                <div class="col-sm-5">
+                    @Html.PasswordFor(s => s.Password, new { @class = "col-sm-3 form-control lead" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3">
+                    @Html.ValidationSummary(true, SR.Account_LoginFailed, new { @class = "alert alert-error" })
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="col-sm-offset-3">
+                    <button type="submit" class="btn btn-primary">@SR.Shared_Login</button>
+                    @Html.ActionLink(SR.Account_ForgotPassword, "Forgot")
+                </div>
+            </div>
+        }
+
+    </div>
 </div>

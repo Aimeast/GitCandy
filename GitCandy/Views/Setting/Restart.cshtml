@@ -4,18 +4,18 @@
 
 <h4>@string.Format(SR.Setting_RestartTitle)</h4>
 
-<div class="span7">
-    <div class="alert alert-block">
-        <h4>@SR.Shared_Conform</h4>
-        @string.Format(SR.Setting_RestartWords)
-    </div>
-
-    <div class="form-actions">
-        <div class="pull-left">
-            @Html.ActionLink(SR.Shared_Back, "Edit", "Setting", null, new { @class = "btn" })
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-block">
+            <h4>@SR.Shared_Conform</h4>
+            @string.Format(SR.Setting_RestartWords)
         </div>
-        <div class="pull-right">
-            @Html.ActionLink(SR.Shared_Restart, "Restart", "Setting", new { Conform = "Yes" }, new { @class = "btn btn-danger" })
+
+        <div class="form-actions">
+            <div class="col-md-12">
+                @Html.ActionLink(SR.Shared_Restart, "Restart", "Setting", new { Conform = "Yes" }, new { @class = "btn btn-danger" })
+                @Html.ActionLink(SR.Shared_Back, "Edit", "Setting", null, new { @class = "btn btn-default" })
+            </div>
         </div>
     </div>
 </div>
