@@ -89,36 +89,32 @@
     $('#md').html(marked($('#md').text()));
     $('.focus :text').focus();
     $('.focus :text[name=query]').val($.queryString.get('query', true));
+    // copy to clipboard
     $('.copy-clip').each(function () {
-        var $clip = $(this),
-            $text = $clip.parent().children(':text');
-        $text.click(function () { $(this).select(); });
-        var zero = new ZeroClipboard($clip, {
-            moviePath: '/Content/ZeroClipboard.swf',
-            //useNoCache: false, // Be careful!! Not supported by IE?
+        var $btn = $(this),
+            $text = $btn.parent().parent().find(':text');
+
+        $text.click(function () {
+            $text.select();
         });
-        var $tip = $(zero.htmlBridge);
-        zero.on('dataRequested', function () {
-            zero.setText($text.val());
-        })
-        .on('complete', function () {
-            $tip.tooltip('destroy').tooltip({ title: $clip.data('copied'), placement: 'right' }).tooltip('show');
-        })
-        .on('mouseover', function () {
-            $tip.tooltip('destroy').tooltip({ title: $clip.data('tips'), placement: 'right' }).tooltip('show');
-        })
-        .on('noflash wrongflash', function () {
-            console.error('No flash or wrong flash version');
+        $btn.click(function () {
+            $text.select();
+            document.execCommand("copy");
+            this.setAttribute("aria-label", $btn.data('copied'));
+            $btn.blur();
+        });
+        $btn.mouseleave(function () {
+            this.setAttribute("aria-label", $btn.data('tips'));
         });
     });
     // switch git url
     $('[data-giturl]').click(function () {
         var $this = $(this),
-            $group = $this.closest('.input-append'),
+            $group = $this.closest('.input-group'),
             url = $this.data('giturl'),
             type = $this.text();
         $group.find(':text').val(url);
-        $group.find('button').html(type + ' <span class="caret"></span>');
+        $group.find('button:first').html(type + ' <span class="caret"></span>');
     });
     // prevent all empty link
     $('a[href=#]').click(function () {
@@ -131,14 +127,14 @@
                 $li = $(this);
             $bn.text($li.text());
             $bn.prev('i').attr('class',
-                $li.closest('div').attr('id').indexOf('branch') == 0 ? 'icon-random' : 'icon-tag');
+                $li.closest('div').attr('id').indexOf('branch') == 0 ? 'glyphicon glyphicon-random' : 'glyphicon glyphicon-tag');
             $con.find('.dropdown').removeClass('open');
         });
     });
     $('.branch-compare').click(function () {
-        var from = $('.branch-from .branch-name').text().replace(/\//g, ';'),
-            to = $('.branch-to .branch-name').text().replace(/\//g, ';'),
-            relative = from + '...' + to,
+        var from = $('.branch-from .branch-name').text().trim().replace(/\//g, ';'),
+            to = $('.branch-to .branch-name').text().trim().replace(/\//g, ';'),
+            relative = escape(from) + '...' + escape(to),
             base = window.location.href,
             seg = base.split('/'),
             last = seg[seg.length - 1],
@@ -148,6 +144,8 @@
         ? window.location.href += '/' + relative
         : window.location.href = relative;
     });
+
+    $(".switch input:checkbox").bootstrapSwitch();
     // blame page
     $('[data-brush]').each(function () {
         var $section = $(this),
@@ -157,11 +155,11 @@
             state = null;
         if (!language)
             return;
-        $blocks.each(function () {
+        $blocks.each(function (i, e) {
             var $this = $(this),
                 result = hljs.highlight(brush, $this.text(), true, state);
             state = result.top;
-            $this$(e).html(result.value);
+            $(e).html(result.value);
         })
     });
     // delete a branch
@@ -198,7 +196,6 @@
                     add_label   -> add
                     del_label   -> remove
                     use_ret_val -> if true, show return value as text
-                    first_width -> width of first column
                     add_action
                         -> [action object]
                     del_action
@@ -218,11 +215,11 @@
             var $container = $(params.container),
                 $searcher = $('<input type="text" autocomplete="off">'),
                 $add_btn = $('<button type="button" class="btn btn-primary">' + params.add_label + '</button>'),
-                $alert_holder = $('<div class="span6 alert_placeholder">'),
-                $grid = $('<div class="span10 offset1">');
+                $alert_holder = $('<div class="alert_placeholder">'),
+                $grid = $('<div>');
 
             var warning = function (message) {
-                $alert_holder.html('<div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a><span>' + message + '</span></div>')
+                $alert_holder.html('<div class="alert alert-danger"><a class="close" data-dismiss="alert">&times;</a><span>' + message + '</span></div>')
             };
             var clearWarning = function () {
                 $alert_holder.html('');
@@ -235,64 +232,21 @@
                 }
             };
             var add_row = function (item) {
-                var first_column_class = 'span' + (isNaN(params.first_width) ? 2 : params.first_width),
-                    row_html =
-                    '<div class="row border-area">'
-                        + (params.controller
-                            ? '<div class="' + first_column_class + '"><a href="/' + params.controller + '/Detail/' + item.Name + '">' + item.Name + '</a></div>'
-                            : '<div class="' + first_column_class + '">' + item.Name + '</div>')
-                    + '</div>',
-                    $row = $(row_html);
-
-                params.action_array.forEach(function (action) {
-                    var cell_html =
-                        '<div class="span2">'
-                           + '<div class="switch switch-small" tabindex="0" data-on-label="' + action.on_label + '" data-off-label="' + action.off_label + '">'
-                               + '<input type="checkbox"/>'
-                           + '</div>'
-                       + '</div>';
-
-                    var $cell = $(cell_html),
-                        $checkbox = $cell.find('input'),
-                        $switcher = $cell.find('.switch');
-
-                    $row.append($cell);
-
-                    $checkbox.prop('checked', item[action.key]);
-                    $checkbox.parent().bootstrapSwitch();
-
-                    var tobe = null;
-                    $switcher.on('switch-change', function (e, data) {
-                        var value = data.value;
-                        if (tobe == value) {
-                            tobe = null;
-                            return;
-                        }
-                        $switcher.bootstrapSwitch('setActive', false);
-                        clearWarning();
-                        var xhr = $.post(value ? action.checked.url : action.unchecked.url,
-                            value ? action.checked.query(item.Name) : action.unchecked.query(item.Name),
-                            function (data) { })
-                        .fail(function () {
-                            tobe = !value;
-                            $switcher.bootstrapSwitch('setState', tobe);
-                            warning(parseResponseJson(xhr.responseText));
-                        })
-                        .always(function () { $switcher.bootstrapSwitch('setActive', true); });
-                    });
-                });
-
-                var remover_html =
-                    '<div class="span1">'
-                        + '<a href="#" class="remover">(' + params.del_label + ')</a>'
-                    + '</div>',
+                var row_html = '<div class="row border-area">',
+                    alter_row_html = '<div>',
+                    name_html = '<p class="lead">' + (params.controller
+                            ? '<a href="/' + params.controller + '/Detail/' + item.Name + '">' + item.Name + '</a>'
+                            : item.Name) + '</p>',
+                    remover_html = '<a href="#" class="remover btn btn-danger">' + params.del_label + '</a>',
+                    $row = $(row_html),
+                    $first_row = $(alter_row_html),
+                    $second_row = $(alter_row_html),
+                    $nameref = $(name_html),
                     $remover = $(remover_html);
-
-                $row.append($remover);
 
                 $remover.click(function () {
                     clearWarning();
-                    var $mask = $('<div class="disable-mask"></div>');
+                    var $mask = $('<div class="disable-mask">');
                     $row.append($mask);
                     event.preventDefault();
                     var xhr = $.post(params.del_action.url, params.del_action.query(item.Name), function (data) {
@@ -303,6 +257,43 @@
                         warning(parseResponseJson(xhr.responseText));
                     });
                 });
+
+                console.log(item);
+
+                params.action_array.forEach(function (action) {
+                    var cell_html = '<div class="col-md-3"><input type="checkbox" /></div>',
+                        $cell = $(cell_html),
+                        $checkbox = $cell.find('input');
+
+                    $checkbox.bootstrapSwitch({ state: item[action.key], size: 'small', onText: action.on_label, offText: action.off_label });
+
+                    var tobe = null;
+                    $checkbox.on('switchChange.bootstrapSwitch', function (event, state) {
+                        if (tobe == state) {
+                            tobe = null;
+                            return;
+                        }
+                        $checkbox.bootstrapSwitch('readonly', true);
+                        clearWarning();
+                        var xhr = $.post(state ? action.checked.url : action.unchecked.url,
+                            state ? action.checked.query(item.Name) : action.unchecked.query(item.Name),
+                            function (data) { })
+                        .fail(function () {
+                            tobe = !state;
+                            $checkbox.bootstrapSwitch('state', tobe);
+                            warning(parseResponseJson(xhr.responseText));
+                        })
+                        .always(function () { $checkbox.bootstrapSwitch('readonly', false); });
+                    });
+
+                    $second_row.append($cell);
+                });
+
+                $first_row.append($nameref);
+                $first_row.append($remover);
+
+                $row.append($first_row);
+                $row.append($second_row);
 
                 $grid.append($row);
             };
@@ -318,7 +309,7 @@
                 clearWarning();
                 var name = $searcher.val();
                 var xhr = $.post(params.add_action.url, params.add_action.query(name), function (data) {
-                    add_row($.extend({}, { Name: params.use_ret_val ? data : name }));
+                    add_row(params.use_ret_val ? { Name: data } : $.extend({ Name: name }, data));
                     $searcher.val('');
                 })
                 .fail(function () {
@@ -326,14 +317,15 @@
                 });
             });
 
-            var $row = $('<div class="row">');
+            var $row = $('<div class="form-group">');
 
-            $row.append($searcher.wrap('<div class="span3">').parent());
-            $row.append($add_btn.wrap('<div class="span2">').parent());
+            $searcher.addClass("form-control");
+            $row.append($searcher.wrap('<div class="input-group">').parent());
+            $('.input-group', $row).append($add_btn.wrap('<span class="input-group-btn">').parent());
 
             $container.append($row);
-            $container.append($alert_holder.wrap('<div class="row">').parent());
-            $container.append($grid.wrap('<div class="row">').parent());
+            $container.append($alert_holder.wrap('<div>').parent());
+            $container.append($grid.wrap('<div>').parent());
 
             params.data.forEach(function (item) { add_row(item) });
         });

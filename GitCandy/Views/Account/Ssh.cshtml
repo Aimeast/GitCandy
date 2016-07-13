@@ -28,8 +28,4 @@
             });
     </script>
 }
-<div class="form-actions">
-    <div class="pull-left">
-        @Html.ActionLink(SR.Shared_Back, "Detail", new { Name = Model.Username }, new { @class = "btn" })
-    </div>
-</div>
+@Html.ActionLink(SR.Shared_Back, "Detail", new { Name = Model.Username }, new { @class = "btn btn-default" })

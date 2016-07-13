@@ -8,34 +8,35 @@
 
 @Html.Partial("_PathBar", Model.PathBar)
 @Html.Partial("_BranchSelector", Model.BranchSelector)
+
+<pre>@Model.Commit.CommitMessageShort</pre>
 <div class="row">
-    <div class="span12">@Model.Commit.CommitMessageShort</div>
-</div>
-<div class="row">
-    <div class="span12">
-        <div class="pull-left keep-space">@Model.Commit.Author.Name</div>
-        <div class="pull-left keep-space">@SR.Repository_AuthoredAt <span title="@Model.Commit.Author.When">@Model.Commit.Author.When.LocalDateTime</span></div>
+    <div class="col-md-12">
+        <strong title="@Model.Commit.Author">@Model.Commit.Author.Name</strong>
+        <span>@SR.Repository_AuthoredAt</span>
+        <span title="@Model.Commit.Author.When">@Model.Commit.Author.When.LocalDateTime</span>
         @if (Model.Commit.Author != Model.Commit.Committer)
         {
-            <div class="pull-left keep-space">@Model.Commit.Committer.Name</div>
-            <div class="pull-left keep-space">@SR.Repository_CommittedAt <span title="@Model.Commit.Committer.When">@Model.Commit.Committer.When.LocalDateTime</span></div>
+            <strong title="@Model.Commit.Committer">@Model.Commit.Committer.Name</strong>
+            <span>@SR.Repository_CommittedAt</span>
+            <span title="@Model.Commit.Committer.When">@Model.Commit.Committer.When.LocalDateTime</span>
         }
     </div>
 </div>
 <div class="row">
-    <div class="span2 pull-left">
-        @Model.SizeString
-    </div>
-    <div class="span4 pull-right">
-        @Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
-        @Html.ActionLink(SR.Repository_Blame, "Blame", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
-        @Html.ActionLink(SR.Repository_Raw, "Raw", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
+    <div class="col-md-12">
+        <span>@Model.SizeString</span>
+        <div class="pull-right">
+            @Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn btn-default" })
+            @Html.ActionLink(SR.Repository_Blame, "Blame", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn btn-default hidden-xs" })
+            @Html.ActionLink(SR.Repository_Raw, "Raw", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn btn-default" })
+        </div>
     </div>
 </div>
 <div class="border-area">
     <table class="table">
         <caption>
-            <div class="pull-left keep-space"><i class="icon-list-alt"></i>@Model.Name</div>
+            <div class="pull-left keep-space"><i class="glyphicon glyphicon-list-alt"></i>@Model.Name</div>
         </caption>
         <tbody>
             <tr>

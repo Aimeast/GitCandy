@@ -8,7 +8,11 @@
 
 @if (Model != null)
 {
-    <div id="chooser"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="chooser"></div>
+        </div>
+    </div>
 
     <script type="text/javascript">
         var team = "@Model.Name";
@@ -34,8 +38,4 @@
             });
     </script>
 }
-<div class="form-actions">
-    <div class="pull-left">
-        @Html.ActionLink(SR.Shared_Back, "Detail", new { Model.Name }, new { @class = "btn" })
-    </div>
-</div>
+@Html.ActionLink(SR.Shared_Back, "Detail", new { Model.Name }, new { @class = "btn btn-default" })

@@ -17,8 +17,9 @@ else
             <tr class="info">
                 <td>
                     <div>@Model.Commit.ReferenceName</div>
-                    <div class="pull-left keep-space" title="@Model.Commit.Author">@Model.Commit.Author.Name</div>
-                    <div class="pull-left keep-space">@SR.Repository_AuthoredAt <span title="@Model.Commit.Author.When">@Model.Commit.Author.When.LocalDateTime</span></div>
+                    <strong title="@Model.Commit.Author">@Model.Commit.Author.Name</strong>
+                    <span>@SR.Repository_AuthoredAt</span>
+                    <span title="@Model.Commit.Author.When">@Model.Commit.Author.When.LocalDateTime</span>
                 </td>
                 <td></td>
                 <td></td>
@@ -29,13 +30,14 @@ else
                 <tr>
                     <td>
                         <div>@Html.ActionLink(item.Commit.ReferenceName, "Tree", Html.OverRoute(new { path = item.Commit.ReferenceName }))</div>
-                        <div class="pull-left keep-space" title="@item.Commit.Author">@item.Commit.Author.Name</div>
-                        <div class="pull-left keep-space">@SR.Repository_AuthoredAt <span title="@item.Commit.Author.When">@item.Commit.Author.When.LocalDateTime</span></div>
+                        <strong title="@item.Commit.Author">@Model.Commit.Author.Name</strong>
+                        <span>@SR.Repository_AuthoredAt</span>
+                        <span title="@item.Commit.Author.When">@item.Commit.Author.When.LocalDateTime</span>
                     </td>
                     <td><p class="text-right">@item.Behind @SR.Repository_Behind</p></td>
                     <td><p class="text-left">@item.Ahead @SR.Repository_Ahead</p></td>
                     <td>@if (Model.CanDelete)
-                    {<a class="btn" data-branch="@item.Commit.ReferenceName" href="#">@SR.Shared_Delete</a>}</td>
+                    {<a class="btn btn-default" data-branch="@item.Commit.ReferenceName" href="#">@SR.Shared_Delete</a>}</td>
                 </tr>
             }
         </tbody>

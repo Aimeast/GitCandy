@@ -42,7 +42,6 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
 * [Microsoft.Composition (MEF2)](http://mef.codeplex.com/) @ [Microsoft Public License](http://mef.codeplex.com/license)
 * [Newtonsoft.Json](http://json.codeplex.com/) @ [MIT License](http://json.codeplex.com/license)
 * [SharpZipLib](http://github.com/icsharpcode/SharpZipLib) @ [GPL License v2](http://github.com/icsharpcode/SharpZipLib/blob/master/doc/COPYING.txt)
-* [ZeroClipboard](http://github.com/zeroclipboard/zeroclipboard) @ [MIT License](http://github.com/zeroclipboard/zeroclipboard/blob/master/LICENSE)
 
 ---
 ### License

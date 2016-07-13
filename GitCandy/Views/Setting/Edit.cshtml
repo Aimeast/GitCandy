@@ -6,119 +6,89 @@
 
 <h4>@SR.Setting_EditTitle</h4>
 
-<div class="span10">
-    @using (Html.BeginForm("Edit", "Setting", FormMethod.Post, new { @class = "form-horizontal" }))
-    {
-        <div class="row">
-            @Html.LabelFor(s => s.IsPublicServer, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.IsPublicServer)
+
+@using (Html.BeginForm("Edit", "Setting", FormMethod.Post))
+{
+    <dl class="dl-horizontal col-md-8">
+        <dt>@Html.DisplayNameFor(s => s.IsPublicServer)</dt>
+        <dd>
+            <div class="switch" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.IsPublicServer, new { data_size = "small" })
             </div>
-        </div>
+        </dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.ForceSsl, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.ForceSsl)
+        <dt>@Html.DisplayNameFor(s => s.ForceSsl)</dt>
+        <dd>
+            <div class="switch" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.ForceSsl, new { data_size = "small" })
             </div>
-        </div>
+        </dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.EnableSsh, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.EnableSsh)
+        <dt>@Html.DisplayNameFor(s => s.EnableSsh)</dt>
+        <dd>
+            <div class="switch" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.EnableSsh, new { data_size = "small" })
             </div>
-        </div>
+        </dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.SslPort, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.SslPort, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.SslPort)</dt>
+        <dd>@Html.TextBoxFor(s => s.SslPort, new { @class = "form-control" })</dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.SshPort, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.SshPort, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.SshPort)</dt>
+        <dd>@Html.TextBoxFor(s => s.SshPort, new { @class = "form-control" })</dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.LocalSkipCustomError, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.LocalSkipCustomError)
+
+        <dt>@Html.DisplayNameFor(s => s.LocalSkipCustomError)</dt>
+        <dd>
+            <div class="switch" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.LocalSkipCustomError, new { data_size = "small" })
             </div>
-        </div>
+        </dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.AllowRegisterUser, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.AllowRegisterUser)
+        <dt>@Html.DisplayNameFor(s => s.AllowRegisterUser)</dt>
+        <dd>
+            <div class="switch" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.AllowRegisterUser, new { data_size = "small" })
             </div>
-        </div>
+        </dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.AllowRepositoryCreation, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            <div class="switch switch-small" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
-                @Html.CheckBoxFor(s => s.AllowRepositoryCreation)
+        <dt>@Html.DisplayNameFor(s => s.AllowRepositoryCreation)</dt>
+        <dd>
+            <div class="switch" data-on-label="@SR.Shared_Yes" data-off-label="@SR.Shared_No">
+                @Html.CheckBoxFor(s => s.AllowRepositoryCreation, new { data_size = "small" })
             </div>
-        </div>
+        </dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.RepositoryPath, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.RepositoryPath, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.RepositoryPath)</dt>
+        <dd>@Html.TextBoxFor(s => s.RepositoryPath, new { @class = "form-control" })</dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.CachePath, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.CachePath, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.CachePath)</dt>
+        <dd>@Html.TextBoxFor(s => s.CachePath, new { @class = "form-control" })</dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.GitCorePath, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.GitCorePath, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.GitCorePath)</dt>
+        <dd>@Html.TextBoxFor(s => s.GitCorePath, new { @class = "form-control" })</dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.NumberOfCommitsPerPage, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.NumberOfCommitsPerPage, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.NumberOfCommitsPerPage)</dt>
+        <dd>@Html.TextBoxFor(s => s.NumberOfCommitsPerPage, new { @class = "form-control" })</dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.NumberOfItemsPerList, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.NumberOfItemsPerList, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.NumberOfItemsPerList)</dt>
+        <dd>@Html.TextBoxFor(s => s.NumberOfItemsPerList, new { @class = "form-control" })</dd>
 
-        <div class="row">
-            @Html.LabelFor(s => s.NumberOfRepositoryContributors, new { @class = "span4 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextBoxFor(s => s.NumberOfRepositoryContributors, new { @class = "span4 text-left lead" })
-        </div>
+        <dt>@Html.DisplayNameFor(s => s.NumberOfRepositoryContributors)</dt>
+        <dd>@Html.TextBoxFor(s => s.NumberOfRepositoryContributors, new { @class = "form-control" })</dd>
 
-        if (!ViewData.ModelState.IsValid)
+        @if (!ViewData.ModelState.IsValid)
         {
-        @Html.ValidationSummary(SR.Setting_UpdateSettingsUnsuccessfull, new { @class = "alert alert-error" })
+        <dt></dt>
+        <dd>@Html.ValidationSummary(true, SR.Setting_UpdateSettingsUnsuccessfull, new { @class = "alert alert-dismissable alert-danger" })</dd>
         }
 
-        <div class="form-actions">
-            <div class="pull-left">
-                @Html.ActionLink(SR.Shared_Restart, "Restart", null, new { @class = "btn" })
-                @Html.ActionLink(SR.Setting_ReGenSsh, "ReGenSsh", null, new { @class = "btn" })
-            </div>
-            <div class="pull-right">
-                <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
-                <button type="submit" class="btn btn-primary">@SR.Shared_Save</button>
-            </div>
-        </div>
-    }
-</div>
+        <dt></dt>
+        <dd>
+            <button type="submit" class="btn btn-primary">@SR.Shared_Save</button> &nbsp;
+            <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button> &nbsp;
+            @Html.ActionLink(SR.Setting_ReGenSsh, "ReGenSsh", null, new { @class = "btn btn-danger" }) &nbsp;
+            @Html.ActionLink(SR.Shared_Restart, "Restart", null, new { @class = "btn btn-danger" }) &nbsp;
+        </dd>
+    </dl>
+}

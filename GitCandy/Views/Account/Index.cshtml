@@ -8,20 +8,23 @@
 
 @using (Html.BeginForm("Index", "Account", FormMethod.Get))
 {
-    <fieldset>
-        <legend class="hide"></legend>
-        <div class="input-append focus">
-            <input type="text" name="query" />
-            <button type="submit" class="btn">@SR.Shared_Search</button>
+<div class="row">
+    <div class="form-group col-md-5">
+        <div class="input-group">
+            <input type="text" name="query" class="form-control" />
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default">@SR.Shared_Search</button>
+            </span>
         </div>
-    </fieldset>
+    </div>
+</div>
 }
 
 <div>
     <div class="pull-left">@string.Format(SR.Account_UsersFound, Model.ItemCount)</div>
     <div class="pull-right">@Html.ActionLink(SR.Shared_Create, "Create", null, new { @class = "btn btn-primary" })</div>
 </div>
-<table class="table table-hover">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>@SR.Account_Username</th>

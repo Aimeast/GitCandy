@@ -8,11 +8,16 @@
 
 @if (Model != null)
 {
-    <span>@SR.Shared_Users</span>
-    <div id="choose_user"></div>
-    <div class="hr"></div>
-    <span>@SR.Shared_Teams</span>
-    <div id="choose_team"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <span>@SR.Shared_Users</span>
+            <div id="choose_user"></div>
+        </div>
+        <div class="col-md-6">
+            <span>@SR.Shared_Teams</span>
+            <div id="choose_team"></div>
+        </div>
+    </div>
 
     <script type="text/javascript">
         var repo = "@Model.RepositoryName";
@@ -79,8 +84,4 @@
             });
     </script>
 }
-<div class="form-actions">
-    <div class="pull-left">
-        @Html.ActionLink(SR.Shared_Back, "Detail", new { Name = Model.RepositoryName }, new { @class = "btn" })
-    </div>
-</div>
+@Html.ActionLink(SR.Shared_Back, "Detail", new { Name = Model.RepositoryName }, new { @class = "btn btn-default" })

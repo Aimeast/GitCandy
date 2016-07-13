@@ -4,46 +4,38 @@
     ViewBag.Title = string.Format(SR.Shared_TitleFormat, SR.Account_ChangePasswordTitle);
 }
 
-<h4>@SR.Account_ChangePasswordTitle</h4>
+<h3>@SR.Account_ChangePasswordTitle</h3>
 
-<div class="span7">
-    @using (Html.BeginForm())
-    {
-        <div class="row">
-            @Html.LabelFor(s => s.OldPassword, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.PasswordFor(s => s.OldPassword, new { @class = "span3 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span4 offset3">
+@using (Html.BeginForm("Change", "Account", FormMethod.Post))
+{
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(s => s.OldPassword)</dt>
+        <dd>@Html.PasswordFor(s => s.OldPassword, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.OldPassword)
             </span>
-        </div>
-        <div class="row">
-            @Html.LabelFor(s => s.NewPassword, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.PasswordFor(s => s.NewPassword, new { @class = "span3 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span4 offset3">
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.NewPassword)</dt>
+        <dd>@Html.PasswordFor(s => s.NewPassword, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.NewPassword)
             </span>
-        </div>
-        <div class="row">
-            @Html.LabelFor(s => s.ConformPassword, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.PasswordFor(s => s.ConformPassword, new { @class = "span3 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span4 offset3">
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.ConformPassword)</dt>
+        <dd>@Html.PasswordFor(s => s.ConformPassword, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.ConformPassword)
             </span>
-        </div>
+        </dd>
 
-        <div class="form-actions">
-            <div class="pull-right">
-                <button type="submit" class="btn btn-primary">@SR.Account_ChangePassword</button>
-            </div>
-        </div>
-    }
-</div>
+        <dt></dt>
+        <dd>
+            <button type="submit" class="btn btn-primary">@SR.Account_ChangePassword</button>
+        </dd>
+    </dl>
+}

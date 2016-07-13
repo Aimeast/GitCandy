@@ -12,17 +12,21 @@
 {
     <div class="border-area">
         <div class="row">
-            <div class="span9 pull-left">
+            <div class="col-md-9">
                 <div title="@commit.CommitMessageShort">@Html.ActionLink(commit.CommitMessageShort.ShortString(100), "Commit", Html.OverRoute(new { path = commit.Sha + "/" + Model.Path }))</div>
-                <div>@commit.Author.Name @SR.Repository_AuthoredAt <span title="@commit.Author.When">@commit.Author.When.LocalDateTime</span></div>
+                <strong title="@commit.Author">@commit.Author.Name</strong>
+                <span>@SR.Repository_AuthoredAt</span>
+                <span title="@commit.Author.When">@commit.Author.When.LocalDateTime</span>
                 @if (commit.Author != commit.Committer)
                 {
-                    <div class="keep-space">@commit.Committer.Name @SR.Repository_CommittedAt <span title="@commit.Committer.When">@commit.Committer.When.LocalDateTime</span></div>
+                    <strong title="@commit.Committer">@commit.Committer.Name</strong>
+                    <span>@SR.Repository_CommittedAt</span>
+                    <span title="@commit.Committer.When">@commit.Committer.When.LocalDateTime</span>
                 }
             </div>
-            <div class="span1 pull-right">
-                <div class="pull-right">@Html.ActionLink(commit.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = commit.Sha }))</div>
-                <div class="pull-right">@Html.ActionLink(SR.Repository_Tree, "Tree", Html.OverRoute(new { path = commit.Sha }))</div>
+            <div class="col-md-3">
+                <div class="text-right">@Html.ActionLink(commit.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = commit.Sha }))</div>
+                <div class="text-right">@Html.ActionLink(SR.Repository_Tree, "Tree", Html.OverRoute(new { path = commit.Sha }))</div>
             </div>
         </div>
     </div>

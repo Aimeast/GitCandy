@@ -7,8 +7,8 @@
     var removed = change.ChangeKind == LibGit2Sharp.ChangeKind.Deleted || change.ChangeKind == LibGit2Sharp.ChangeKind.Ignored;
     <div class="row">
         <div>
-            <div class="span2 pull-left">@change.ChangeKind.ToLocateString() +@change.LinesAdded -@change.LinesDeleted</div>
-            <div class="span10 pull-right">
+            <div class="col-md-2 pull-left">@change.ChangeKind.ToLocateString() +@change.LinesAdded -@change.LinesDeleted</div>
+            <div class="col-md-10 pull-right">
                 @if (change.OldPath != change.Path)
                 {
                     @change.OldPath @Html.Raw(" → ")
@@ -26,8 +26,8 @@
     <div class="page-divider"></div>
     <div class="row">
         <div>
-            <div class="span2 pull-left">@change.ChangeKind.ToLocateString() +@change.LinesAdded -@change.LinesDeleted</div>
-            <div class="span10 pull-right">
+            <div class="col-md-2">@change.ChangeKind.ToLocateString() +@change.LinesAdded -@change.LinesDeleted</div>
+            <div class="col-md-10">
                 @if (change.OldPath != change.Path)
                 {
                     @change.OldPath @Html.Raw(" → ")
@@ -39,7 +39,7 @@
         </div>
         @if (!removed)
         {
-            <div class="span12">
+            <div class="col-md-12">
                 <pre><code class="language diff">@change.Patch</code></pre>
             </div>
         }

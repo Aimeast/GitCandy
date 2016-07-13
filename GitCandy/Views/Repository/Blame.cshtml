@@ -10,13 +10,13 @@
 @Html.Partial("_BranchSelector", Model.BranchSelector)
 
 <div class="row">
-    <div class="span2 pull-left">
+    <div class="col-md-12">
+        <div class="pull-right">
+            @Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn btn-default" })
+            @Html.ActionLink(SR.Repository_NormalView, "Blob", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn btn-default" })
+            @Html.ActionLink(SR.Repository_Raw, "Raw", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn btn-default" })
+        </div>
         @Model.SizeString
-    </div>
-    <div class="span4 pull-right">
-        @Html.ActionLink(SR.Repository_History, "Commits", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
-        @Html.ActionLink(SR.Repository_NormalView, "Blob", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
-        @Html.ActionLink(SR.Repository_Raw, "Raw", Html.OverRoute(new { path = (Model.ReferenceName ?? Model.Sha) + "/" + Model.Path }), new { @class = "btn" })
     </div>
 </div>
 
@@ -29,7 +29,7 @@
                     <div>
                         <span>@Html.ActionLink(hunk.Sha.ToShortSha(), "Commit", Html.OverRoute(new { path = hunk.Sha + "/" + Model.Path }))</span>
                         <span>@Html.ActionLink("»", "Blame", Html.OverRoute(new { path = hunk.Sha + "/" + Model.Path }))</span>
-                        <span title="@hunk.AuthorEmail">@hunk.Author</span>
+                        <strong title="@hunk.AuthorEmail">@hunk.Author</strong>
                     </div>
                     <div>
                         <span title="@hunk.AuthorDate">@hunk.AuthorDate.LocalDateTime.ToShortDateString()</span>

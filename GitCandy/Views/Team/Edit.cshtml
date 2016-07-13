@@ -5,43 +5,39 @@
     var token = GitCandy.Security.Token.Current;
 }
 
-<h4>@string.Format(SR.Team_EditTitle, Model.Name)</h4>
+<h3>@string.Format(SR.Team_EditTitle, Model.Name)</h3>
 
-<div class="span8">
-    @using (Html.BeginForm("Edit", "Team", FormMethod.Post, new { @class = "form-horizontal" }))
-    {
-        <div class="row">
-            <div class="span3 text-right lead muted">@Html.DisplayNameFor(s => s.Name)</div>
-            <span class="span1"></span>
-            <span class="span5 text-left lead">@Model.Name</span>
-            @Html.HiddenFor(s => s.Name, new { @class = "span4 text-left lead" })
-        </div>
 
-        <div class="row">
-            @Html.LabelFor(s => s.Description, new { @class = "span3 text-right lead muted" })
-            <span class="span1"></span>
-            @Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "span4 text-left lead" })
-        </div>
-        <div class="row">
-            <span class="text-error span5 offset4">
+@using (Html.BeginForm("Edit", "Team", FormMethod.Post))
+{
+    <dl class="dl-horizontal col-md-8">
+        <dt>@Html.DisplayNameFor(s => s.Name)</dt>
+        <dd>
+            @Html.HiddenFor(s => s.Name)
+            @Model.Name
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.Description)</dt>
+        <dd>@Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
                 @Html.ValidationMessageFor(s => s.Description)
             </span>
-        </div>
+        </dd>
 
-        @Html.ValidationSummary(true, SR.Team_UpdateUnsuccessfull, new { @class = "alert alert-error" })
+        <dt></dt>
+        <dd>@Html.ValidationSummary(true, SR.Team_UpdateUnsuccessfull, new { @class = "alert alert-dismissable alert-danger" })</dd>
 
-        <div class="form-actions">
-            <div class="pull-left">
-                @Html.ActionLink(SR.Shared_Back, "Detail", new { Model.Name }, new { @class = "btn" })
-            </div>
-            <div class="pull-right">
-                @if (token.IsSystemAdministrator)
-                {
-                    @Html.ActionLink(SR.Shared_Delete, "Delete", new { Model.Name }, new { @class = "btn" })
-                }
-                <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button>
-                <button type="submit" class="btn btn-primary">@SR.Shared_Save</button>
-            </div>
-        </div>
-    }
-</div>
+        <dt>
+            @Html.ActionLink(SR.Shared_Back, "Detail", new { Model.Name }, new { @class = "btn btn-default pull-left" })
+        </dt>
+        <dd>
+            <button type="submit" class="btn btn-primary">@SR.Shared_Save</button> &nbsp;
+            <button type="reset" class="btn btn-inverse">@SR.Shared_Reset</button> &nbsp;
+            @if (token != null && token.IsSystemAdministrator)
+            {
+                @Html.ActionLink(SR.Shared_Delete, "Delete", new { Model.Name }, new { @class = "btn btn-danger" })
+            }
+        </dd>
+    </dl>
+}

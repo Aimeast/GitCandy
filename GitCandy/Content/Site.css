@@ -5,11 +5,6 @@
     border-top: 1px solid #eee;
 }
 
-.hr {
-    margin-top: 25px;
-    margin-bottom: 25px;
-}
-
 .center {
     display: table;
     width: auto;
@@ -20,7 +15,7 @@
 .border-area {
     position: relative;
     margin: 5px 0;
-    padding: 5px 0;
+    padding: 5px 10px;
     background-color: #fff;
     border: 1px solid #ddd;
     -webkit-border-radius: 4px;
@@ -29,8 +24,9 @@
 }
 
 .remover {
-    color: #d00;
-    text-decoration: underline;
+    position: absolute;
+    top: 7px;
+    right: 7px;
 }
 
 .disable-mask {
@@ -77,9 +73,58 @@
     width: 300px;
 }
 
+.url-path {
+    width: 300px;
+}
+.url-path > input {
+    background: #fff !important;
+}
+
+[aria-label] {
+    position: relative;
+}
+    [aria-label]:after {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 50%;
+        padding: 5px 8px;
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        content: attr(aria-label);
+        margin-top: 7px;
+        font-size: 12px;
+        white-space: pre;
+        pointer-events: none;
+        transform: translateX(50%);
+        z-index: 10000;
+    }
+
+    [aria-label]:hover:after, [aria-label]:focus:after {
+        display: block;
+    }
+
 /* override bootstrap */
 @media print {
     a[href]:after {
         content: none !important;
     }
+}
+
+.dl-horizontal dt { padding:5px 0; }
+.dl-horizontal dd { padding:5px 0; }
+
+@media (min-width: 768px) {
+  .dl-horizontal dt { width: 240px; }
+  .dl-horizontal dd { margin-left: 260px; }
+}
+@media (min-width: 470px) {
+  .nav-justified > li {
+    display: table-cell;
+    width: 1%;
+  }
+  .nav-justified > li > a {
+    margin-bottom: 0;
+  }
 }

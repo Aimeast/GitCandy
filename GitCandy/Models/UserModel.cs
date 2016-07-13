@@ -12,7 +12,7 @@ namespace GitCandy.Models
         [Display(ResourceType = typeof(SR), Name = "Account_Username")]
         public string Name { get; set; }
 
-        [StringLength(20, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_StringLength")]
+        [StringLength(20, MinimumLength = 2, ErrorMessageResourceType = typeof(SR), ErrorMessageResourceName = "Validation_StringLength")]
         [Display(ResourceType = typeof(SR), Name = "Account_Nickname")]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Nickname { get; set; }
