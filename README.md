@@ -30,11 +30,16 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
 * The `git-core` path looks like `x:\PortableGit\libexec\git-core` or `x:\PortableGit\mingw64\libexec\git-core`
 
 ---
+### Changes
+Go to [changes page](http://github.com/Aimeast/GitCandy/blob/dev/CHANGES.md)
+
+---
 ### Thanks for (alphabet)
 * [ASP.NET MVC](http://aspnetwebstack.codeplex.com/) @ [Apache License 2.0](http://aspnetwebstack.codeplex.com/license)
 * [Bootstrap](http://github.com/twbs/bootstrap) @ [MIT License](http://github.com/twbs/bootstrap/blob/master/LICENSE)
 * [Bootstrap-switch](http://github.com/nostalgiaz/bootstrap-switch) @ [Apache License 2.0](http://github.com/nostalgiaz/bootstrap-switch/blob/master/LICENSE)
 * [EntityFramework](http://entityframework.codeplex.com/) @ [Apache License 2.0](http://entityframework.codeplex.com/license)
+* [FxSsh](http://github.com/Aimeast/FxSsh) @ [MIT license](http://github.com/Aimeast/FxSsh/blob/master/LICENSE.md)
 * [Highlight.js](http://github.com/isagalaev/highlight.js) @ [New BSD License](http://github.com/isagalaev/highlight.js/blob/master/LICENSE)
 * [jQuery](http://github.com/jquery/jquery) @ [MIT License](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt)
 * [LibGit2Sharp](http://github.com/libgit2/libgit2sharp) @ [MIT License](http://github.com/libgit2/libgit2sharp/blob/master/LICENSE.md)

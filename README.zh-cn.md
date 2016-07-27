@@ -30,11 +30,16 @@ GitCandy© 是一个基于 ASP.NET MVC 的 [Git](http://git-scm.com/documentatio
 * `git-core`路径示例：`x:\PortableGit\libexec\git-core`，`x:\PortableGit\mingw64\libexec\git-core`
 
 ---
+### 更新日志
+跳转到[日志页](http://github.com/Aimeast/GitCandy/blob/dev/CHANGES.md)
+
+---
 ### 鸣谢 (按字母序)
 * [ASP.NET MVC](http://aspnetwebstack.codeplex.com/) @ [Apache License 2.0](http://aspnetwebstack.codeplex.com/license)
 * [Bootstrap](http://github.com/twbs/bootstrap) @ [MIT License](http://github.com/twbs/bootstrap/blob/master/LICENSE)
 * [Bootstrap-switch](http://github.com/nostalgiaz/bootstrap-switch) @ [Apache License 2.0](http://github.com/nostalgiaz/bootstrap-switch/blob/master/LICENSE)
 * [EntityFramework](http://entityframework.codeplex.com/) @ [Apache License 2.0](http://entityframework.codeplex.com/license)
+* [FxSsh](http://github.com/Aimeast/FxSsh) @ [MIT license](http://github.com/Aimeast/FxSsh/blob/master/LICENSE.md)
 * [Highlight.js](http://github.com/isagalaev/highlight.js) @ [New BSD License](http://github.com/isagalaev/highlight.js/blob/master/LICENSE)
 * [jQuery](http://github.com/jquery/jquery) @ [MIT License](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt)
 * [LibGit2Sharp](http://github.com/libgit2/libgit2sharp) @ [MIT License](http://github.com/libgit2/libgit2sharp/blob/master/LICENSE.md)
