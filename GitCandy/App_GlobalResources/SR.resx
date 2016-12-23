@@ -222,9 +222,9 @@
   <data name="Home_AboutDescription" xml:space="preserve">
     <value>GitCandy&amp;copy; is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
 
-Visit a demo on [http://gitcandy.com]()
+Visit a demo on [http://gitcandy.com](http://gitcandy.com)
 
-Get source and fork me on [http://github.com/Aimeast/GitCandy]()
+Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com/Aimeast/GitCandy)
 
 ---
 #### Thanks for (alphabet)</value>
