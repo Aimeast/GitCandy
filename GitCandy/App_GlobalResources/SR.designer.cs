@@ -806,7 +806,7 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Push a repository with HEAD(master) branch for display here..
+        ///   Looks up a localized string similar to This is a empty repository or we are importing a remote repository. Push a repository with HEAD(master) branch for display here..
         /// </summary>
         public static string Repository_EmptyWords {
             get {
@@ -932,6 +932,33 @@ namespace GitCandy.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to How to initialize.
+        /// </summary>
+        public static string Repository_HowInit {
+            get {
+                return ResourceManager.GetString("Repository_HowInit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string Repository_Import {
+            get {
+                return ResourceManager.GetString("Repository_Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support http(s) protocol only.
+        /// </summary>
+        public static string Repository_ImportTips {
+            get {
+                return ResourceManager.GetString("Repository_ImportTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is a private repository.
         /// </summary>
         public static string Repository_IsPrivate {
@@ -1009,6 +1036,15 @@ namespace GitCandy.App_GlobalResources {
         public static string Repository_Relationship {
             get {
                 return ResourceManager.GetString("Repository_Relationship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Url of remote repository.
+        /// </summary>
+        public static string Repository_RemoteUrlTitle {
+            get {
+                return ResourceManager.GetString("Repository_RemoteUrlTitle", resourceCulture);
             }
         }
         
@@ -1495,6 +1531,15 @@ namespace GitCandy.App_GlobalResources {
         public static string Shared_No {
             get {
                 return ResourceManager.GetString("Shared_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Shared_None {
+            get {
+                return ResourceManager.GetString("Shared_None", resourceCulture);
             }
         }
         

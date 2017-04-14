@@ -48,6 +48,26 @@
             </span>
         </dd>
 
+        <dt>@Html.DisplayNameFor(s => s.HowInit)</dt>
+        <dd>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary" data-repo-init="None">
+                    <input type="radio" autocomplete="off">@SR.Shared_None
+                </label>
+                <label class="btn btn-primary" data-repo-init="Import">
+                    <input type="radio" autocomplete="off">@SR.Repository_Import
+                </label>
+            </div>
+            @Html.TextBoxFor(s => s.HowInit, new { @class = "hide" })
+            <div class="collapse" data-repo-init="Import">
+                <div class="well">
+                    <div>@Html.DisplayNameFor(s => s.RemoteUrl)</div>
+                    @Html.TextBoxFor(s => s.RemoteUrl, new { @class = "form-control", placeholder ="http(s)://" })
+                    <p class="text-warning">@SR.Repository_ImportTips</p>
+                </div>
+            </div>
+        </dd>
+
         <dt></dt>
         <dd>@Html.ValidationSummary(true, SR.Repository_CreationUnsuccessfull, new { @class = "alert alert-dismissable alert-danger" })</dd>
 

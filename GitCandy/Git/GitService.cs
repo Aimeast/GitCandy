@@ -3,6 +3,7 @@ using GitCandy.Configuration;
 using GitCandy.Extensions;
 using GitCandy.Git.Cache;
 using GitCandy.Models;
+using GitCandy.Schedules;
 using LibGit2Sharp;
 using System;
 using System.Diagnostics.Contracts;
@@ -671,7 +672,7 @@ namespace GitCandy.Git
         #endregion
 
         #region Static Methods
-        public static bool CreateRepository(string name)
+        public static bool CreateRepository(string name, string remoteUrl = null)
         {
             var path = Path.Combine(UserConfiguration.Current.RepositoryPath, name);
             try
@@ -679,6 +680,17 @@ namespace GitCandy.Git
                 using (var repo = new Repository(Repository.Init(path, true)))
                 {
                     repo.Config.Set("core.logallrefupdates", true);
+                    if (remoteUrl != null)
+                    {
+                        repo.Network.Remotes.Add("origin", remoteUrl, "+refs/*:refs/*");
+                        Scheduler.Instance.AddJob(new SingleJob(() =>
+                        {
+                            using (var fetch_repo = new Repository(repo.Info.Path))
+                            {
+                                fetch_repo.Fetch("origin");
+                            }
+                        }));
+                    }
                 }
                 return true;
             }

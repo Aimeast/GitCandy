@@ -371,7 +371,7 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
     <value>Edit Repository {0}</value>
   </data>
   <data name="Repository_EmptyWords" xml:space="preserve">
-    <value>Push a repository with HEAD(master) branch for display here.</value>
+    <value>This is a empty repository or we are importing a remote repository. Push a repository with HEAD(master) branch for display here.</value>
   </data>
   <data name="Repository_FileAdded" xml:space="preserve">
     <value>Added</value>
@@ -412,8 +412,17 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
   <data name="Repository_HistoryFor" xml:space="preserve">
     <value>History for ·</value>
   </data>
+  <data name="Repository_HowInit" xml:space="preserve">
+    <value>How to initialize</value>
+  </data>
   <data name="Repository_IsPrivate" xml:space="preserve">
     <value>Is a private repository</value>
+  </data>
+  <data name="Repository_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Repository_ImportTips" xml:space="preserve">
+    <value>Support http(s) protocol only</value>
   </data>
   <data name="Repository_ListTitle" xml:space="preserve">
     <value>List of Repositories</value>
@@ -438,6 +447,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
   </data>
   <data name="Repository_Relationship" xml:space="preserve">
     <value>Relationship</value>
+  </data>
+  <data name="Repository_RemoteUrlTitle" xml:space="preserve">
+    <value>Url of remote repository</value>
   </data>
   <data name="Repository_RepositorySize" xml:space="preserve">
     <value>Repository size</value>
@@ -465,6 +477,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
   </data>
   <data name="Repository_Tags" xml:space="preserve">
     <value>Tags</value>
+  </data>
+  <data name="Repository_TagDeletionWords" xml:space="preserve">
+    <value>Do you conform to delete the tag "{0}"?</value>
   </data>
   <data name="Repository_TagsTitle" xml:space="preserve">
     <value>Tags · {0}</value>
@@ -598,6 +613,9 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
   <data name="Shared_No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Shared_None" xml:space="preserve">
+    <value>None</value>
+  </data>
   <data name="Shared_Register" xml:space="preserve">
     <value>Register</value>
   </data>
@@ -711,8 +729,5 @@ Get source and fork me on [http://github.com/Aimeast/GitCandy](http://github.com
   </data>
   <data name="Validation_StringLengthRange" xml:space="preserve">
     <value>"{0}" should be smaller than {1} chars and large then {2} chars</value>
-  </data>
-  <data name="Repository_TagDeletionWords" xml:space="preserve">
-    <value>Do you conform to delete the tag "{0}"?</value>
   </data>
 </root>

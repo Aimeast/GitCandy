@@ -371,7 +371,7 @@
     <value>编辑代码库 {0}</value>
   </data>
   <data name="Repository_EmptyWords" xml:space="preserve">
-    <value>推送一个代码库到 HEAD(master) 分支才能在此显示。</value>
+    <value>这是个空仓库或导入远程仓库尚未完成。推送一个代码库到 HEAD(master) 分支才能在此显示。</value>
   </data>
   <data name="Repository_FileAdded" xml:space="preserve">
     <value>增加</value>
@@ -412,8 +412,17 @@
   <data name="Repository_HistoryFor" xml:space="preserve">
     <value>提交记录 ·</value>
   </data>
+  <data name="Repository_HowInit" xml:space="preserve">
+    <value>如何初始化仓库</value>
+  </data>
   <data name="Repository_IsPrivate" xml:space="preserve">
     <value>私有代码库</value>
+  </data>
+  <data name="Repository_Import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="Repository_ImportTips" xml:space="preserve">
+    <value>仅支持http(s)协议</value>
   </data>
   <data name="Repository_ListTitle" xml:space="preserve">
     <value>代码库列表</value>
@@ -438,6 +447,9 @@
   </data>
   <data name="Repository_Relationship" xml:space="preserve">
     <value>关联</value>
+  </data>
+  <data name="Repository_RemoteUrlTitle" xml:space="preserve">
+    <value>远程仓库地址</value>
   </data>
   <data name="Repository_RepositorySize" xml:space="preserve">
     <value>代码库大小</value>
@@ -465,6 +477,9 @@
   </data>
   <data name="Repository_Tags" xml:space="preserve">
     <value>标签</value>
+  </data>
+  <data name="Repository_TagDeletionWords" xml:space="preserve">
+    <value>你确认要删除标签 "{0}" 吗？</value>
   </data>
   <data name="Repository_TagsTitle" xml:space="preserve">
     <value>标签 · {0}</value>
@@ -530,7 +545,7 @@
     <value>显示参与者的条目数</value>
   </data>
   <data name="Setting_ReGenSsh" xml:space="preserve">
-   <value>重新生成SSH密钥</value>
+    <value>重新生成SSH密钥</value>
   </data>
   <data name="Setting_ReGenSshTitle" xml:space="preserve">
     <value>确认重新生成SSH密钥</value>
@@ -597,6 +612,9 @@
   </data>
   <data name="Shared_No" xml:space="preserve">
     <value>否</value>
+  </data>
+  <data name="Shared_None" xml:space="preserve">
+    <value>无</value>
   </data>
   <data name="Shared_Register" xml:space="preserve">
     <value>注册</value>
@@ -711,8 +729,5 @@
   </data>
   <data name="Validation_StringLengthRange" xml:space="preserve">
     <value>"{0}" 必须介于 {1} 和 {2} 个字符之间</value>
-  </data>
-  <data name="Repository_TagDeletionWords" xml:space="preserve">
-    <value>你确认要删除标签 "{0}" 吗？</value>
   </data>
 </root>

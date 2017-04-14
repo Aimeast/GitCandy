@@ -18,6 +18,12 @@ namespace GitCandy.Models
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Description { get; set; }
 
+        [Display(ResourceType = typeof(SR), Name = "Repository_HowInit")]
+        public string HowInit { get; set; }
+
+        [Display(ResourceType = typeof(SR), Name = "Repository_RemoteUrlTitle")]
+        public string RemoteUrl { get; set; }
+
         [Display(ResourceType = typeof(SR), Name = "Repository_IsPrivate")]
         [UIHint("YesNo")]
         public bool IsPrivate { get; set; }

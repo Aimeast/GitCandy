@@ -184,6 +184,19 @@
             });
         }
     });
+    // init repository
+    $('label[data-repo-init]').click(function () {
+        var $this = $(this),
+            how = $this.data('repo-init');
+        $this.parent().siblings('input').val(how);
+        $('div[data-repo-init]').each(function () {
+            var $panel = $(this),
+                belong = $panel.data('repo-init');
+            how == belong
+            ? $panel.collapse('show')
+            : $panel.collapse('hide');
+        });
+    });
     // chooser
     typeof chooser_params !== 'undefined'
         && chooser_params instanceof Array
