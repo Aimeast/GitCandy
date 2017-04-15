@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using GitCandy.Logging;
+using GitCandy.Base;
 
 namespace GitCandy
 {
@@ -21,7 +25,15 @@ namespace GitCandy
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole();
+            var appDataFileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "App_Data"));
+
+            if (!env.IsProduction())
+            {
+                loggerFactory.AddConsole();
+            }
+            loggerFactory.AddPlain(appDataFileProvider, includeScopes: true);
+
+            loggerFactory.CreateLogger<Startup>().LogInformation(AppInformation.GetAppStartingInfo(env));
 
             if (env.IsDevelopment())
             {
