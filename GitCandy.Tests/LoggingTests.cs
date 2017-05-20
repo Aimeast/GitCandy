@@ -1,5 +1,4 @@
 ﻿using GitCandy.Logging;
-using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +12,7 @@ namespace GitCandy.Tests
         [Fact]
         public void LoggerCreaterHasCache()
         {
-            var fileProvider = GetFileProvider();
+            var fileProvider = FileHelper.GetFileProvider(nameof(LoggingTests));
             var loggerProvider = new PlainLoggerProvider(fileProvider);
             var one = loggerProvider.CreateLogger("a");
             var two = loggerProvider.CreateLogger("a");
@@ -26,7 +25,7 @@ namespace GitCandy.Tests
         [Fact]
         public void ChangeLogFileNamePattern()
         {
-            var fileProvider = GetFileProvider();
+            var fileProvider = FileHelper.GetFileProvider(nameof(LoggingTests));
             var fileList = new List<string>(4);
             using (var processer = new PlainLoggerProcesser(fileProvider, () =>
             {
@@ -50,7 +49,7 @@ namespace GitCandy.Tests
         [Fact]
         public void CreateDelayCloseWriterWithoutWriting()
         {
-            var fileProvider = GetFileProvider();
+            var fileProvider = FileHelper.GetFileProvider(nameof(LoggingTests));
             var filename = fileProvider.GetFileInfo(DateTime.Now.Ticks + ".log").PhysicalPath;
 
             var writter = new DelayCloseWriter(filename);
@@ -66,7 +65,7 @@ namespace GitCandy.Tests
         [Fact]
         public void WriteAndReleaseLogFile()
         {
-            var fileProvider = GetFileProvider();
+            var fileProvider = FileHelper.GetFileProvider(nameof(LoggingTests));
             var filename = fileProvider.GetFileInfo(DateTime.Now.Ticks + ".log").PhysicalPath;
 
             var writter = new DelayCloseWriter(filename);
@@ -89,17 +88,6 @@ namespace GitCandy.Tests
             Assert.False(writter.CanWrite);
             Assert.Equal("Delay close testing", ReadAllTextWithFileShare(filename));
             File.Open(filename, FileMode.Open, FileAccess.ReadWrite).Dispose();
-        }
-
-        private IFileProvider GetFileProvider()
-        {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "testlog");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            var fileProvider = new PhysicalFileProvider(path);
-
-            return fileProvider;
         }
 
         private string ReadAllTextWithFileShare(string filename)

@@ -28,6 +28,25 @@ namespace GitCandy.Tests
         }
 
         [Fact]
+        public void ContractsOfHostKeys()
+        {
+            var providerType = typeof(IHostKey);
+            var types = providerType
+                .GetTypeInfo()
+                .Assembly
+                .GetTypes()
+                .Where(t => t != providerType && providerType.IsAssignableFrom(t))
+                .ToArray();
+
+            foreach (var t in types)
+            {
+                Assert.Equal(providerType.Namespace, t.Namespace);
+                Assert.Empty(t.GetTypeInfo().GetConstructors().Single().GetParameters());
+                Assert.True(t.GetTypeInfo().IsSealed);
+            }
+        }
+
+        [Fact]
         public void PeekedRightVersion()
         {
             Assert.Equal(1, PasswordProvider.Peek(1).Version);
