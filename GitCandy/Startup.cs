@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GitCandy.Base;
+using GitCandy.Configuration;
+using GitCandy.Data;
+using GitCandy.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using GitCandy.Logging;
-using GitCandy.Base;
-using GitCandy.Configuration;
+using System.IO;
 
 namespace GitCandy
 {
@@ -33,6 +30,11 @@ namespace GitCandy
 
             services.AddOptions();
             services.ConfigureUserSettings<UserSettings>(appDataFileProvider.GetFileInfo("usersettings.json"));
+            services.AddDataService(new DataServiceSettings
+            {
+                MainDbFileInfo = appDataFileProvider.GetFileInfo("GitCandy.db"),
+                CacheDbFileInfo = appDataFileProvider.GetFileInfo("Cache.db"),
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
