@@ -1,0 +1,15 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "bootstrap-switch": "v3.3.4",
+    "highlightjs": "9.12.0",
+    "jquery": "3.2.1",
+    "marked": "v0.3.6",
+    "typeahead.js": "v0.11.1"
+  },
+  "resolutions": {
+    "jquery": "3.2.1"
+  }
+}

@@ -262,3 +262,9 @@ __pycache__/
 
 # To be ignored
 GitCandy/Properties/Information
+bundled.js
+bundled.css
+*.min.js
+*.min.css
+*.css.map
+*.min.map

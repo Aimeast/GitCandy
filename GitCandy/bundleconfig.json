@@ -1,0 +1,35 @@
+﻿// Configure bundling and minification for the project.
+// More info at https://go.microsoft.com/fwlink/?LinkId=808241
+[
+  {
+    "outputFileName": "wwwroot/css/bundled.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css",
+      "wwwroot/lib/highlightjs/styles/docco.css",
+      "wwwroot/css/site.css"
+    ],
+    "minify": {
+      "commentMode": "none"
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/bundled.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/lib/bootstrap-switch/dist/js/bootstrap-switch.js",
+      "wwwroot/lib/typeahead.js/dist/typeahead.jquery.js",
+      "wwwroot/lib/highlightjs/highlight.pack.js",
+      "wwwroot/lib/marked/lib/marked.js",
+      "wwwroot/js/site.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "renameLocals": true,
+      "preserveImportantComments": false
+    },
+    // Optionally generate .map file
+    "sourceMap": false
+  }
+]
