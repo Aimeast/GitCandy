@@ -1,7 +1,9 @@
-﻿using GitCandy.Base;
+﻿using GitCandy.Accessories;
+using GitCandy.Base;
 using GitCandy.Configuration;
 using GitCandy.Data;
 using GitCandy.Logging;
+using GitCandy.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +37,7 @@ namespace GitCandy
                 MainDbFileInfo = appDataFileProvider.GetFileInfo("GitCandy.db"),
                 CacheDbFileInfo = appDataFileProvider.GetFileInfo("Cache.db"),
             });
+            services.AddSingleton<IProfilerAccessor, ProfilerAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +57,8 @@ namespace GitCandy
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseProfiler();
 
             app.Run(async (context) =>
             {
