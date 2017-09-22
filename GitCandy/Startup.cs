@@ -37,7 +37,9 @@ namespace GitCandy
                 MainDbFileInfo = appDataFileProvider.GetFileInfo("GitCandy.db"),
                 CacheDbFileInfo = appDataFileProvider.GetFileInfo("Cache.db"),
             });
+
             services.AddSingleton<IProfilerAccessor, ProfilerAccessor>();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +61,8 @@ namespace GitCandy
             }
 
             app.UseProfiler();
+
+            app.UseLightweightLocalization();
 
             app.Run(async (context) =>
             {
