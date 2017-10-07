@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Nav_About" xml:space="preserve">
-    <value>About</value>
+    <value>关于</value>
   </data>
   <data name="Nav_Login" xml:space="preserve">
-    <value>Login</value>
+    <value>登录</value>
   </data>
   <data name="Nav_Logout" xml:space="preserve">
-    <value>Logout</value>
+    <value>退出</value>
   </data>
   <data name="Nav_Register" xml:space="preserve">
-    <value>Register</value>
+    <value>注册</value>
   </data>
   <data name="Nav_Repositories" xml:space="preserve">
-    <value>Repositories</value>
+    <value>仓库</value>
   </data>
   <data name="Nav_Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>设置</value>
   </data>
   <data name="Nav_Teams" xml:space="preserve">
-    <value>Teams</value>
+    <value>团队</value>
   </data>
   <data name="Nav_Users" xml:space="preserve">
-    <value>Users</value>
+    <value>用户</value>
   </data>
 </root>

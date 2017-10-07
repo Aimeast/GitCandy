@@ -6,7 +6,6 @@ using GitCandy.Logging;
 using GitCandy.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -40,6 +39,8 @@ namespace GitCandy
 
             services.AddSingleton<IProfilerAccessor, ProfilerAccessor>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddViewLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,13 +61,17 @@ namespace GitCandy
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             app.UseProfiler();
-
             app.UseLightweightLocalization();
+            app.UseInjectHttpHeaders();
 
-            app.Run(async (context) =>
+            app.UseMvc(routes =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=About}/{id?}");
             });
         }
     }

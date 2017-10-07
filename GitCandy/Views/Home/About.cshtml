@@ -1,0 +1,28 @@
+﻿@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["AboutTitle"];
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<div id="md">
+@Localizer["AboutDescription"]
+* [ASP.NET Core](https://github.com/aspnet/home) @@ [Apache License 2.0](https://github.com/aspnet/Home/blob/dev/LICENSE.txt)
+* [Bootstrap](https://github.com/twbs/bootstrap) @@ [MIT License](https://github.com/twbs/bootstrap/blob/master/LICENSE)
+* [Bootstrap Switch](https://github.com/Bttstrp/bootstrap-switch) @@ [MIT License](https://github.com/Bttstrp/bootstrap-switch/blob/master/LICENSE)
+* [FxSsh](https://github.com/Aimeast/FxSsh) @@ [MIT license](https://github.com/Aimeast/FxSsh/blob/master/LICENSE.md)
+* [Highlight.js](https://github.com/isagalaev/highlight.js) @@ [BSD-3 License](https://github.com/isagalaev/highlight.js/blob/master/LICENSE)
+* [jQuery](https://github.com/jquery/jquery) @@ [MIT License](https://github.com/jquery/jquery/blob/master/LICENSE.txt)
+* [LibGit2Sharp](https://github.com/libgit2/libgit2sharp) @@ [MIT License](https://github.com/libgit2/libgit2sharp/blob/master/LICENSE.md)
+* [LiteDB](https://github.com/mbdavid/LiteDB) @@ [MIT License](https://github.com/mbdavid/LiteDB/blob/master/LICENSE)
+* [marked](https://github.com/chjj/marked) @@ [MIT License](https://github.com/chjj/marked/blob/master/LICENSE)
+* [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) @@ [MIT License](https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt)
+* [typeahead.js](https://github.com/twitter/typeahead.js) @@ [MIT License](https://github.com/twitter/typeahead.js/blob/master/LICENSE)
+</div>
+<!--
+@Html.Raw(AppInformation.BuildingInformation)
+
+Version: @Html.Raw(AppInformation.Version)
+
+Starting: @Html.Raw(AppInformation.StartingTime)
+-->

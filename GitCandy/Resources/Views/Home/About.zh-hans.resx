@@ -117,28 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Nav_About" xml:space="preserve">
-    <value>About</value>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>GitCandy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
+
+演示地址：[http://gitcandy.com](http://gitcandy.com)
+
+获取源码并衍生：[https://github.com/Aimeast/GitCandy](https://github.com/Aimeast/GitCandy)
+
+---
+#### 鸣谢 (字母序)</value>
   </data>
-  <data name="Nav_Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="Nav_Logout" xml:space="preserve">
-    <value>Logout</value>
-  </data>
-  <data name="Nav_Register" xml:space="preserve">
-    <value>Register</value>
-  </data>
-  <data name="Nav_Repositories" xml:space="preserve">
-    <value>Repositories</value>
-  </data>
-  <data name="Nav_Settings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="Nav_Teams" xml:space="preserve">
-    <value>Teams</value>
-  </data>
-  <data name="Nav_Users" xml:space="preserve">
-    <value>Users</value>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>关于</value>
   </data>
 </root>

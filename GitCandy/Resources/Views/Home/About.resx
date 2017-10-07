@@ -117,28 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Nav_About" xml:space="preserve">
+  <data name="AboutDescription" xml:space="preserve">
+    <value>GitCandy&amp;copy; is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC core application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
+
+Visit a demo on [http://gitcandy.com](http://gitcandy.com)
+
+Get source and fork me on [https://github.com/Aimeast/GitCandy](https://github.com/Aimeast/GitCandy)
+
+---
+#### Thanks for (alphabet)</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
     <value>About</value>
-  </data>
-  <data name="Nav_Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="Nav_Logout" xml:space="preserve">
-    <value>Logout</value>
-  </data>
-  <data name="Nav_Register" xml:space="preserve">
-    <value>Register</value>
-  </data>
-  <data name="Nav_Repositories" xml:space="preserve">
-    <value>Repositories</value>
-  </data>
-  <data name="Nav_Settings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="Nav_Teams" xml:space="preserve">
-    <value>Teams</value>
-  </data>
-  <data name="Nav_Users" xml:space="preserve">
-    <value>Users</value>
   </data>
 </root>
