@@ -4,6 +4,7 @@ using GitCandy.Configuration;
 using GitCandy.Data;
 using GitCandy.Logging;
 using GitCandy.Middlewares;
+using GitCandy.Router;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +42,8 @@ namespace GitCandy
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc()
                 .AddViewLocalization();
+
+            services.AddGitCandyRouter();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,12 +70,7 @@ namespace GitCandy
             app.UseLightweightLocalization();
             app.UseInjectHttpHeaders();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=About}/{id?}");
-            });
+            app.UseGitCandyRouter();
         }
     }
 }

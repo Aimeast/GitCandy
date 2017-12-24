@@ -28,16 +28,16 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-controller="Repositories" asp-action="Index">@SharedLocalizer["Nav_Repositories"]</a></li>
+                    <li><a asp-controller="Home" asp-action="Index">@SharedLocalizer["Nav_Repositories"]</a></li>
                     <li><a asp-controller="Home" asp-action="About">@SharedLocalizer["Nav_About"]</a></li>
-                    <li><a asp-controller="Users" asp-action="Index">@SharedLocalizer["Nav_Users"]</a></li>
-                    <li><a asp-controller="Teams" asp-action="Index">@SharedLocalizer["Nav_Teams"]</a></li>
-                    <li><a asp-controller="Home" asp-action="Settings">@SharedLocalizer["Nav_Settings"]</a></li>
+                    <li><a asp-controller="User" asp-action="Index">@SharedLocalizer["Nav_Users"]</a></li>
+                    <li><a asp-controller="Team" asp-action="Index">@SharedLocalizer["Nav_Teams"]</a></li>
+                    <li><a asp-controller="Home" asp-action="Setting">@SharedLocalizer["Nav_Settings"]</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a asp-controller="Users" asp-action="Create">@SharedLocalizer["Nav_Register"]</a></li>
-                    <li><a asp-controller="Users" asp-action="Login">@SharedLocalizer["Nav_Login"]</a></li>
-                    <li><a asp-controller="Users" asp-action="Logout">@SharedLocalizer["Nav_Logout"]</a></li>
+                    <li><a asp-controller="User" asp-action="Create">@SharedLocalizer["Nav_Register"]</a></li>
+                    <li><a asp-controller="User" asp-action="Login">@SharedLocalizer["Nav_Login"]</a></li>
+                    <li><a asp-controller="User" asp-action="Logout">@SharedLocalizer["Nav_Logout"]</a></li>
                 </ul>
             </div>
         </div>
