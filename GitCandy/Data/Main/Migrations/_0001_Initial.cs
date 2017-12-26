@@ -11,8 +11,8 @@ namespace GitCandy.Data.Main.Migrations
 
         public override void Up()
         {
-            _db.Database.GetCollection<User>().EnsureIndex(x => x.Name, true, $"LOWER($.Name)");
-            _db.Database.GetCollection<User>().EnsureIndex(x => x.Email, true, $"LOWER($.Email)");
+            _db.Database.GetCollection<User>().EnsureIndex(x => x.Name, $"LOWER($.Name)", true);
+            _db.Database.GetCollection<User>().EnsureIndex(x => x.Email, $"LOWER($.Email)", true);
         }
     }
 }
