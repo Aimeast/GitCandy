@@ -1,6 +1,7 @@
 ﻿using GitCandy.Base;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Xunit;
 
@@ -41,6 +42,11 @@ namespace GitCandy.Tests
                     .Assembly
                     .GetCustomAttribute<AssemblyCopyrightAttribute>()
                     .Copyright);
+
+            var path = Directory.GetCurrentDirectory();
+            path = path.Substring(0, path.LastIndexOf("bin"));
+            var content = File.ReadAllText(new DirectoryInfo(path).Parent.GetFiles("LICENSE.md").First().FullName);
+            Assert.Contains("Copyright (c) 2013-" + DateTime.Now.Year + " Aimeast", content);
         }
     }
 }
