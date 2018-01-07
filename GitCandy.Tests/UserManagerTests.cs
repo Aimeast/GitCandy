@@ -13,7 +13,7 @@ namespace GitCandy.Tests
         public void AddOneUser()
         {
             var manager = CreateUserManager();
-            var user = manager.AddUser("root", "su", "hello", "ab@git", "super user", out _, out _);
+            var user = manager.CreateUser("root", "su", "hello", "ab@git", "super user", out _, out _);
 
             Assert.Equal("root", user.Name);
             Assert.Equal("su", user.Nickname);
@@ -27,23 +27,23 @@ namespace GitCandy.Tests
         {
             var manager = CreateUserManager();
 
-            manager.AddUser("root", "su", "hello", "AB@git", "super user", out var badName, out var badEmail);
+            manager.CreateUser("root", "su", "hello", "AB@git", "super user", out var badName, out var badEmail);
             Assert.False(badName);
             Assert.False(badEmail);
 
-            manager.AddUser("SUPER", "su", "hello", "abxx@git", "super user", out badName, out badEmail);
+            manager.CreateUser("SUPER", "su", "hello", "abxx@git", "super user", out badName, out badEmail);
             Assert.False(badName);
             Assert.False(badEmail);
 
-            manager.AddUser("root", "su", "hello", "abxx@git", "super user", out badName, out badEmail);
+            manager.CreateUser("root", "su", "hello", "abxx@git", "super user", out badName, out badEmail);
             Assert.True(badName);
             Assert.True(badEmail);
 
-            manager.AddUser("super", "su", "hello", "abcc@git", "super user", out badName, out badEmail);
+            manager.CreateUser("super", "su", "hello", "abcc@git", "super user", out badName, out badEmail);
             Assert.True(badName);
             Assert.False(badEmail);
 
-            manager.AddUser("ROOT", "su", "hello", "ab@git", "super user", out badName, out badEmail);
+            manager.CreateUser("ROOT", "su", "hello", "ab@git", "super user", out badName, out badEmail);
             Assert.True(badName);
             Assert.True(badEmail);
         }
@@ -53,7 +53,7 @@ namespace GitCandy.Tests
         {
             var manager = CreateUserManager();
 
-            manager.AddUser("root", "su", "hello", "ab@git", "super user", out _, out _);
+            manager.CreateUser("root", "su", "hello", "ab@git", "super user", out _, out _);
 
             Assert.NotNull(manager.Login("root", "hello"));
             Assert.NotNull(manager.Login("ab@GIT", "hello"));

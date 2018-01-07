@@ -8,7 +8,7 @@ namespace GitCandy.Data
         {
             services
                 .AddSingleton(settings)
-                .AddScoped<DataService>();
+                .AddSingleton<DataService>();
 
             return services;
         }

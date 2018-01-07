@@ -1,6 +1,7 @@
-﻿using LiteDB;
+﻿using GitCandy.Data.Main;
+using LiteDB;
 
-namespace GitCandy.Data.Main.Migrations
+namespace GitCandy.Data.Migrations
 {
     public class _0001_Initial : MainDataMigration
     {

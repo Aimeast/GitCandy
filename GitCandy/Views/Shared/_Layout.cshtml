@@ -1,5 +1,6 @@
 ﻿@inject IProfilerAccessor ProfilerAccessor
-@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@inject ITokenAccessor TokenAccessor
+@inject IHtmlLocalizer<SR> SharedLocalizer
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,9 +36,16 @@
                     <li><a asp-controller="Home" asp-action="Setting">@SharedLocalizer["Nav_Settings"]</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a asp-controller="User" asp-action="Create">@SharedLocalizer["Nav_Register"]</a></li>
-                    <li><a asp-controller="User" asp-action="Login">@SharedLocalizer["Nav_Login"]</a></li>
-                    <li><a asp-controller="User" asp-action="Logout">@SharedLocalizer["Nav_Logout"]</a></li>
+                    @if (TokenAccessor.Token == null)
+                    {
+                        <li><a asp-controller="Home" asp-action="Join">@SharedLocalizer["Nav_Join"]</a></li>
+                        <li><a asp-controller="Home" asp-action="Login">@SharedLocalizer["Nav_Login"]</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="User" asp-action="Index">@TokenAccessor.Token.Nickname</a></li>
+                        <li><a asp-controller="Home" asp-action="Logout">@SharedLocalizer["Nav_Logout"]</a></li>
+                    }
                 </ul>
             </div>
         </div>

@@ -117,28 +117,116 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Home_AboutDescription" xml:space="preserve">
+    <value>GitCandy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
+
+演示地址：[http://gitcandy.com](http://gitcandy.com)
+
+获取源码并衍生：[https://github.com/Aimeast/GitCandy](https://github.com/Aimeast/GitCandy)
+
+---
+#### 鸣谢 (字母序)</value>
+  </data>
+  <data name="Home_AboutTitle" xml:space="preserve">
+    <value>关于</value>
+  </data>
   <data name="Nav_About" xml:space="preserve">
-    <value>About</value>
+    <value>关于</value>
+  </data>
+  <data name="Nav_Join" xml:space="preserve">
+    <value>注册</value>
   </data>
   <data name="Nav_Login" xml:space="preserve">
-    <value>Login</value>
+    <value>登录</value>
   </data>
   <data name="Nav_Logout" xml:space="preserve">
-    <value>Logout</value>
-  </data>
-  <data name="Nav_Register" xml:space="preserve">
-    <value>Register</value>
+    <value>退出</value>
   </data>
   <data name="Nav_Repositories" xml:space="preserve">
-    <value>Repositories</value>
+    <value>仓库</value>
   </data>
   <data name="Nav_Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>设置</value>
   </data>
   <data name="Nav_Teams" xml:space="preserve">
-    <value>Teams</value>
+    <value>团队</value>
   </data>
   <data name="Nav_Users" xml:space="preserve">
-    <value>Users</value>
+    <value>用户</value>
+  </data>
+  <data name="Shared_Create" xml:space="preserve">
+    <value>创建</value>
+  </data>
+  <data name="Shared_Login" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="Shared_No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Shared_Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="Shared_Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="User_ConformPassword" xml:space="preserve">
+    <value>重复密码</value>
+  </data>
+  <data name="User_Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="User_Email" xml:space="preserve">
+    <value>电子邮箱</value>
+  </data>
+  <data name="User_EmailAlreadyExists" xml:space="preserve">
+    <value>电子邮箱已存在</value>
+  </data>
+  <data name="User_IsSystemAdministrator" xml:space="preserve">
+    <value>管理员</value>
+  </data>
+  <data name="User_JoinTitle" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="User_LoginFailed" xml:space="preserve">
+    <value>用户名或密码错误</value>
+  </data>
+  <data name="User_LoginTitle" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="User_Nickname" xml:space="preserve">
+    <value>昵称</value>
+  </data>
+  <data name="User_Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="User_Username" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="User_UsernameAlreadyExists" xml:space="preserve">
+    <value>用户名已存在</value>
+  </data>
+  <data name="Validation_Compare" xml:space="preserve">
+    <value>"{0}" 和 "{1}" 必须一致</value>
+  </data>
+  <data name="Validation_Email" xml:space="preserve">
+    <value>"{0}" 不是有效的电子邮件地址</value>
+  </data>
+  <data name="Validation_Filepath" xml:space="preserve">
+    <value>"{0}" 不是有效的 "{1}" 文件路径</value>
+  </data>
+  <data name="Validation_Name" xml:space="preserve">
+    <value>"{0}" 不规范</value>
+  </data>
+  <data name="Validation_NumberRange" xml:space="preserve">
+    <value>{0} 必须介于 {1} 和 {2} 之间</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>"{0}" 必须填写</value>
+  </data>
+  <data name="Validation_StringLength" xml:space="preserve">
+    <value>"{0}" 不能超过 {1} 个字符</value>
+  </data>
+  <data name="Validation_StringLengthRange" xml:space="preserve">
+    <value>"{0}" 必须介于 {1} 和 {2} 个字符之间</value>
   </data>
 </root>

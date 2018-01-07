@@ -1,0 +1,69 @@
+﻿@inject IStringLocalizer<SR> SharedLocalizer
+@model UserModel
+@{
+    ViewData["Title"] = SharedLocalizer["User_JoinTitle"];
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<form method="post">
+    <dl class="dl-horizontal col-md-8">
+
+        <dt>@Html.DisplayNameFor(s => s.Name)</dt>
+        <dd>@Html.TextBoxFor(s => s.Name, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
+                @Html.ValidationMessageFor(s => s.Name)
+            </span>
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.Nickname)</dt>
+        <dd>@Html.TextBoxFor(s => s.Nickname, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
+                @Html.ValidationMessageFor(s => s.Nickname)
+            </span>
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.Password)</dt>
+        <dd>@Html.PasswordFor(s => s.Password, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
+                @Html.ValidationMessageFor(s => s.Password)
+            </span>
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.ConformPassword)</dt>
+        <dd>@Html.PasswordFor(s => s.ConformPassword, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
+                @Html.ValidationMessageFor(s => s.ConformPassword)
+            </span>
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.Email)</dt>
+        <dd>@Html.TextBoxFor(s => s.Email, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
+                @Html.ValidationMessageFor(s => s.Email)
+            </span>
+        </dd>
+
+        <dt>@Html.DisplayNameFor(s => s.Description)</dt>
+        <dd>@Html.TextAreaFor(s => s.Description, 4, 0, new { @class = "form-control" })</dd>
+        <dd>
+            <span class="text-danger">
+                @Html.ValidationMessageFor(s => s.Description)
+            </span>
+        </dd>
+
+        <dt></dt>
+        <dd>@Html.ValidationSummary(true, SharedLocalizer["User_CreationUnsuccessfull"], new { @class = "alert alert-dismissable alert-danger" }, "span")</dd>
+
+        <dt></dt>
+        <dd>
+            <button type="submit" class="btn btn-primary">@SharedLocalizer["Shared_Create"]</button> &nbsp;
+            <button type="reset" class="btn btn-inverse">@SharedLocalizer["Shared_Reset"]</button> &nbsp;
+        </dd>
+    </dl>
+</form>

@@ -1,0 +1,4 @@
+﻿@inject IStringLocalizer<SR> SharedLocalizer
+@model bool
+
+@(Model ? SharedLocalizer["Shared_Yes"] : SharedLocalizer["Shared_No"])

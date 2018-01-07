@@ -2,8 +2,10 @@
 using GitCandy.Base;
 using GitCandy.Configuration;
 using GitCandy.Data;
+using GitCandy.Filters;
 using GitCandy.Logging;
 using GitCandy.Middlewares;
+using GitCandy.Resources;
 using GitCandy.Router;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,9 +40,19 @@ namespace GitCandy
                 CacheDbFileInfo = appDataFileProvider.GetFileInfo("Cache.db"),
             });
 
-            services.AddSingleton<IProfilerAccessor, ProfilerAccessor>();
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddMvc()
+            services.AddAccessories();
+            services.AddFilters();
+            services.AddLocalization();
+            services
+                .AddMvc(options =>
+                {
+                    options.Filters.AddService<TokenFilter>();
+                })
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SR));
+                })
                 .AddViewLocalization();
 
             services.AddGitCandyRouter();

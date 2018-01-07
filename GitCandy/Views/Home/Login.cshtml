@@ -1,0 +1,27 @@
+﻿@inject IStringLocalizer<SR> SharedLocalizer
+@model LoginModel
+@{
+    ViewData["Title"] = SharedLocalizer["User_LoginTitle"];
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<form method="post">
+    <dl class="dl-horizontal col-md-8">
+
+        <dt>@Html.DisplayNameFor(s => s.Name)</dt>
+        <dd>@Html.TextBoxFor(s => s.Name, new { @class = "form-control" })</dd>
+
+        <dt>@Html.DisplayNameFor(s => s.Password)</dt>
+        <dd>@Html.PasswordFor(s => s.Password, new { @class = "form-control" })</dd>
+
+        <dt></dt>
+        <dd>@Html.ValidationSummary(true, "", new { @class = "alert alert-dismissable alert-danger" })</dd>
+
+        <dt></dt>
+        <dd>
+            @Html.HiddenFor(s => s.ReturnUrl)
+            <button type="submit" class="btn btn-primary">@SharedLocalizer["Shared_Login"]</button> &nbsp;
+        </dd>
+    </dl>
+</form>

@@ -12,7 +12,7 @@ namespace GitCandy.Data.Main
             _dbAccessor = dbAccessor;
         }
 
-        public User AddUser(string name, string nickname, string password, string email, string description, out bool badName, out bool badEmail)
+        public User CreateUser(string name, string nickname, string password, string email, string description, out bool badName, out bool badEmail)
         {
             var lowercaseName = name.ToLower();
             var lowercaseEmail = email.ToLower();
@@ -35,7 +35,6 @@ namespace GitCandy.Data.Main
                 if (badName || badEmail)
                     return null;
 
-#warning TODO: missing transaction supporting in litedb 4.0.0-beta1
                 var user = new User
                 {
                     Name = name,
@@ -82,6 +81,71 @@ namespace GitCandy.Data.Main
                     }
                 }
                 return null;
+            }
+        }
+
+        public AuthorizationLog CreateAuthorization(long userID, DateTime expires, string ip)
+        {
+            using (var db = _dbAccessor.CreateMainDbAccessor())
+            {
+                var auth = new AuthorizationLog
+                {
+                    AuthCode = Guid.NewGuid(),
+                    UserID = userID,
+                    IssueDate = DateTime.Now,
+                    Expires = expires,
+                    IssueIp = ip,
+                    LastIp = ip,
+                    IsValid = true,
+                };
+                db.Insert(auth);
+                return auth;
+            }
+        }
+
+        public void UpdateAuthorization(Guid authCode, DateTime expires, string lastIp)
+        {
+            using (var db = _dbAccessor.CreateMainDbAccessor())
+            {
+                var auth = db.FirstOrDefault<AuthorizationLog>(x => x.AuthCode == authCode);
+                if (auth != null)
+                {
+                    auth.Expires = expires;
+                    auth.LastIp = lastIp;
+
+                    db.Update(auth);
+                }
+            }
+        }
+
+        public void SetAuthorizationAsInvalid(Guid authCode)
+        {
+            using (var db = _dbAccessor.CreateMainDbAccessor())
+            {
+                var auth = db.FirstOrDefault<AuthorizationLog>(x => x.AuthCode == authCode);
+                if (auth != null)
+                {
+                    auth.IsValid = false;
+
+                    db.Update(auth);
+                }
+            }
+        }
+
+        public Token GetAuthorizationToken(Guid authCode)
+        {
+            using (var db = _dbAccessor.CreateMainDbAccessor())
+            {
+                var auth = db.FirstOrDefault<AuthorizationLog>(x => x.AuthCode == authCode && x.IsValid);
+                if (auth == null)
+                {
+                    return null;
+                }
+                var user = db.First<User>(x => x.ID == auth.UserID);
+                return new Token(auth.AuthCode, user.ID, user.Name, user.Nickname, user.IsSystemAdministrator, auth.Expires)
+                {
+                    LastIp = auth.LastIp,
+                };
             }
         }
     }

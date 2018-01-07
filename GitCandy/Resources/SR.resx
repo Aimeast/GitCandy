@@ -117,17 +117,116 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>GitCandy&amp;copy; 是一个基于ASP.NET MVC的[Git](http://git-scm.com/documentation)分布式版本控制平台，支持公共和私有代码库。可以不受限制的创建代码库，与你的团队一块协作。
+  <data name="Home_AboutDescription" xml:space="preserve">
+    <value>GitCandy&amp;copy; is a [Git](http://git-scm.com/documentation) distributed version control platform based on ASP.NET MVC core application, which supports public and private repositories. You can create and collaborate your repository with your team anytime anywhere without any limit.
 
-演示地址：[http://gitcandy.com](http://gitcandy.com)
+Visit a demo on [http://gitcandy.com](http://gitcandy.com)
 
-获取源码并衍生：[https://github.com/Aimeast/GitCandy](https://github.com/Aimeast/GitCandy)
+Get source and fork me on [https://github.com/Aimeast/GitCandy](https://github.com/Aimeast/GitCandy)
 
 ---
-#### 鸣谢 (字母序)</value>
+#### Thanks for (alphabet)</value>
   </data>
-  <data name="AboutTitle" xml:space="preserve">
-    <value>关于</value>
+  <data name="Home_AboutTitle" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Nav_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Nav_Join" xml:space="preserve">
+    <value>Join</value>
+  </data>
+  <data name="Nav_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Nav_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Nav_Repositories" xml:space="preserve">
+    <value>Repositories</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Nav_Teams" xml:space="preserve">
+    <value>Teams</value>
+  </data>
+  <data name="Nav_Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Shared_Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Shared_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Shared_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Shared_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Shared_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="User_ConformPassword" xml:space="preserve">
+    <value>Conform password</value>
+  </data>
+  <data name="User_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="User_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="User_EmailAlreadyExists" xml:space="preserve">
+    <value>Email already exists</value>
+  </data>
+  <data name="User_IsSystemAdministrator" xml:space="preserve">
+    <value>Is administrator</value>
+  </data>
+  <data name="User_JoinTitle" xml:space="preserve">
+    <value>Join</value>
+  </data>
+  <data name="User_LoginFailed" xml:space="preserve">
+    <value>Username or password error</value>
+  </data>
+  <data name="User_LoginTitle" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="User_Nickname" xml:space="preserve">
+    <value>Nickname</value>
+  </data>
+  <data name="User_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="User_Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="User_UsernameAlreadyExists" xml:space="preserve">
+    <value>Username already exists</value>
+  </data>
+  <data name="Validation_Compare" xml:space="preserve">
+    <value>"{0}" and "{1}" must have the same value</value>
+  </data>
+  <data name="Validation_Email" xml:space="preserve">
+    <value>"{0}" is not a valid email address</value>
+  </data>
+  <data name="Validation_Filepath" xml:space="preserve">
+    <value>"{0}" is not a valid "{1}" file path</value>
+  </data>
+  <data name="Validation_Name" xml:space="preserve">
+    <value>"{0}" not a valid</value>
+  </data>
+  <data name="Validation_NumberRange" xml:space="preserve">
+    <value>"{0}" can only be between {1} and {2}</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>"{0}" is mandatory</value>
+  </data>
+  <data name="Validation_StringLength" xml:space="preserve">
+    <value>"{0}" should be smaller than {1} chars</value>
+  </data>
+  <data name="Validation_StringLengthRange" xml:space="preserve">
+    <value>"{0}" should be smaller than {1} chars and large then {2} chars</value>
   </data>
 </root>

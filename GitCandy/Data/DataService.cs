@@ -1,5 +1,5 @@
 ﻿using GitCandy.Data.Main;
-using GitCandy.Data.Main.Migrations;
+using GitCandy.Data.Migrations;
 using LiteDB;
 using System;
 using System.Linq;
@@ -67,7 +67,7 @@ namespace GitCandy.Data
 
                 if (isNewDb)
                 {
-                    var user = UserManager.AddUser("admin", "admin", "gitcandy", "admin@GitCandy", "", out _, out _);
+                    var user = UserManager.CreateUser("admin", "admin", "gitcandy", "admin@GitCandy", "", out _, out _);
                     user.IsSystemAdministrator = true;
                     db.Update(user);
                 }
