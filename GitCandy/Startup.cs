@@ -7,6 +7,7 @@ using GitCandy.Logging;
 using GitCandy.Middlewares;
 using GitCandy.Resources;
 using GitCandy.Router;
+using GitCandy.Schedules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,7 @@ namespace GitCandy
                 MainDbFileInfo = appDataFileProvider.GetFileInfo("GitCandy.db"),
                 CacheDbFileInfo = appDataFileProvider.GetFileInfo("Cache.db"),
             });
+            services.AddScoped<Scheduler>();
 
             services.AddAccessories();
             services.AddFilters();
