@@ -52,7 +52,15 @@ namespace GitCandy.Router
             // template[1..] = key of routes.
             //   if start with '@', the field is constant.
             //   if start with '*', the field is optional.
+            //   if start with '_', the field is a status marker.
             //   otherwish, is variable.
+            // ex. abc.com/api/jack/rock/blob/docs/readme
+            //            [1] [2]  [3]  [4]  [5]
+            // [1] is a status marker. it is a optional, null value to be skiped both route and generate path
+            // [2] and [3] is dynamic field, means username and reponame
+            // [4] is constant
+            // [5] is optional, means path
+
             var templates = new List<string[]>();
             var template = new string[32];
             foreach (var route in rootRoute.Children)
@@ -95,7 +103,7 @@ namespace GitCandy.Router
             {
                 var path = string.Join('/', GetCombinedValues(pathValues, template));
                 var querystring = string.Join('&', context.Values.Keys
-                    .Except(template.Select(x => x.TrimStart('*')), StringComparer.OrdinalIgnoreCase)
+                    .Except(template.Select(x => x.TrimStart('*', '_')), StringComparer.OrdinalIgnoreCase)
                     .Select(x => _urlEncoder.Encode(x) + "=" + _urlEncoder.Encode(context.Values[x].ToString())));
 
                 if (querystring != "")
@@ -135,14 +143,14 @@ namespace GitCandy.Router
                     }
                     else
                     {
-                        var isOptional = segment.StartsWith('*');
-                        if (isOptional)
+                        var isNullableField = segment.StartsWith('*') || segment.StartsWith('_');
+                        if (isNullableField)
                         {
                             segment = segment.Substring(1);
                         }
                         var value = GetDictValue(context.Values, segment)
                             ?? GetDictValue(context.AmbientValues, segment);
-                        if (!isOptional && string.IsNullOrEmpty(value))
+                        if (!isNullableField && string.IsNullOrEmpty(value))
                         {
                             matched = false;
                             break;
@@ -166,11 +174,13 @@ namespace GitCandy.Router
         {
             for (int i = 1; i < values.Length; i++)
             {
-                if (template[i].StartsWith('*') && string.IsNullOrEmpty(values[i]))
+                var segment = template[i];
+                var isNullableField = segment.StartsWith('*') || segment.StartsWith('_');
+                if (isNullableField && string.IsNullOrEmpty(values[i]))
                 {
-                    yield break;
+                    continue;
                 }
-                if (string.Equals(template[i], "action", StringComparison.OrdinalIgnoreCase)
+                if (string.Equals(segment, "action", StringComparison.OrdinalIgnoreCase)
                     && string.Equals(values[i], "index", StringComparison.OrdinalIgnoreCase))
                 {
                     yield break;
@@ -225,7 +235,7 @@ namespace GitCandy.Router
                 var matcher = stack.Pop();
                 if (matcher.Match())
                 {
-                    if (matcher.Succeed)
+                    if (matcher.Succeed) // has found action
                     {
                         foreach (var (key, value) in matcher.RouteData)
                         {

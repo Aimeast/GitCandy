@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Version>0.3</Version>
-    <Copyright>Copyright © 2013-2018</Copyright>
+    <Copyright>Copyright © 2013-2019</Copyright>
     <PreBuildEvent>PowerShell.exe -NonInteractive -ExecutionPolicy Unrestricted $(SolutionDir)Build\PreBuild.ps1</PreBuildEvent>
   </PropertyGroup>
 

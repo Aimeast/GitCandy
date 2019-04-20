@@ -41,6 +41,9 @@ namespace GitCandy.Tests
         {
             Assert.Equal("Home.Index", GetContent(""));
             Assert.Equal("Home.Index", GetContent("/"));
+            Assert.Equal("Home.Index_api", GetContent("/api"));
+            Assert.Equal("Home.Index_api", GetContent("/api/"));
+            Assert.Equal("Home.Detail_api", GetContent("/api/detail"));
             Assert.Equal("Home.Detail", GetContent("/detail"));
             Assert.Equal("Home.Detail", GetContent("/DETAIL/"));
 
@@ -89,12 +92,18 @@ namespace GitCandy.Tests
                     new { Controller = "Home", Action = "Join" }, new { controller = "Home", action = "Join"} };
                 yield return new object[] { "/Jack",
                     new { Controller = "User", Action = "Index" }, new { Username = "Jack" } };
+                yield return new object[] { "/api/Jack",
+                    new { Controller = "User", Action = "Index", api = "api" }, new { Username = "Jack" } };
                 yield return new object[] { "/Moon/Edit/a/b?app=foo&bar=dot",
                     new { Controller = "Team", Action = "Edit" }, new { teamname = "Moon", path = "a/b", app = "foo", bar="dot" } };
+                yield return new object[] { "/api/Moon/Edit/a/b?app=foo&bar=dot",
+                    new { Controller = "Team", Action = "Edit" }, new { teamname = "Moon", path = "a/b", app = "foo", bar="dot", api = "api" } };
                 yield return new object[] { "/Moon/Edit/a/b?bar=dot",
                     new { Controller = "Team", Action = "Edit", app = "foo" }, new { teamname = "Moon", path = "a/b", bar="dot" } };
                 yield return new object[] { "/Lucy/Candy/wiki/Page/a/b",
                     new { Controller = "Wiki", Action = "Page" }, new { username = "Lucy", reponame="Candy", path = "a/b" } };
+                yield return new object[] { "/api/Lucy/Candy/wiki/Page/a/b",
+                    new { Controller = "Wiki", Action = "Page", api = "api" }, new { username = "Lucy", reponame="Candy", path = "a/b" } };
                 yield return new object[] { "/",
                     new { Controller = "Wiki", Action = "Page" }, new { } }; // fail
             }
@@ -149,17 +158,18 @@ namespace GitCandy.Tests
                     );
 
                 var root = new RouteTree()
-                    .Add(new ActionRouteNode<HomeController>(actions, "path"))
-                    .Add(new DynamicRouteNode(s => _names.FirstOrDefault(x => x.Name == s).Type)
-                        .Add(new ChoiceRouteNode("username")
-                            .Add(new ActionRouteNode<UserController>(actions, "path"))
-                            .Add(repoRouteNode)
-                        )
-                        .Add(new ChoiceRouteNode("teamname")
-                            .Add(new ActionRouteNode<TeamController>(actions, "path"))
-                            .Add(repoRouteNode)
-                        )
-                    );
+                    .Add(new MarkerRouteNode("api", s => string.Equals(s, "api", StringComparison.OrdinalIgnoreCase))
+                        .Add(new ActionRouteNode<HomeController>(actions, "path"))
+                        .Add(new DynamicRouteNode(s => _names.FirstOrDefault(x => x.Name == s).Type)
+                            .Add(new ChoiceRouteNode("username")
+                                .Add(new ActionRouteNode<UserController>(actions, "path"))
+                                .Add(repoRouteNode)
+                            )
+                            .Add(new ChoiceRouteNode("teamname")
+                                .Add(new ActionRouteNode<TeamController>(actions, "path"))
+                                .Add(repoRouteNode)
+                            )
+                        ));
 
                 router.BuildRoute(root);
 
@@ -234,12 +244,16 @@ namespace GitCandy.Tests
     {
         public IActionResult Index()
         {
-            return Content("Home.Index");
+            return RouteData.Values.ContainsKey("_api")
+                ? Content("Home.Index_api")
+                : Content("Home.Index");
         }
 
         public IActionResult Detail()
         {
-            return Content("Home.Detail");
+            return RouteData.Values.ContainsKey("_api")
+                ? Content("Home.Detail_api")
+                : Content("Home.Detail");
         }
     }
 }

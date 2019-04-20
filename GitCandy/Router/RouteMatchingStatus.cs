@@ -20,5 +20,7 @@ namespace GitCandy.Router
         public Span<string> Segment { get; private set; }
         public IQueryCollection Query { get; private set; }
         public IDictionary<string, string> RouteData { get; private set; }
+
+        public int SkipSegment { get; set; }
     }
 }

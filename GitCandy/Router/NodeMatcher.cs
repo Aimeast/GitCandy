@@ -20,12 +20,18 @@ namespace GitCandy.Router
 
         public bool Match()
         {
+            var isMarkerRoute = _status.RouteNode is MarkerRouteNode;
+            _status.SkipSegment = _status.RouteNode.SkipSegment;
+
             if (_status.Segment.Length == 0)
-                return false;
+                return isMarkerRoute;
 
             var pairs = _status.RouteNode.GetData(_status);
             if (pairs == null)
-                return false;
+                return isMarkerRoute;
+
+            if (isMarkerRoute)
+                _status.SkipSegment++;
 
             foreach (var (key, value) in pairs)
             {
@@ -42,7 +48,7 @@ namespace GitCandy.Router
             {
                 var status = new RouteMatchingStatus(tree,
                     _status.Method,
-                    _status.Segment.Slice(_status.RouteNode.SkipSegment),
+                    _status.Segment.Slice(_status.SkipSegment),
                     _status.Query,
                     new Dictionary<string, string>(_status.RouteData, StringComparer.OrdinalIgnoreCase));
                 yield return new NodeMatcher(status) { Parent = this };
