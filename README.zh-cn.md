@@ -1,7 +1,7 @@
 ﻿## GitCandy
 GitCandy© 是一个基于 ASP.NET MVC 的 [Git](http://git-scm.com/documentation) 版本控制服务端，支持公有和私有代码库，可不受限制的创建代码代码库，随时随地的与团队进行协作。
 
-演示网站：[http://gitcandy.com](http://gitcandy.com)
+演示网站不可用
 
 源代码： [http://github.com/Aimeast/GitCandy](http://github.com/Aimeast/GitCandy)
 
