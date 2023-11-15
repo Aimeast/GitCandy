@@ -61,6 +61,21 @@ namespace GitCandy.Ssh.Services
             }
         }
 
+        private bool IsRequestTypeTolerated(ChannelRequestMessage message)
+        {
+            if (message == null)
+                return (false);
+
+            switch (message.RequestType)
+            {
+                // Occured on Ubuntu -> "SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.2"
+                case "env":
+                    return (true);
+                default:
+                    return (false);
+            }
+        }
+
         private void HandleMessage(ChannelRequestMessage message)
         {
             switch (message.RequestType)
@@ -75,7 +90,11 @@ namespace GitCandy.Ssh.Services
                         {
                             RecipientChannel = FindChannelByServerId<Channel>(message.RecipientChannel).ClientChannelId
                         });
-                    throw new SshConnectionException(string.Format("Unknown request type: {0}.", message.RequestType));
+
+                    if (!IsRequestTypeTolerated(message))
+                        throw new SshConnectionException(string.Format("Unknown request type: {0}.", message.RequestType));
+
+                    break;
             }
         }
 
